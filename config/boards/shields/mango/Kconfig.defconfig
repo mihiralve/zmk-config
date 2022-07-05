@@ -1,6 +1,6 @@
 if SHIELD_MANGO_LEFT
 
-config ZMK_MANGO
+config ZMK_KEYBOARD_NAME
     default "Mango"
 
 config ZMK_SPLIT_ROLE_CENTRAL
