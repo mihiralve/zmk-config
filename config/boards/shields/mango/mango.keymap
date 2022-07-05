@@ -72,10 +72,10 @@ default_layer {
 lower_layer {
 
     bindings = <
-        &kp trans   &kp EXCL    &kp AT      &kp HASH    &kp DLLR    &kp PRCNT           &kp CARET   &kp AMPS    &kp ASTRK   &kp LPAR    &kp RPAR    &kp trans
-        &kp trans   &kp N1      &kp N2      &kp N3      &kp N4      &kp N5              &kp N6      &kp N7      &kp N8      &kp N9      &kp N0      &kp trans
-        &kp trans   &kp GRAVE   &kp trans   &kp trans   &kp trans   &kp trans           &kp MINUS   &kp EQUAL   &kp LBKT    &kp RBKT    &kp BSLH    &kp trans
-                                            &kp trans   &mo trans   &kp trans           &kp trans   &mo trans   &kp trans
+        &trans      &kp EXCL    &kp AT      &kp HASH    &kp DLLR    &kp PRCNT           &kp CARET   &kp AMPS    &kp ASTRK   &kp LPAR    &kp RPAR    &kp trans
+        &trans      &kp N1      &kp N2      &kp N3      &kp N4      &kp N5              &kp N6      &kp N7      &kp N8      &kp N9      &kp N0      &kp trans
+        &trans      &kp GRAVE   &trans      &trans      &trans      &trans              &kp MINUS   &kp EQUAL   &kp LBKT    &kp RBKT    &kp BSLH    &kp trans
+                                            &trans      &trans      &trans              &trans      &trans      &kp trans
                                             
                     &trans      &trans      &trans      &trans      &trans              &trans      &trans      &trans      &trans      &trans
     >;
@@ -107,10 +107,10 @@ lower_layer {
 raise_layer {
 
     bindings = <
-        &kp trans  &out OUT_TOG &kp C_VOL_DN &kp C_MUTE &kp C_VOL_UP &kp trans          &kp BT_NXT  &kp trans   &kp UP      &kp trans   &kp F12     &kp trans
-        &kp trans   &kp trans  &SCRSHT      &kp trans   &kp trans    &kp trans          &kp trans   &kp LEFT    &kp DOWN    &kp RIGHT   &kp F11     &kp trans
-        &kp trans   &kp F1     &kp F2       &kp F3      &kp F4       &kp F5             &kp F6      &kp F7      &kp F8      &kp F9      &kp F10     &kp trans
-                                            &kp trans   &mo trans    &kp trans          &kp trans   &mo trans   &kp trans
+        &kp trans  &out OUT_TOG &kp C_VOL_DN &kp C_MUTE &kp C_VOL_UP &trans             &kp BT_NXT  &trans      &kp UP      &trans      &kp F12     &kp trans
+        &trans      &kp trans  &SCRSHT      &trans      &trans       &trans             &trans      &kp LEFT    &kp DOWN    &kp RIGHT   &kp F11     &kp trans
+        &trans      &kp F1     &kp F2       &kp F3      &kp F4       &kp F5             &kp F6      &kp F7      &kp F8      &kp F9      &kp F10     &kp trans
+                                            &trans      &trans       &trans             &trans      &trans      &kp trans
                                             
                     &trans     &trans       &trans      &trans       &trans             &trans      &trans      &trans      &trans      &trans
     >;
