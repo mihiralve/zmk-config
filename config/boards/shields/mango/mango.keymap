@@ -1,0 +1,260 @@
+#include <behaviors.dtsi>
+#include <dt-bindings/zmk/keys.h>
+#include <dt-bindings/zmk/bt.h>
+#include <dt-bindings/zmk/outputs.h>
+
+#define BASE 0
+#define NUM  1
+#define NAV  2
+
+/ {
+keymap {
+    compatible = "zmk,keymap";
+
+/*                                  
+*  DEFAULT               _____                                               _____
+*                 .-----|  E  |-----._____                       _____.-----|  I  |-----.
+*      _____.-----|  W  |_____|  R  |  T  |                     |  Y  |  U  |_____|  O  |-----._____
+*     | ESC |  Q  |-----|  D  |-----|_____|                     |_____|-----|  K  |-----|  P  | BSP |  
+*     |_____|-----|  S  |_____|  F  |  G  |                     |  H  |  J  |_____|  L  |-----|_____|  
+*     | TAB |  A  |-----|  C  |-----|_____|                     |_____|-----| , < |-----| ; : | ' " |  
+*     |_____|-----|  X  |_____|  V  |  B  |                     |  N  |  M  |_____| . > |-----|_____|  
+*     |SHIFT|  Z  |-----'   .-'---.=|_____|.-.._           _..-.|_____|=.---'-.   '-----| / ? |SHIFT|
+*     !_____!-----'         | GUI | CTRL| /     /         \     \ | BSP | ALT |         '-----!_____!
+*              |            '-----!_____!/ ENT /           \ SPC \!_____!-----'            |
+*            SHIFT             |        '--.._/             \_..--'  |                   SHIFT                                                                                                                                       
+*                             NUM                                   NAV
+*
+*                          MUP                                               MUP
+*                          __                                                __
+*                       __|  |__                                          __|  |__
+*               MLEFT  |_MCLICK_|  MRIGHT                         MLEFT  |_MCLICK_|  MRIGHT
+*                         |__|                                              |__|
+*                                                                             
+*                        MDOWN                                             MDOWN
+*/
+
+default_layer {
+
+    bindings = <
+        &kp ESC     &kp Q       &kp W       &kp E       &kp R       &kp T               &kp Y       &kp U       &kp I       &kp O       &kp P       &kp BSPC
+        &kp TAB     &kp A       &kp S       &kp D       &kp F       &kp G               &kp H       &kp J       &kp K       &kp L       &kp SEMI    &kp SQT
+        &kp LSHFT   &kp Z       &kp X       &kp C       &kp V       &kp B               &kp N       &kp M       &kp COMMA   &kp DOT     &kp FSLH    &kp RSHFT
+                        &th_hold (&mo NUM), &kp LGUI    &kp LCTRL   &kp SPACE           &kp ENTER   &th_hold (&mo NAV), &kp BSPC   &kp RALT
+
+                    &trans      &trans      &trans      &trans      &trans              &trans      &trans      &trans      &trans      &trans
+    >;
+};
+
+/*                                  
+*  NUMBERS               _____                                               _____
+*                 .-----|  #  |-----._____                       _____.-----|  *  |-----.
+*      _____.-----|  @  |_____|  $  |  %  |                     |  ^  |  &  |_____|  (  |-----._____
+*     | ESC |  !  |-----|  3  |-----|_____|                     |_____|-----|  8  |-----|  )  | BSP |  
+*     |_____|-----|  2  |_____|  4  |  5  |                     |  6  |  7  |_____|  9  |-----|_____|  
+*     | TAB |  1  |-----|     |-----|_____|                     |_____|-----| [ { |-----|  0  | ' " |  
+*     |_____|-----|     |_____|     |     |                     | - _ | = + |_____| ] } |-----|_____|  
+*     |SHIFT| ` ~ |-----'   .-'---.=|_____|.-.._           _..-.|_____|=.---'-.   '-----| \ | |SHIFT|
+*     !_____!-----'         | GUI | CTRL| /     /         \     \ | BSP | ALT |         '-----!_____!
+*              |            '-----!_____!/ ENT /           \ SPC \!_____!-----'            |
+*            SHIFT             |        '--.._/             \_..--'  |                   SHIFT                                                                                                                                       
+*                             NUM                                   NAV
+*
+*                          MUP                                               MUP
+*                          __                                                __
+*                       __|  |__                                          __|  |__
+*               MLEFT  |_MCLICK_|  MRIGHT                         MLEFT  |_MCLICK_|  MRIGHT
+*                         |__|                                              |__|
+*                                                                             
+*                        MDOWN                                             MDOWN
+*/
+
+lower_layer {
+
+    bindings = <
+        &kp trans   &kp EXCL    &kp AT      &kp HASH    &kp DLLR    &kp PRCNT           &kp CARET   &kp AMPS    &kp ASTRK   &kp LPAR    &kp RPAR    &kp trans
+        &kp trans   &kp N1      &kp N2      &kp N3      &kp N4      &kp N5              &kp N6      &kp N7      &kp N8      &kp N9      &kp N0      &kp trans
+        &kp trans   &kp GRAVE   &kp trans   &kp trans   &kp trans   &kp trans           &kp MINUS   &kp EQUAL   &kp LBKT    &kp RBKT    &kp BSLH    &kp trans
+                                            &kp trans   &mo trans   &kp trans           &kp trans   &mo trans   &kp trans
+                                            
+                    &trans      &trans      &trans      &trans      &trans              &trans      &trans      &trans      &trans      &trans
+    >;
+};
+
+/*                                  
+*  NAVIGATION            _____                                               _____
+*                 .-----| MUTE|-----._____                       _____.-----| UP  |-----.
+*      _____.-----|VDOWN|_____| VUP | SWAP|                     |BTNXT|     |_____|     |-----._____
+*     | ESC |BTOG |-----|SCRSH|-----|_____|                     |_____|-----| DOWN|-----| F12 | BSP |  
+*     |_____|-----|     |_____|     |     |                     |     | LEFT|_____|RIGHT|-----|_____|  
+*     | TAB |     |-----| F3  |-----|_____|                     |_____|-----| F8  |-----| F11 | ' " |  
+*     |_____|-----| F2  |_____| F4  | F5  |                     | F6  | F7  |_____| F9  |-----|_____|  
+*     |SHIFT| F1  |-----'   .-'---.=|_____|.-.._           _..-.|_____|=.---'-.   '-----| F10 |SHIFT|
+*     !_____!-----'         | GUI | CTRL| /     /         \     \ | BSP | ALT |         '-----!_____!
+*              |            '-----!_____!/ ENT /           \ SPC \!_____!-----'            |
+*            SHIFT             |        '--.._/             \_..--'  |                   SHIFT                                                                                                                                       
+*                             NUM                                   NAV
+*
+*                          MUP                                               MUP
+*                          __                                                __
+*                       __|  |__                                          __|  |__
+*               MLEFT  |_MCLICK_|  MRIGHT                         MLEFT  |_MCLICK_|  MRIGHT
+*                         |__|                                              |__|
+*                                                                             
+*                        MDOWN                                             MDOWN
+*/
+
+raise_layer {
+
+    bindings = <
+        &kp trans  &out OUT_TOG &kp C_VOL_DN &kp C_MUTE &kp C_VOL_UP &kp trans          &kp BT_NXT  &kp trans   &kp UP      &kp trans   &kp F12     &kp trans
+        &kp trans   &kp trans  &SCRSHT      &kp trans   &kp trans    &kp trans          &kp trans   &kp LEFT    &kp DOWN    &kp RIGHT   &kp F11     &kp trans
+        &kp trans   &kp F1     &kp F2       &kp F3      &kp F4       &kp F5             &kp F6      &kp F7      &kp F8      &kp F9      &kp F10     &kp trans
+                                            &kp trans   &mo trans    &kp trans          &kp trans   &mo trans   &kp trans
+                                            
+                    &trans     &trans       &trans      &trans       &trans             &trans      &trans      &trans      &trans      &trans
+    >;
+};
+
+};
+};
+
+
+/ {
+    combos {
+        compatible = "zmk,combos";
+
+/* 
+*
+*                                               _____________________         _____________________
+*                                            __|__                   |       |                   __|__ 
+*                                   _____   |     |                  v       v                  |     |   _____
+*                            .-----|  3  |-----._____                                         _____.-----|  8  |-----.
+*                 _____.-----|  2  |_____|  4  |  5  |               (       )               |  6  |  7  |_____|  9  |-----._____
+*                |  0  |  1  |-----| 15  |-----|_____| --.__  +                     -  __.-- |_____|-----| 20  |-----| 10  | 11  |  
+*     ESC  __.-- |_____|-----| 14  |_____| 16  | 17  | --'           [       ]           '-- | 18  | 19  |_____| 21  |-----|_____| --.__  '
+*            '-- | 12  | 13  |-----| 27  |-----|_____| --.__  *                     =  __.-- |_____|-----| 32  |-----| 22  | 23  | --' 
+*     TAB  __.-- |_____|-----| 26  |_____| 28  | 29  | --'           {       }           '-- | 30  | 31  |_____| 33  |-----|_____| --.__  "
+*            '-- | 24  | 25  |-----'   .-'---.=|_____|.-.._                             _..-.|_____|=.---'-.   '-----| 34  | 35  | --'
+*                !_____!-----'         | 36  | 37  | /     /                           \     \ | 40  | 41  |         '-----!_____!
+*                                      '-----!_____!/ 38  /                             \ 39  \!_____!-----'          
+*                                                  '--.._/                               \_..--'                
+*/
+
+// ESC
+        combo_esc {
+            timeout-ms = <20>;
+            key-positions = <0 12>;
+            bindings = <&kp ESC>;
+        };
+
+// TAB
+        combo_tab {
+            timeout-ms = <20>;
+            key-positions = <12 24>;
+            bindings = <&kp TAB>;
+        };
+
+// '
+        combo_sqt {
+            timeout-ms = <20>;
+            key-positions = <11 23>;
+            bindings = <&kp SQT>;
+        };
+
+// "
+        combo_dqt {
+            timeout-ms = <20>;
+            key-positions = <23 35>;
+            bindings = <&kp DQT>;
+        };
+
+// ()
+        combo_lpar {
+            timeout-ms = <20>;
+            key-positions = <4 5>;
+            bindings = <&kp LPAR>;
+        };
+
+        combo_rpar {
+            timeout-ms = <20>;
+            key-positions = <6 7>;
+            bindings = <&kp RPAR>;
+        };
+
+// []
+        combo_lbkt {
+            timeout-ms = <20>;
+            key-positions = <16 17>;
+            bindings = <&kp LBKT>;
+        };
+
+        combo_rbkt {
+            timeout-ms = <20>;
+            key-positions = <18 19>;
+            bindings = <&kp RBKT>;
+        };
+
+// {}
+        combo_lbrc {
+            timeout-ms = <20>;
+            key-positions = <28 29>;
+            bindings = <&kp LBRC>;
+        };
+
+        combo_rbrc {
+            timeout-ms = <20>;
+            key-positions = <30 31>;
+            bindings = <&kp RBRC>;
+        };
+
+// +
+        combo_plus {
+            timeout-ms = <20>;
+            key-positions = <5 17>;
+            bindings = <&kp PLUS>;
+        };
+
+// *
+        combo_astrk {
+            timeout-ms = <20>;
+            key-positions = <27 29>;
+            bindings = <&kp ASTRK>;
+        };
+
+// -
+        combo_minus {
+            timeout-ms = <20>;
+            key-positions = <6 18>;
+            bindings = <&kp MINUS>;
+        };
+
+// =
+        combo_equal {
+            timeout-ms = <20>;
+            key-positions = <18 30>;
+            bindings = <&kp EQUAL>;
+        };
+
+    };
+};
+
+
+/ {
+    macros {
+
+// Screenshot
+        SCRSHT: scrsht {
+            label = "Screenshot";
+            compatible = "zmk,behavior-macro";
+            #binding-cells = <0>;
+            bindings
+                = <&macro_press &kp LGUI>
+                , <&macro_press &kp LSHFT>
+                , <&macro_tap &kp S>
+                , <&macro_release &kp LSHFT>
+                , <&macro_release &kp LGUI>
+                ;
+        };
+    };
+};

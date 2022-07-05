@@ -1,0 +1,16 @@
+#include "mango.dtsi" // Notice that the main dtsi files are included in the overlay.
+
+&default_transform { // The matrix transform for this board is 6 columns over because the left half is 6 columns wide according to the matrix.
+    col-offset = <6>;
+};
+
+&kscan0 {
+    col-gpios
+        = <&pro_micro 7 GPIO_ACTIVE_HIGH> // col1_r in the schematic
+        , <&pro_micro 10 GPIO_ACTIVE_HIGH> // col2_r in the schematic
+        , <&pro_micro 16 GPIO_ACTIVE_HIGH> // col3_r in the schematic
+        , <&pro_micro 19 GPIO_ACTIVE_HIGH> // col4_r in the schematic
+        , <&pro_micro 20 GPIO_ACTIVE_HIGH> // col5_r in the schematic
+        , <&pro_micro 21 GPIO_ACTIVE_HIGH> // col6_r in the schematic
+        ;
+};
