@@ -2,7 +2,7 @@
     status = "okay";
     compatible = "nordic,nrf-spim";
     sck-pin = <24>;
-    mosi-pin = <6>;
+    mosi-pin = <20>;
     cs-gpios = <&pro_micro 4 GPIO_ACTIVE_HIGH>;
     // Unused pin, needed for SPI definition, but not used by the display driver itself.
     miso-pin = <7>; // 0.07 is not broken out on the n!n
