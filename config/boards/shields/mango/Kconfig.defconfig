@@ -16,16 +16,19 @@ config ZMK_SPLIT
 config ZMK_DISPLAY
 	select LVGL_USE_CONT
 	select LVGL_FONT_MONTSERRAT_26
-	
-choice ZMK_DISPLAY_STATUS_SCREEN
-	default ZMK_DISPLAY_STATUS_SCREEN_BUILT_IN
-
-endchoice
 
 if ZMK_DISPLAY
 
+config SYSTEM_WORKQUEUE_STACK_SIZE
+    default 2048
+
+choice LVGL_THEME_DEFAULT_FONT_NORMAL
+    default LVGL_THEME_DEFAULT_FONT_NORMAL_MONTSERRAT_26
+
+endchoice
+
 choice LVGL_THEME_DEFAULT_FONT_SMALL
-    default LVGL_THEME_DEFAULT_FONT_SMALL_MONTSERRAT_36
+    default LVGL_THEME_DEFAULT_FONT_SMALL_MONTSERRAT_26
 
 endchoice
 
@@ -56,14 +59,5 @@ config LVGL_VDB_SIZE
 	default 16
 
 endif # ZMK_DISPLAY
-
-menuconfig CUSTOM_WIDGET_BATTERY_STATUS
-	bool "custom battery status widget"
-
-menuconfig CUSTOM_WIDGET_LAYER_STATUS
-	bool "custom layer status widget"
-	
-menuconfig CUSTOM_WIDGET_OUTPUT_STATUS
-	bool "custom output status widget"
 
 endif # SHIELD_MANGO_LEFT || SHIELD_MANGO_RIGHT
