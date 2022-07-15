@@ -1,0 +1,87 @@
+if BOARD_MANGO_LEFT
+
+config BOARD_MANGO_LEFT
+	bool "mango_left"
+	depends on SOC_NRF52840_QIAA
+
+config BOARD
+	default "mango"
+
+config ZMK_KEYBOARD_NAME
+    default "Mango"
+
+config ZMK_SPLIT_BLE_ROLE_CENTRAL
+    default y
+
+endif
+
+if BOARD_MANGO_RIGHT
+
+config BOARD_MANGO_RIGHT
+	bool "mango_right"
+	depends on SOC_NRF52840_QIAA
+
+endif
+
+if BOARD_MANGO_LEFT || BOARD_MANGO_RIGHT
+
+config ZMK_SPLIT
+    default y
+
+config ZMK_DISPLAY
+	select LVGL_USE_CONT
+	select LVGL_FONT_MONTSERRAT_26
+
+if ZMK_DISPLAY
+
+config SYSTEM_WORKQUEUE_STACK_SIZE
+    default 2048
+
+choice LVGL_THEME_DEFAULT_FONT_NORMAL
+    default LVGL_THEME_DEFAULT_FONT_NORMAL_MONTSERRAT_26
+
+endchoice
+
+choice LVGL_THEME_DEFAULT_FONT_SMALL
+    default LVGL_THEME_DEFAULT_FONT_SMALL_MONTSERRAT_26
+
+endchoice
+
+config LVGL_HOR_RES_MAX
+	default 160
+
+config LVGL_VER_RES_MAX
+	default 68
+
+config SPI
+	default y
+
+config LS0XX
+	default y
+
+config LVGL_BITS_PER_PIXEL
+	default 1
+
+choice LVGL_COLOR_DEPTH
+	default LVGL_COLOR_DEPTH_1
+
+endchoice
+
+config LVGL_DPI
+	default 30
+
+config LVGL_VDB_SIZE
+	default 16
+
+endif # ZMK_DISPLAY
+
+menuconfig MANGO_WIDGET_BATTERY_STATUS
+	bool "mango battery status widget"
+
+menuconfig MANGO_WIDGET_LAYER_STATUS
+	bool "mango layer status widget"
+	
+menuconfig MANGO_WIDGET_OUTPUT_STATUS
+	bool "mango output status widget"
+
+endif # BOARD_MANGO_LEFT || BOARD_MANGO_RIGHT

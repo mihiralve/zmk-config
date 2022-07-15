@@ -1,0 +1,5 @@
+config BOARD_MANGO_LEFT
+    def_bool $(board_list_contains,mango_left)
+
+config BOARD_MANGO_RIGHT
+    def_bool $(board_list_contains,mango_right)

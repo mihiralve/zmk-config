@@ -1,0 +1,27 @@
+file_format: "1"
+id: mango
+name: Mango
+type: keyboard
+url: N/A
+arch: arm
+requires: [nice!nano_V2]
+toolchain:
+  - zephyr
+  - gnuarmemb
+  - xtools
+supported:
+  - adc
+  - usb_device
+  - ble
+  - ieee802154
+  - pwm
+  - watchdog
+features:
+  - keys
+  - display
+  - underglow
+  - rgb
+  - 5-way switch
+siblings:
+  - mango_left
+  - mango_right
