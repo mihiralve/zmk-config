@@ -2,6 +2,7 @@
 
 #include <nordic/nrf52840_qiaa.dtsi>
 #include <dt-bindings/zmk/matrix_transform.h>
+#include <nice_nano_v2.dts>
 
 / {
 	chosen {
@@ -11,25 +12,9 @@
 		zephyr,sram = &sram0;
 		zephyr,flash = &flash0;
 		zephyr,display = &lcd;
-//		zmk,battery = &vbatt;
+		zmk,battery = &vbatt;
 		zephyr,console = &cdc_acm_uart;
 	};
-
-//	leds {
-//		compatible = "gpio-leds";
-//		blue_led: led_0 {
-//			gpios = <&gpio1 9 GPIO_ACTIVE_HIGH>;
-//			label = "Blue LED";
-//		};
-//	};
-
-//	vbatt: vbatt {
-//		compatible = "zmk,battery-voltage-divider";
-//		label = "BATTERY";
-//		io-channels = <&adc 7>;
-//		output-ohms = <2000000>;
-//		full-ohms = <(2000000 + 806000)>;
-//	};
 
 /*                                  
 *                        _____                                               _____
@@ -80,84 +65,5 @@
             , <&pro_micro 15 (GPIO_ACTIVE_HIGH | GPIO_PULL_DOWN)> // row4 from the schematic file
 			;
 		
-	};
-};
-
-&adc {
-	status = "okay";
-};
-
-&gpiote {
-	status = "okay";
-};
-
-&gpio0 {
-	status = "okay";
-};
-
-&gpio1 {
-	status = "okay";
-};
-
-&spi0 {
-    status = "okay";
-    compatible = "nordic,nrf-spim";
-    sck-pin = <24>;
-    mosi-pin = <20>;
-    cs-gpios = <&pro_micro 4 GPIO_ACTIVE_HIGH>;
-    // Unused pin, needed for SPI definition, but not used by the display driver itself.
-    miso-pin = <7>; // 0.07 is not broken out on the n!n
-
-	lcd: ls0xx@0 {
-		compatible = "sharp,ls0xx";
-		label = "DISPLAY";
-		spi-max-frequency = <2000000>;
-		reg = <0>;
-		width = <160>;
-		height = <68>;
-		extcomin-gpios = <&pro_micro 2 GPIO_ACTIVE_HIGH>;
-		extcomin-frequency = <60>;
-		disp-en-gpios = <&pro_micro 3 GPIO_ACTIVE_HIGH>; 
-	};
-};
-
-&usbd {
-	status = "okay";
-	compatible = "nordic,nrf-usbd";
-	cdc_acm_uart: cdc_acm_uart {
-		compatible = "zephyr,cdc-acm-uart";
-		label = "CDC_ACM_0";
-	};
-};
-
-
-&flash0 {
-	/*
-	 * For more information, see:
-	 * http://docs.zephyrproject.org/latest/devices/dts/flash_partitions.html
-	 */
-	partitions {
-		compatible = "fixed-partitions";
-		#address-cells = <1>;
-		#size-cells = <1>;
-
-		sd_partition: partition@0 {
-			label = "mbr";
-			reg = <0x00000000 0x00001000>;
-		};
-		code_partition: partition@1000 {
-			label = "code_partition";
-			reg = <0x00001000 0x000d3000>;
-		};
-
-		storage_partition: partition@d4000 {
-			label = "storage";
-			reg = <0x000d4000 0x00020000>;
-		};
-
-		boot_partition: partition@f4000 {
-			label = "adafruit_boot";
-			reg = <0x000f4000 0x0000c000>;
-		};
 	};
 };
