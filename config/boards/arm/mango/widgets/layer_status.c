@@ -1,6 +1,7 @@
+#include <kernel.h>
 #include <logging/log.h>
 LOG_MODULE_DECLARE(zmk, CONFIG_ZMK_LOG_LEVEL);
-
+#include <zmk/display.h>
 #include "layer_status.h"
 #include <zmk/events/layer_state_changed.h>
 #include <zmk/event_manager.h>
@@ -8,41 +9,67 @@ LOG_MODULE_DECLARE(zmk, CONFIG_ZMK_LOG_LEVEL);
 #include <zmk/keymap.h>
 
 static sys_slist_t widgets = SYS_SLIST_STATIC_INIT(&widgets);
+static lv_style_t label_style;
 
-LV_IMG_DECLARE(layer_base_img);
-LV_IMG_DECLARE(layer_num_img);
-LV_IMG_DECLARE(layer_sym_img);
-LV_IMG_DECLARE(layer_key_img);
+static bool style_initialized = false;
 
-void set_layer_symbol(lv_obj_t *icon) {
-    int active_layer_index = zmk_keymap_highest_layer_active();
-    const char *layer_label = zmk_keymap_layer_label(active_layer_index);
+K_MUTEX_DEFINE(layer_status_mutex);
 
-     LOG_DBG("Layer changed to %i", active_layer_index);
+struct {
+    uint8_t index;
+    const char *label;
+} layer_status_state;
 
+void layer_status_init() {
+    if (style_initialized) {
+        return;
+    }
+    style_initialized = true;
+    lv_style_init(&label_style);
+    lv_style_set_text_color(&label_style, LV_STATE_DEFAULT, LV_COLOR_BLACK);
+    lv_style_set_text_font(&label_style, LV_STATE_DEFAULT, &lv_font_montserrat_16);
+    lv_style_set_text_letter_space(&label_style, LV_STATE_DEFAULT, 1);
+    lv_style_set_text_line_space(&label_style, LV_STATE_DEFAULT, 1);
+
+}
+
+void set_layer_symbol(lv_obj_t *label) {
+
+    k_mutex_lock(&layer_status_mutex, K_FOREVER);
+    const char *layer_label = layer_status_state.label;
+    uint8_t active_layer_index = layer_status_state.index;
+    k_mutex_unlock(&layer_status_mutex);
+
+    //LOG_DBG("Layer Label: %s", layer_label);
+    
     if (layer_label == NULL) {
-        lv_img_set_src(icon, &layer_key_img);
-        LOG_DBG("set keyboard layer");
-    } else if (strcmp(layer_label, "BASE") == 0) {
-        lv_img_set_src(icon, &layer_base_img);
-        LOG_DBG("set base layer");
-    } else if (strcmp(layer_label, "NUM") == 0) {
-        lv_img_set_src(icon, &layer_num_img);
-        LOG_DBG("set num layer");
-    } else if (strcmp(layer_label, "SYM") == 0) {
-        lv_img_set_src(icon, &layer_sym_img);
-        LOG_DBG("set sym layer");
+        char text[6] = {};
+
+        sprintf(text, " %i", active_layer_index);
+
+        lv_label_set_text(label, text);
     } else {
-        lv_img_set_src(icon, &layer_key_img);
-        LOG_DBG("set other layer");
+        lv_label_set_text(label, layer_label);
     }
 }
 
+static void update_state() {
+    k_mutex_lock(&layer_status_mutex, K_FOREVER);
+    layer_status_state.index = zmk_keymap_highest_layer_active();
+    layer_status_state.label = zmk_keymap_layer_label(layer_status_state.index);
+    LOG_DBG("Layer changed to %i", layer_status_state.index);
+
+    k_mutex_unlock(&layer_status_mutex);
+}
+
 int zmk_widget_layer_status_init(struct zmk_widget_layer_status *widget, lv_obj_t *parent) {
-    widget->obj = lv_img_create(parent, NULL);
-    lv_obj_set_size(widget->obj, 38, 53);
+    layer_status_init();
+    update_state();
+    widget->obj = lv_label_create(parent, NULL);
+    lv_obj_add_style(widget->obj, LV_LABEL_PART_MAIN, &label_style);
     set_layer_symbol(widget->obj);
-    sys_slist_append(&widgets, &widget->node);
+    sys_slist_append(&widgets, &widget->node); 
+
     return 0;
 }
 
@@ -50,9 +77,17 @@ lv_obj_t *zmk_widget_layer_status_obj(struct zmk_widget_layer_status *widget) {
     return widget->obj;
 }
 
-int layer_status_listener(const zmk_event_t *eh) {
+void layer_status_update_cb(struct k_work *work) {
     struct zmk_widget_layer_status *widget;
     SYS_SLIST_FOR_EACH_CONTAINER(&widgets, widget, node) { set_layer_symbol(widget->obj); }
+}
+
+K_WORK_DEFINE(layer_status_update_work, layer_status_update_cb);
+
+int layer_status_listener(const zmk_event_t *eh) {
+    update_state();;
+
+    k_work_submit_to_queue(zmk_display_work_q(), &layer_status_update_work);
     return 0;
 }
 
