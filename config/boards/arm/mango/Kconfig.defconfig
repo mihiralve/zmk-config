@@ -1,29 +1,21 @@
 if BOARD_MANGO_LEFT
 
-config BOARD_MANGO_LEFT
-	bool "mango_left"
-	depends on SOC_NRF52840_QIAA
+	config ZMK_KEYBOARD_NAME
+	default "Mango"
 
-config BOARD
-	default "mango"
-
-config ZMK_KEYBOARD_NAME
-    default "Mango"
-
-config ZMK_SPLIT_BLE_ROLE_CENTRAL
-    default y
-
-endif
+endif # BOARD_MANGO_LEFT
 
 if BOARD_MANGO_RIGHT
 
-config BOARD_MANGO_RIGHT
-	bool "mango_right"
-	depends on SOC_NRF52840_QIAA
+	config ZMK_KEYBOARD_NAME
+	default "Mango right"
 
-endif
+endif # BOARD_MANGO_RIGHT
 
 if BOARD_MANGO_LEFT || BOARD_MANGO_RIGHT
+
+config BOARD
+	default "mango"
 
 config ZMK_SPLIT
     default y
@@ -75,13 +67,13 @@ config LVGL_VDB_SIZE
 
 endif # ZMK_DISPLAY
 
-menuconfig MANGO_WIDGET_BATTERY_STATUS
-	bool "mango battery status widget"
+menuconfig CUSTOM_WIDGET_BATTERY_STATUS
+	bool "custom battery status widget"
 
-menuconfig MANGO_WIDGET_LAYER_STATUS
-	bool "mango layer status widget"
-	
-menuconfig MANGO_WIDGET_OUTPUT_STATUS
-	bool "mango output status widget"
+menuconfig CUSTOM_WIDGET_OUTPUT_STATUS
+	bool "custom output status widget"
+
+menuconfig CUSTOM_WIDGET_LAYER_STATUS
+	bool "custom layer status widget"
 
 endif # BOARD_MANGO_LEFT || BOARD_MANGO_RIGHT
