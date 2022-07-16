@@ -3,6 +3,9 @@ if BOARD_MANGO_LEFT
 	config ZMK_KEYBOARD_NAME
 	default "Mango"
 
+	config ZMK_SPLIT_BLE_ROLE_CENTRAL
+    default y
+
 endif # BOARD_MANGO_LEFT
 
 if BOARD_MANGO_RIGHT
