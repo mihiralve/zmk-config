@@ -27,6 +27,14 @@
 		label = "BATTERY";
 	};
 
+	leds {
+		compatible = "gpio-leds";
+		blue_led: led_0 {
+			gpios = <&gpio0 15 GPIO_ACTIVE_HIGH>;
+			label = "Blue LED";
+		};
+	};
+
 /*                                  
 *                        _____                                               _____
 *                 .-----|     |-----._____                       _____.-----|     |-----.
@@ -184,10 +192,6 @@
 };
 
 &flash0 {
-	/*
-	 * For more information, see:
-	 * http://docs.zephyrproject.org/latest/devices/dts/flash_partitions.html
-	 */
 	partitions {
 		compatible = "fixed-partitions";
 		#address-cells = <1>;

@@ -14,66 +14,79 @@ endif # BOARD_MANGO_RIGHT
 
 if BOARD_MANGO_LEFT || BOARD_MANGO_RIGHT
 
-config BOARD
-	default "mango"
+	config BOARD
+		default "mango"
 
-config ZMK_SPLIT
-    default y
+	config ZMK_SPLIT
+		default y
 
-config ZMK_DISPLAY
-	select LVGL_USE_CONT
-	select LVGL_FONT_MONTSERRAT_26
+	config ZMK_DISPLAY
+		select LVGL_USE_CONT
+		select LVGL_FONT_MONTSERRAT_26
 
-if ZMK_DISPLAY
+	if ZMK_DISPLAY
 
-config SYSTEM_WORKQUEUE_STACK_SIZE
-    default 2048
+		config SYSTEM_WORKQUEUE_STACK_SIZE
+			default 2048
 
-choice LVGL_THEME_DEFAULT_FONT_NORMAL
-    default LVGL_THEME_DEFAULT_FONT_NORMAL_MONTSERRAT_26
+		choice LVGL_THEME_DEFAULT_FONT_NORMAL
+			default LVGL_THEME_DEFAULT_FONT_NORMAL_MONTSERRAT_26
+		endchoice
 
-endchoice
+		choice LVGL_THEME_DEFAULT_FONT_SMALL
+			default LVGL_THEME_DEFAULT_FONT_SMALL_MONTSERRAT_26
+		endchoice
 
-choice LVGL_THEME_DEFAULT_FONT_SMALL
-    default LVGL_THEME_DEFAULT_FONT_SMALL_MONTSERRAT_26
+		config LVGL_HOR_RES_MAX
+			default 160
 
-endchoice
+		config LVGL_VER_RES_MAX
+			default 68
 
-config LVGL_HOR_RES_MAX
-	default 160
+		config SPI
+			default y
 
-config LVGL_VER_RES_MAX
-	default 68
+		config LS0XX
+			default y
 
-config SPI
-	default y
+		config LVGL_BITS_PER_PIXEL
+			default 1
 
-config LS0XX
-	default y
+		choice LVGL_COLOR_DEPTH
+			default LVGL_COLOR_DEPTH_1
+		endchoice
 
-config LVGL_BITS_PER_PIXEL
-	default 1
+		config LVGL_DPI
+			default 30
 
-choice LVGL_COLOR_DEPTH
-	default LVGL_COLOR_DEPTH_1
+		config LVGL_VDB_SIZE
+			default 16
 
-endchoice
+	endif # ZMK_DISPLAY
 
-config LVGL_DPI
-	default 30
+	if USB_DEVICE_STACK
 
-config LVGL_VDB_SIZE
-	default 16
+		config USB_NRFX
+			default y
 
-endif # ZMK_DISPLAY
+	endif # USB_DEVICE_STACK
 
-menuconfig CUSTOM_WIDGET_BATTERY_STATUS
-	bool "custom battery status widget"
+	config BT_CTLR
+	default BT
 
-menuconfig CUSTOM_WIDGET_OUTPUT_STATUS
-	bool "custom output status widget"
+	config ZMK_BLE
+		default y
 
-menuconfig CUSTOM_WIDGET_LAYER_STATUS
-	bool "custom layer status widget"
+	config ZMK_USB
+		default y
+
+	menuconfig CUSTOM_WIDGET_BATTERY_STATUS
+		bool "custom battery status widget"
+
+	menuconfig CUSTOM_WIDGET_OUTPUT_STATUS
+		bool "custom output status widget"
+
+	menuconfig CUSTOM_WIDGET_LAYER_STATUS
+		bool "custom layer status widget"
 
 endif # BOARD_MANGO_LEFT || BOARD_MANGO_RIGHT
