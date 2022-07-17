@@ -17,9 +17,6 @@ endif # BOARD_MANGO_RIGHT
 
 if BOARD_MANGO_LEFT || BOARD_MANGO_RIGHT
 
-	config BOARD
-		default "mango"
-
 	config ZMK_SPLIT
 		default y
 
