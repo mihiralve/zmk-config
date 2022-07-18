@@ -1,7 +1,7 @@
 config BOARD_MANGO_LEFT
-	bool "mango left"
+	bool "mango_left"
 	depends on SOC_NRF52840_QIAA
 
 config BOARD_MANGO_RIGHT
-	bool "mango right"
+	bool "mango_right"
 	depends on SOC_NRF52840_QIAA
