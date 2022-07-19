@@ -1,3 +1,5 @@
+CONFIG_BOARD_MANGO_RIGHT=y
+
 # Deep Sleep
 # CONFIG_ZMK_SLEEP=y
 
