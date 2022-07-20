@@ -1,5 +1,5 @@
 #include "widgets/battery_status.h"
-/*#include "widgets/output_status.h"*/
+#include "widgets/output_status.h"
 #include "widgets/layer_status.h"
 #include "custom_status_screen.h"
 
@@ -14,7 +14,7 @@ static struct zmk_widget_battery_status battery_status_widget;
 #endif
 
 #if IS_ENABLED(CONFIG_CUSTOM_WIDGET_OUTPUT_STATUS)
-//static struct zmk_widget_output_status output_status_widget;
+static struct zmk_widget_output_status output_status_widget;
 #endif
 
 #if IS_ENABLED(CONFIG_CUSTOM_WIDGET_LAYER_STATUS)
@@ -34,9 +34,9 @@ lv_obj_t *zmk_display_status_screen() {
 #endif
 
 #if IS_ENABLED(CONFIG_CUSTOM_WIDGET_OUTPUT_STATUS)
-   /* zmk_widget_output_status_init(&output_status_widget, screen);
+    zmk_widget_output_status_init(&output_status_widget, screen);
     lv_obj_align(zmk_widget_output_status_obj(&output_status_widget), NULL, LV_ALIGN_IN_TOP_MID, 0,
-                 41); */
+                 41); 
 #endif
 
 #if IS_ENABLED(CONFIG_CUSTOM_WIDGET_LAYER_STATUS)
