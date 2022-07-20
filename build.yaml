@@ -15,5 +15,3 @@
 include:
   - board: mango_right
   - board: mango_left
-  - board: nice_nano_v2
-    shield: settings_reset
