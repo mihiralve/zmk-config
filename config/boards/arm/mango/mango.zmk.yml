@@ -5,6 +5,7 @@ type: keyboard
 url: N/A
 arch: arm
 requires: [nice!nano_V2]
+exposes: [pro_micro]
 toolchain:
   - zephyr
   - gnuarmemb
@@ -22,6 +23,9 @@ features:
   - underglow
   - rgb
   - 5-way switch
+outputs:
+  - usb
+  - ble
 siblings:
   - mango_left
   - mango_right
