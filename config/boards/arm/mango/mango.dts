@@ -2,6 +2,7 @@
 
 #include <nordic/nrf52840_qiaa.dtsi>
 #include <dt-bindings/zmk/matrix_transform.h>
+#include <dt-bindings/led/led.h>
 
 / {
 	chosen {
@@ -13,12 +14,13 @@
 		zephyr,display = &lcd;
 		zmk,battery = &vbatt;
 		zephyr,console = &cdc_acm_uart;
+		zmk,underglow = &led_strip;
 	};
 
 	ext-power {
 		compatible = "zmk,ext-power-generic";
 		label = "EXT_POWER";
-		control-gpios = <&gpio0 13 GPIO_ACTIVE_HIGH>;
+		control-gpios = <&gpio0 8 GPIO_ACTIVE_HIGH>; //this was 13 by default on the n!n 
 		init-delay-ms = <50>;
 	};
 
@@ -215,6 +217,32 @@
 			label = "adafruit_boot";
 			reg = <0x000f4000 0x0000c000>;
 		};
+	};
+};
+
+&spi1 {
+	compatible = "nordic,nrf-spim";
+	/* Cannot be used together with i2c0. */
+	status = "okay";
+	mosi-pin = <6>;
+	// Unused pins, needed for SPI definition, but not used by the ws2812 driver itself.
+	sck-pin = <24>;
+	miso-pin = <7>;
+
+	led_strip: ws2812@0 {
+		compatible = "worldsemi,ws2812-spi";
+		label = "SK6812mini";
+
+		/* SPI */
+		reg = <0>; /* ignored, but necessary for SPI bindings */
+		spi-max-frequency = <4000000>;
+
+		/* WS2812 */
+		chain-length = <6>; /* There are per-key RGB, but the first 6 are underglow */
+		spi-one-frame = <0x70>;
+		spi-zero-frame = <0x40>;
+
+		color-mapping = <LED_COLOR_ID_GREEN LED_COLOR_ID_RED LED_COLOR_ID_BLUE>;
 	};
 };
 
