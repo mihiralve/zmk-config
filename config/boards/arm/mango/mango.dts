@@ -198,17 +198,17 @@
 		#size-cells = <1>;
 
 		sd_partition: partition@0 {
-			label = "mbr";
-			reg = <0x00000000 0x00001000>;
+			label = "softdevice";
+			reg = <0x00000000 0x00026000>;
 		};
-		code_partition: partition@1000 {
+		code_partition: partition@26000 {
 			label = "code_partition";
-			reg = <0x00001000 0x000d3000>;
+			reg = <0x00026000 0x000c6000>;
 		};
 
-		storage_partition: partition@d4000 {
+		storage_partition: partition@ec000 {
 			label = "storage";
-			reg = <0x000d4000 0x00020000>;
+			reg = <0x000ec000 0x00008000>;
 		};
 
 		boot_partition: partition@f4000 {
