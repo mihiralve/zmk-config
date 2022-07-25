@@ -15,9 +15,3 @@
 include:
   - board: mango_right
   - board: mango_left
-  - board: mango_right
-    cmake-args: "-DCONFIG_ZMK_BLE_CLEAR_BONDS_ON_START=y"
-    name: mango_right_settings_reset
-  - board: mango_left
-    cmake-args: "-DCONFIG_ZMK_BLE_CLEAR_BONDS_ON_START=y"
-    name: mango_left_settings_reset
