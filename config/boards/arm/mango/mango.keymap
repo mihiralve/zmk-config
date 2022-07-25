@@ -109,8 +109,8 @@ numbers_layer {
 navigation_layer {
     label = "NAV";
     bindings = <
-        &trans    &out OUT_TOG &kp C_VOL_DN &kp C_MUTE  &kp C_VOL_UP &trans             &bt BT_NXT  &trans      &kp UP      &trans      &kp F12     &trans      
-        &trans     &bt BT_CLR  &trans       &trans      &trans       &trans             &ext_power EP_TOG &kp LEFT &kp DOWN &kp RIGHT   &kp F11     &trans      
+        &trans    &out OUT_TOG &kp C_VOL_DN &kp C_MUTE  &kp C_VOL_UP &trans             &bt BT_NXT &rgb_ug RGB_BRD &kp UP &rgb_ug RGB_BRI &kp F12   &trans      
+        &trans     &bt BT_CLR  &trans       &trans      &trans &rgb_ug RGB_EFF          &ext_power EP_TOG &kp LEFT &kp DOWN &kp RIGHT   &kp F11     &trans      
         &trans    &mt LSHFT F1 &kp F2       &kp F3      &kp F4       &kp F5             &kp F6      &kp F7      &kp F8      &kp F9    &mt RSHFT F10 &trans      
                                             &trans      &trans       &trans             &trans      &trans      &trans      
                                             
