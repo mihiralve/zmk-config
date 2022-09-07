@@ -1,6 +1,7 @@
 #include "widgets/battery_status.h"
 #include "widgets/output_status.h"
 #include "widgets/layer_status.h"
+#include "widgets/luna_status.h"
 #include "custom_status_screen.h"
 
 #include <logging/log.h>
@@ -19,6 +20,10 @@ static struct zmk_widget_output_status output_status_widget;
 
 #if IS_ENABLED(CONFIG_CUSTOM_WIDGET_LAYER_STATUS)
 static struct zmk_widget_layer_status layer_status_widget;
+#endif
+
+#if IS_ENABLED(CONFIG_ZMK_WIDGET_LUNA_STATUS)
+static struct zmk_widget_luna_status luna_status_widget;
 #endif
 
 lv_obj_t *zmk_display_status_screen() {
@@ -45,6 +50,11 @@ lv_obj_t *zmk_display_status_screen() {
     zmk_widget_layer_status_init(&layer_status_widget, screen);
     lv_obj_align(zmk_widget_layer_status_obj(&layer_status_widget), NULL, LV_ALIGN_IN_BOTTOM_MID, 0,
                  -5);
+#endif
+
+#if IS_ENABLED(CONFIG_ZMK_WIDGET_LUNA_STATUS)
+    zmk_widget_luna_status_init(&luna_status_widget, screen);
+    lv_obj_align(zmk_widget_luna_status_obj(&luna_status_widget), NULL, LV_ALIGN_CENTER, 0, 0);
 #endif
 
 #if CONFIG_BOARD_MANGO_RIGHT
