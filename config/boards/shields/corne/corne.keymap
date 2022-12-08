@@ -1,11 +1,11 @@
 #include <behaviors.dtsi>
 #include <dt-bindings/zmk/keys.h>
 #include <dt-bindings/zmk/bt.h>
-#include <dt-bindings/zmk/outputs.h>
 
 #define BASE 0
-#define NUM  1
-#define NAV  2
+#define GAME 1
+#define NUM  2
+#define NAV  3
 
 / {
 keymap {
@@ -24,14 +24,6 @@ keymap {
 *              |            '-----!_____!/ ENT /           \ SPC \!_____!-----'            |
 *            SHIFT             |        '--.._/             \_..--'  |                   SHIFT                                                                                                                                       
 *                             NUM                                   NAV
-*
-*                          VUP                                              MUP
-*                          __                                                __
-*                       __|  |__                                          __|  |__
-*                PREV  |_TGPLAY_|  NEXT                           MLEFT  |_MCLK-1_|  MRIGHT
-*                         |__|                                              |__|
-*                                                                             
-*                        VDOWN                                             MDOWN
 */
 
 default_layer {
@@ -41,8 +33,20 @@ default_layer {
         &kp TAB     &kp A       &kp S       &kp D       &kp F       &kp G               &kp H       &kp J       &kp K       &kp L       &kp SEMI    &kp SQT
         &kp LSHFT   &mt LSHFT Z &kp X       &kp C       &kp V       &kp B               &kp N       &kp M       &kp COMMA   &kp DOT  &mt RSHFT FSLH &kp RSHFT
                                       &lhkt NUM LGUI &kp LCTRL  &kp ENTER               &kp SPACE   &lhkt NAV BSPC &kp RALT
+    >;
+};
 
-                    &none       &none       &none       &none       &none               &none       &none       &none       &none       &none
+/* 
+*  GAME - this just swaps space and enter
+*/
+
+game_layer {
+    label = "GAME";
+    bindings = <
+        &trans      &trans      &trans      &trans      &trans      &trans              &trans      &trans      &trans      &trans      &trans      &trans
+        &trans      &trans      &trans      &trans      &trans      &trans              &trans      &trans      &trans      &trans      &trans      &trans
+        &trans      &trans      &trans      &trans      &trans      &trans              &trans      &trans      &trans      &trans      &trans      &trans
+                                            &trans      &trans   &kp SPACE              &kp ENTER   &trans      &trans
     >;
 };
 
@@ -59,14 +63,6 @@ default_layer {
 *              |            '-----!_____!/ ENT /           \ SPC \!_____!-----'            |
 *            SHIFT             |        '--.._/             \_..--'  |                   SHIFT                                                                                                                                       
 *                             NUM                                   NAV
-*
-*                     BRIGHTNESS UP                                         MUP
-*                          __                                                __
-*                       __|  |__                                          __|  |__
-*         PREV EFFECT  |_UDGLOW_|  NEXT EFFECT                    MLEFT  |_MCLK-2_|  MRIGHT
-*                         |__|                                              |__|
-*                                                                             
-*                    BRIGHTNESS DOWN                                       MDOWN
 */
 
 numbers_layer {
@@ -76,43 +72,31 @@ numbers_layer {
         &trans      &kp N1      &kp N2      &kp N3      &kp N4      &kp N5              &kp N6      &kp N7      &kp N8      &kp N9      &kp N0      &trans      
         &trans  &mt LSHFT GRAVE &trans    &kp LG(LS(S)) &trans      &trans              &kp MINUS   &kp EQUAL   &kp LBKT    &kp RBKT &mt RSHFT BSLH &trans      
                                             &trans      &trans      &trans              &trans      &trans      &trans      
-                                            
-                    &trans      &trans      &trans      &trans      &trans              &trans      &trans      &trans      &trans      &trans
     >;
 };
 
 /*                                  
 *  NAVIGATION            _____                                               _____
 *                 .-----| MUTE|-----._____                       _____.-----| UP  |-----.
-*      _____.-----|VDOWN|_____| VUP | SWAP|                     |BTNXT|     |_____|     |-----._____
-*     | ESC |BTOG |-----|     |-----|_____|                     |_____|-----| DOWN|-----| F12 | BSP |  
-*     |_____|-----|     |_____|     |     |                     |     | LEFT|_____|RIGHT|-----|_____|  
-*     | TAB |     |-----| F3  |-----|_____|                     |_____|-----| F8  |-----| F11 | ' " |  
+*      _____.-----|VDOWN|_____| VUP | SWAP|                     |BTNXT|BRI_D|_____|BRI_U|-----._____
+*     | ESC |BTTOG|-----|     |-----|_____|                     |_____|-----| DOWN|-----| F12 | BSP |  
+*     |_____|-----|     |_____|     |RGB_E|                     |UNGLW| LEFT|_____|RIGHT|-----|_____|  
+*     | TAB |BTCLR|-----| F3  |-----|_____|                     |_____|-----| F8  |-----| F11 | ' " |  
 *     |_____|-----| F2  |_____| F4  | F5  |                     | F6  | F7  |_____| F9  |-----|_____|  
 *     |SHIFT| F1  |-----'   .-'---.=|_____|.-.._           _..-.|_____|=.---'-.   '-----| F10 |SHIFT|
 *     !_____!-----'         | GUI | CTRL| /     /         \     \ | BSP | ALT |         '-----!_____!
 *              |            '-----!_____!/ ENT /           \ SPC \!_____!-----'            |
 *            SHIFT             |        '--.._/             \_..--'  |                   SHIFT                                                                                                                                       
 *                             NUM                                   NAV
-*
-*                     BRIGHTNESS UP                                       SCROLLUP
-*                          __                                                __
-*                       __|  |__                                          __|  |__
-*         PREV EFFECT  |__RGB___|  NEXT EFFECT               SCROLLLEFT  |_MCLK-C_|  SCROLLRIGHT
-*                         |__|                                              |__|
-*                                                                             
-*                    BRIGHTNESS DOWN                                     SCROLLDOWN
 */
 
 navigation_layer {
     label = "NAV";
     bindings = <
-        &trans     &out OUT_TOG &kp C_VOL_DN &kp C_MUTE &kp C_VOL_UP &trans             &bt BT_NXT  &trans      &kp UP      &trans      &kp F12     &trans      
-        &trans      &trans     &trans       &trans      &trans       &trans             &trans      &kp LEFT    &kp DOWN    &kp RIGHT   &kp F11     &trans      
-        &trans   &mt LSHFT F1 &kp F2        &kp F3      &kp F4       &kp F5             &kp F6      &kp F7      &kp F8      &kp F9    &mt RSHFT F10 &trans      
+        &trans    &out OUT_TOG &kp C_VOL_DN &kp C_MUTE  &kp C_VOL_UP &tog GAME          &bt BT_NXT &rgb_ug RGB_BRD &kp UP &rgb_ug RGB_BRI &kp F12   &trans      
+        &trans     &bt BT_CLR  &trans       &trans      &trans &rgb_ug RGB_EFF          &rgb_ug RGB_TOG &kp LEFT &kp DOWN   &kp RIGHT   &kp F11     &trans      
+        &trans    &mt LSHFT F1 &kp F2       &kp F3      &kp F4       &kp F5             &kp F6      &kp F7      &kp F8      &kp F9    &mt RSHFT F10 &trans      
                                             &trans      &trans       &trans             &trans      &trans      &trans      
-                                            
-                    &trans     &trans       &trans      &trans       &trans             &trans      &trans      &trans      &trans      &trans
     >;
 };
 
@@ -131,9 +115,9 @@ combos {
 *         |               |  .-----|  3  |-----._____                                         _____.-----|  8  |-----.  |               |
 *         v       _____.-----|  2  |_____|  4  |  5  |               (       )               |  6  |  7  |_____|  9  |-----._____       v
 *             __ |  0  |  1  |-----| 15  |-----|_____| --.__  +                     -  __.-- |_____|-----| 20  |-----| 10  | 11  | __
-*     ESC  --|__ |_____|-----| 14  |_____| 16  | 17  | --'           [       ]           '-- | 18  | 19  |_____| 21  |-----|_____| __|--  '
+*     ESC  --|__ |_____|-----| 14  |_____| 16  | 17  | --'           [       ]           '-- | 18  | 19  |_____| 21  |-----|_____| __|--  "
 *             __ | 12  | 13  |-----| 27  |-----|_____| --.__  *                     =  __.-- |_____|-----| 32  |-----| 22  | 23  | __ 
-*     TAB  --|__ |_____|-----| 26  |_____| 28  | 29  | --'           {       }           '-- | 30  | 31  |_____| 33  |-----|_____| __|--  "
+*     TAB  --|__ |_____|-----| 26  |_____| 28  | 29  | --'           {       }           '-- | 30  | 31  |_____| 33  |-----|_____| __|--  '
 *                | 24  | 25  |-----'   .-'---.=|_____|.-.._                             _..-.|_____|=.---'-.   '-----| 34  | 35  | 
 *                !_____!-----'         | 36  | 37  | /     /                           \     \ | 40  | 41  |         '-----!_____!
 *                                      '-----!_____!/ 38  /                             \ 39  \!_____!-----'          
@@ -159,14 +143,14 @@ combos {
 // '
     combo_sqt {
         timeout-ms = <20>;
-        key-positions = <10 22>;
+        key-positions = <22 34>;
         bindings = <&kp SQT>;
     };
 
 // "
     combo_dqt {
         timeout-ms = <20>;
-        key-positions = <22 34>;
+        key-positions = <10 22>;
         bindings = <&kp DQT>;
     };
 
