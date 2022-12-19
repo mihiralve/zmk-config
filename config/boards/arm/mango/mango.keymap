@@ -263,6 +263,65 @@ combos {
         bindings = <&kp EQUAL>;
     };
 
+
+// ctrl c
+    combo_ctrl_c {
+        timeout-ms = <20>;
+        key-positions = <26 27>;
+        bindings = <&kp LC(C)>;
+    };
+
+// ctrl v
+    combo_ctrl_v {
+        timeout-ms = <20>;
+        key-positions = <27 28>;
+        bindings = <&kp LC(V))>;
+    };
+
+// ctrl alt v
+    combo_ctrl_alt_v {
+        timeout-ms = <20>;
+        key-positions = <28 292>;
+        bindings = <&kp LC(LA(V))>;
+    };
+
+// ctrl alt left
+    combo_alt_left {
+        timeout-ms = <20>;
+        key-positions = <14 15>;
+        bindings = <&kp LC(LA(LEFT))>;
+    };
+
+// ctrl alt enter
+    combo_alt_enter {
+        timeout-ms = <20>;
+        key-positions = <2 3>;
+        bindings = <&kp LC(LA(KP_ENTER))>;
+    };
+
+// ctrl up
+    combo_ctrl_up {
+        timeout-ms = <20>;
+        key-positions = <8 9>;
+        bindings = <&kp LC(UP)>;
+    };
+
+// ctrl alt right
+    combo_alt_right {
+        timeout-ms = <20>;
+        key-positions = <20 21>;
+        bindings = <&kp LC(LA(RIGHT))>;
+    };
+
+// ctrl down
+    combo_ctrl_down {
+        timeout-ms = <20>;
+        key-positions = <32 33>;
+        bindings = <&kp LC(DOWN)>;
+    };
+
+
+
 };
 };
 
