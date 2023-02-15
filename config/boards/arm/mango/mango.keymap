@@ -43,7 +43,7 @@ default_layer {
     label = "BASE";
     bindings = <
         &lhkt NAV GRAVE &kp Q       &kp W       &kp E       &kp R       &kp T               &kp Y       &kp U       &kp I       &kp O       &kp P       &kp RGUI
-        &mo TAB         &kp A       &kp S       &kp D       &kp F       &kp G               &kp H       &kp J       &kp K       &kp L       &kp SEMI    &kp SQT
+        &kp TAB         &kp A       &kp S       &kp D       &kp F       &kp G               &kp H       &kp J       &kp K       &kp L       &kp SEMI    &kp SQT
         &kp LCTRL       &mt LSHFT Z &kp X       &kp C       &kp V       &kp B               &kp N       &kp M       &kp COMMA   &kp DOT  &mt RSHFT FSLH &kp RALT
                                                 &kp BSPC &kp LSHFT  &kp ENTER               &kp SPACE   &mo NUM &kp ESC
 
@@ -75,7 +75,7 @@ game_layer {
 *     | NAV |  !  |-----|  3  |-----|_____|                     |_____|-----|  8  |-----|  )  | GUI |  
 *     |_____|-----|  2  |_____|  4  |  5  |                     |  6  |  7  |_____|  9  |-----|_____|  
 *     | TAB |  1  |-----|SCRSH|-----|_____|                     |_____|-----| [ { |-----|  0  | ' " |  
-*     |_____|-----|     |_____|     |     |                     | - _ | = + |_____| ] } |-----|_____|  
+*     |_____|-----|     |_____|  |  |  _  |                     | - _ | = + |_____| ] } |-----|_____|  
 *     | CTRL| ` ~ |-----'   .-'---.=|_____|.-.._           _..-.|_____|=.---'-.   '-----| \ | | ALT |
 *     !_____!-----'         | DEL |SHIFT| /     /         \     \ | NUM | ESC |         '-----!_____!
 *              |            '-----!_____!/ ENT /           \ SPC \!_____!-----'            |
@@ -96,7 +96,7 @@ numbers_layer {
     bindings = <
         &trans      &kp EXCL    &kp AT      &kp HASH    &kp DLLR    &kp PRCNT           &kp CARET   &kp AMPS    &kp ASTRK   &kp LPAR    &kp RPAR    &trans      
         &trans      &kp N1      &kp N2      &kp N3      &kp N4      &kp N5              &kp N6      &kp N7      &kp N8      &kp N9      &kp N0      &trans      
-        &trans  &mt LSHFT GRAVE &trans    &kp LG(LS(S)) &trans      &trans              &kp MINUS   &kp EQUAL   &kp LBKT    &kp RBKT &mt RSHFT BSLH &trans      
+        &trans  &mt LSHFT GRAVE &trans    &kp LG(LS(S)) &kp PIPE    &kp UNDER           &kp MINUS   &kp EQUAL   &kp LBKT    &kp RBKT &mt RSHFT BSLH &trans      
                                             &kp DEL     &trans      &trans              &trans      &trans      &trans      
                                             
                     &trans      &trans      &trans      &trans      &trans              &trans      &trans      &trans      &trans      &trans
