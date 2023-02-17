@@ -26,8 +26,8 @@ keymap {
 *     |_____|-----|  X  |_____|  V  |  B  |                     |  N  |  M  |_____| . > |-----|_____|  
 *     | CTRL|  Z  |-----'   .-'---.=|_____|.-.._           _..-.|_____|=.---'-.   '-----| / ? | ALT |
 *     !_____!-----'         | BSP |SHIFT| /     /         \     \ | NUM | ESC |         '-----!_____!
-*              |            '-----!_____!/ ENT /           \ SPC \!_____!-----'            |
-*            SHIFT                      '--.._/             \_..--'                      SHIFT
+*                           '-----!_____!/ ENT /           \ SPC \!_____!-----' 
+*                                       '--.._/             \_..--'
 *
 *
 *                          VUP                                              MUP
@@ -44,7 +44,7 @@ default_layer {
     bindings = <
         &lhkt NAV GRAVE &kp Q       &kp W       &kp E       &kp R       &kp T               &kp Y       &kp U       &kp I       &kp O       &kp P       &kp RGUI
         &kp TAB         &kp A       &kp S       &kp D       &kp F       &kp G               &kp H       &kp J       &kp K       &kp L       &kp SEMI    &kp SQT
-        &kp LCTRL       &mt LSHFT Z &kp X       &kp C       &kp V       &kp B               &kp N       &kp M       &kp COMMA   &kp DOT  &mt RSHFT FSLH &kp RALT
+        &kp LCTRL       &kp Z       &kp X       &kp C       &kp V       &kp B               &kp N       &kp M       &kp COMMA   &kp DOT     &kp FSLH    &kp RALT
                                                 &kp BSPC &kp LSHFT  &kp ENTER               &kp SPACE   &mo NUM &kp ESC
 
         &rgb_ug RGB_BRD &kp C_VOL_UP &rgb_ug RGB_BRI &kp C_VOL_DN   &none               &none       &kp RIGHT   &kp UP      &kp LEFT    &kp DOWN
@@ -78,8 +78,8 @@ game_layer {
 *     |_____|-----|     |_____|  |  |  _  |                     | - _ | = + |_____| ] } |-----|_____|  
 *     | CTRL| ` ~ |-----'   .-'---.=|_____|.-.._           _..-.|_____|=.---'-.   '-----| \ | | ALT |
 *     !_____!-----'         | DEL |SHIFT| /     /         \     \ | NUM | ESC |         '-----!_____!
-*              |            '-----!_____!/ ENT /           \ SPC \!_____!-----'            |
-*            SHIFT                      '--.._/             \_..--'                      SHIFT
+*                           '-----!_____!/ ENT /           \ SPC \!_____!-----'
+*                                       '--.._/             \_..--'
 *
 *
 *                     BRIGHTNESS UP                                         MUP
@@ -96,7 +96,7 @@ numbers_layer {
     bindings = <
         &trans      &kp EXCL    &kp AT      &kp HASH    &kp DLLR    &kp PRCNT           &kp CARET   &kp AMPS    &kp ASTRK   &kp LPAR    &kp RPAR    &trans      
         &trans      &kp N1      &kp N2      &kp N3      &kp N4      &kp N5              &kp N6      &kp N7      &kp N8      &kp N9      &kp N0      &trans      
-        &trans  &mt LSHFT GRAVE &trans    &kp LG(LS(S)) &kp PIPE    &kp UNDER           &kp MINUS   &kp EQUAL   &kp LBKT    &kp RBKT &mt RSHFT BSLH &trans      
+        &trans      &kp GRAVE   &trans    &kp LG(LS(S)) &kp PIPE    &kp UNDER           &kp MINUS   &kp EQUAL   &kp LBKT    &kp RBKT    &kp BSLH    &trans
                                             &kp DEL     &trans      &trans              &trans      &trans      &trans      
                                             
                     &trans      &trans      &trans      &trans      &trans              &trans      &trans      &trans      &trans      &trans
@@ -114,8 +114,8 @@ numbers_layer {
 *     |_____|-----| F2  |_____| F4  | F5  |                     | F6  | F7  |_____| F9  |-----|_____|  
 *     | CTRL| F1  |-----'   .-'---.=|_____|.-.._           _..-.|_____|=.---'-.   '-----| F10 |SHIFT|
 *     !_____!-----'         | DEL |SHIFT| /     /         \     \ | NUM | ESC |         '-----!_____!
-*              |            '-----!_____!/ ENT /           \ SPC \!_____!-----'            |
-*            SHIFT                      '--.._/             \_..--'                      SHIFT
+*                           '-----!_____!/ ENT /           \ SPC \!_____!-----'
+*                                       '--.._/             \_..--'
 *
 *
 *                     BRIGHTNESS UP                                       SCROLLUP
@@ -132,7 +132,7 @@ navigation_layer {
     bindings = <
         &trans    &out OUT_TOG &kp C_VOL_DN &kp C_MUTE  &kp C_VOL_UP &tog GAME          &bt BT_NXT &rgb_ug RGB_BRD &kp UP &rgb_ug RGB_BRI &kp F12   &trans      
         &trans     &bt BT_CLR  &trans       &trans      &trans &rgb_ug RGB_EFF          &rgb_ug RGB_TOG &kp LEFT &kp DOWN   &kp RIGHT   &kp F11     &trans      
-        &trans    &mt LSHFT F1 &kp F2       &kp F3      &kp F4       &kp F5             &kp F6      &kp F7      &kp F8      &kp F9    &mt RSHFT F10 &trans      
+        &trans     &kp F1      &kp F2       &kp F3      &kp F4       &kp F5             &kp F6      &kp F7      &kp F8      &kp F9      &kp F10     &trans      
                                             &kp DEL     &trans       &trans             &trans      &trans      &trans      
                                             
                     &trans     &trans       &trans      &trans       &trans             &trans      &trans      &trans      &trans      &trans
