@@ -25,8 +25,8 @@ keymap {
 *     | TAB |  A  |-----|  C  |-----|_____|                     |_____|-----| , < |-----| ; : | ' " |  
 *     |_____|-----|  X  |_____|  V  |  B  |                     |  N  |  M  |_____| . > |-----|_____|  
 *     | CTRL|  Z  |-----'   .-'---.=|_____|.-.._           _..-.|_____|=.---'-.   '-----| / ? | ALT |
-*     !_____!-----'         | BSP |SHIFT| /     /         \     \ | NUM | ESC |         '-----!_____!
-*                           '-----!_____!/ ENT /           \ SPC \!_____!-----' 
+*     !_____!-----'         | BSP | ENT | /     /         \     \ |SPACE| ESC |         '-----!_____!
+*                           '-----!_____!/SHIFT/           \ NUM \!_____!-----' 
 *                                       '--.._/             \_..--'
 *
 *
@@ -45,7 +45,7 @@ default_layer {
         &lhkt NAV GRAVE &kp Q       &kp W       &kp E       &kp R       &kp T               &kp Y       &kp U       &kp I       &kp O       &kp P       &kp RGUI
         &kp TAB         &kp A       &kp S       &kp D       &kp F       &kp G               &kp H       &kp J       &kp K       &kp L       &kp SEMI    &kp SQT
         &kp LCTRL       &kp Z       &kp X       &kp C       &kp V       &kp B               &kp N       &kp M       &kp COMMA   &kp DOT     &kp FSLH    &kp RALT
-                                                &kp BSPC &kp LSHFT  &kp ENTER               &kp SPACE   &mo NUM &kp ESC
+                                                &kp BSPC &kp ENTER  &kp SHIFT               &mo NUM     &kp SPACE   &kp ESC
 
         &rgb_ug RGB_BRD &kp C_VOL_UP &rgb_ug RGB_BRI &kp C_VOL_DN   &none               &none       &kp RIGHT   &kp UP      &kp LEFT    &kp DOWN
     >;
@@ -61,7 +61,7 @@ game_layer {
         &trans      &trans      &trans      &trans      &trans      &trans              &trans      &trans      &trans      &trans      &trans      &trans
         &trans      &trans      &trans      &trans      &trans      &trans              &trans      &trans      &trans      &trans      &trans      &trans
         &trans      &trans      &trans      &trans      &trans      &trans              &trans      &trans      &trans      &trans      &trans      &trans
-                                            &trans      &trans   &kp SPACE              &kp ENTER   &trans      &trans
+                                            &trans      &kp SPACE   &trans              &trans      &kp ENTER   &trans
 
                     &trans      &trans      &trans      &trans      &trans              &trans      &trans      &trans      &trans      &trans
     >;
