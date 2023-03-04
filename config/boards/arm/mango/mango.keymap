@@ -45,7 +45,7 @@ default_layer {
         &lhkt NAV GRAVE &kp Q       &kp W       &kp E       &kp R       &kp T               &kp Y       &kp U       &kp I       &kp O       &kp P       &kp RGUI
         &kp TAB         &kp A       &kp S       &kp D       &kp F       &kp G               &kp H       &kp J       &kp K       &kp L       &kp SEMI    &kp SQT
         &kp LCTRL       &kp Z       &kp X       &kp C       &kp V       &kp B               &kp N       &kp M       &kp COMMA   &kp DOT     &kp FSLH    &kp RALT
-                                                &kp BSPC &kp ENTER  &kp SHIFT               &mo NUM     &kp SPACE   &kp ESC
+                                                &kp BSPC &kp ENTER  &kp LSHFT               &mo NUM     &kp SPACE   &kp ESC
 
         &rgb_ug RGB_BRD &kp C_VOL_UP &rgb_ug RGB_BRI &kp C_VOL_DN   &none               &none       &kp RIGHT   &kp UP      &kp LEFT    &kp DOWN
     >;
