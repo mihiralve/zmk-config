@@ -52,7 +52,7 @@ default_layer {
 };
 
 /* 
-*  GAME - this just swaps space and enter
+*  GAME - this just swaps space and enter, and the esc with the backspace. An additional enter is added to the left side.
 */
 
 game_layer {
@@ -60,8 +60,8 @@ game_layer {
     bindings = <
         &trans      &trans      &trans      &trans      &trans      &trans              &trans      &trans      &trans      &trans      &trans      &trans
         &trans      &trans      &trans      &trans      &trans      &trans              &trans      &trans      &trans      &trans      &trans      &trans
-        &trans      &trans      &trans      &trans      &trans      &trans              &trans      &trans      &trans      &trans      &trans      &trans
-                                            &trans      &kp SPACE   &trans              &trans      &kp ENTER   &trans
+        &trans      &trans      &trans      &trans      &trans      &kp ENTER           &trans      &trans      &trans      &trans      &trans      &trans
+                                            &kp ESC     &kp SPACE   &trans              &trans      &kp ENTER   &kp BSPC
 
                     &trans      &trans      &trans      &trans      &trans              &trans      &trans      &trans      &trans      &trans
     >;
