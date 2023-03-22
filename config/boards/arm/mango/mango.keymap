@@ -296,7 +296,7 @@ combos {
     combo_alt_enter {
         timeout-ms = <20>;
         key-positions = <2 3>;
-        bindings = <&kp LG(LA(KP_ENTER))>;
+        bindings = <&kp LG(LA(ENTER))>;
     };
 
 // ctrl up
