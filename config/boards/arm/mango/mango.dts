@@ -20,21 +20,21 @@
 
 	ext-power {
 		compatible = "zmk,ext-power-generic";
-		label = "EXT_POWER";
+		// label = "EXT_POWER";
 		control-gpios = <&gpio0 8 GPIO_ACTIVE_HIGH>; //this was 13 by default on the n!n 
 		init-delay-ms = <50>;
 	};
 
 	vbatt: vbatt {
 		compatible = "zmk,battery-nrf-vddh";
-		label = "BATTERY";
+		// label = "BATTERY";
 	};
 
 	leds {
 		compatible = "gpio-leds";
 		blue_led: led_0 {
 			gpios = <&gpio0 15 GPIO_ACTIVE_HIGH>;
-			label = "Blue LED";
+			// label = "Blue LED";
 		};
 	};
 
@@ -76,7 +76,7 @@
 
 	kscan0: kscan {
 		compatible = "zmk,kscan-gpio-matrix";
-		label = "KSCAN";
+		// label = "KSCAN";
 
 		diode-direction = "col2row";
 		row-gpios
