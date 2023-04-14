@@ -1,7 +1,14 @@
+/*
+ *
+ * Copyright (c) 2021 Darryl deHaan
+ * SPDX-License-Identifier: MIT
+ *
+ */
+
 #pragma once
 
 #include <lvgl.h>
-#include <kernel.h>
+#include <zephyr/kernel.h>
 
 struct zmk_widget_output_status {
     sys_snode_t node;

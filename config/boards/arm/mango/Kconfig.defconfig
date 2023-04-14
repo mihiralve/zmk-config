@@ -94,13 +94,16 @@ if BOARD_MANGO_LEFT || BOARD_MANGO_RIGHT
 		default y
 
 	menuconfig CUSTOM_WIDGET_BATTERY_STATUS
-		bool "custom battery status widget"
+	bool "custom battery status widget"
 
 	menuconfig CUSTOM_WIDGET_OUTPUT_STATUS
-		bool "custom output status widget"
+	bool "custom output status widget"
 
 	menuconfig CUSTOM_WIDGET_LAYER_STATUS
-		bool "custom layer status widget"
+	bool "custom layer status widget"
+
+	menuconfig CUSTOM_WIDGET_PERIPHERAL_STATUS
+	bool "custom peripheral status widget"
 
 	config ZMK_WIDGET_LUNA_STATUS
 		bool "widget for displaying luna"
