@@ -37,17 +37,19 @@ if BOARD_MANGO_LEFT || BOARD_MANGO_RIGHT
 			default 2048
 
 		choice LV_THEME_DEFAULT_FONT_NORMAL
-			default LV_THEME_DEFAULT_FONT_NORMAL_MONTSERRAT_28
+			default LV_THEME_DEFAULT_FONT_NORMAL_MONTSERRAT_26
 		endchoice
 
 		choice LV_THEME_DEFAULT_FONT_SMALL
-			default LV_THEME_DEFAULT_FONT_SMALL_MONTSERRAT_28
+			default LV_THEME_DEFAULT_FONT_SMALL_MONTSERRAT_26
 		endchoice
 
 		config LV_HOR_RES_MAX
+			int "Max horizontal resolution"
 			default 160
 
 		config LV_VER_RES_MAX
+			int "Max vertical resolution"
 			default 68
 
 		config SPI
