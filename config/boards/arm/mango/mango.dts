@@ -3,6 +3,7 @@
 #include <nordic/nrf52840_qiaa.dtsi>
 #include <dt-bindings/zmk/matrix_transform.h>
 #include <dt-bindings/led/led.h>
+#include "mango-pinctrl.dtsi"
 
 / {
 	chosen {
@@ -26,14 +27,14 @@
 
 	vbatt: vbatt {
 		compatible = "zmk,battery-nrf-vddh";
-		label = "BATTERY";
+		// label = "BATTERY";
 	};
 
 	leds {
 		compatible = "gpio-leds";
 		blue_led: led_0 {
 			gpios = <&gpio0 15 GPIO_ACTIVE_HIGH>;
-			label = "Blue LED";
+			// label = "Blue LED";
 		};
 	};
 
@@ -75,7 +76,7 @@
 
 	kscan0: kscan {
 		compatible = "zmk,kscan-gpio-matrix";
-		label = "KSCAN";
+		// label = "KSCAN";
 
 		diode-direction = "col2row";
 		row-gpios
@@ -152,14 +153,16 @@
 
 &i2c0 {
 	compatible = "nordic,nrf-twi";
-	sda-pin = <17>;
-	scl-pin = <20>;
+    pinctrl-0 = <&i2c0_default>;
+    pinctrl-1 = <&i2c0_sleep>;
+    pinctrl-names = "default", "sleep";
 };
 
 &uart0 {
 	compatible = "nordic,nrf-uarte";
-	tx-pin = <6>;
-	rx-pin = <8>;
+	pinctrl-0 = <&uart0_default>;
+    pinctrl-1 = <&uart0_sleep>;
+    pinctrl-names = "default", "sleep";
 };
 
 &usbd {
@@ -167,22 +170,21 @@
 	compatible = "nordic,nrf-usbd";
 	cdc_acm_uart: cdc_acm_uart {
 		compatible = "zephyr,cdc-acm-uart";
-		label = "CDC_ACM_0";
+		// label = "CDC_ACM_0";
 	};
 };
 
 &spi0 {
     status = "okay";
     compatible = "nordic,nrf-spim";
-    sck-pin = <24>;
-    mosi-pin = <20>;
+    pinctrl-0 = <&spi0_default>;
+    pinctrl-1 = <&spi0_sleep>;
+    pinctrl-names = "default", "sleep";
     cs-gpios = <&pro_micro 4 GPIO_ACTIVE_HIGH>;
-    // Unused pin, needed for SPI definition, but not used by the display driver itself.
-    miso-pin = <7>; // 0.07 is not broken out on the n!n
 
 	lcd: ls0xx@0 {
 		compatible = "sharp,ls0xx";
-		label = "DISPLAY";
+		// label = "DISPLAY";
 		spi-max-frequency = <2000000>;
 		reg = <0>;
 		width = <160>;
@@ -224,14 +226,13 @@
 	compatible = "nordic,nrf-spim";
 	/* Cannot be used together with i2c0. */
 	status = "okay";
-	mosi-pin = <6>;
-	// Unused pins, needed for SPI definition, but not used by the ws2812 driver itself.
-	sck-pin = <24>;
-	miso-pin = <7>;
+	pinctrl-0 = <&spi1_default>;
+    pinctrl-1 = <&spi1_sleep>;
+    pinctrl-names = "default", "sleep";
 
 	led_strip: ws2812@0 {
 		compatible = "worldsemi,ws2812-spi";
-		label = "SK6812mini";
+		// label = "SK6812mini";
 
 		/* SPI */
 		reg = <0>; /* ignored, but necessary for SPI bindings */
