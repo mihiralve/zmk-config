@@ -18,30 +18,30 @@ LOG_MODULE_DECLARE(zmk, CONFIG_ZMK_LOG_LEVEL);
 
 static sys_slist_t widgets = SYS_SLIST_STATIC_INIT(&widgets);
 
-// SIT
-LV_IMG_DECLARE(pet_sit_1);
-LV_IMG_DECLARE(pet_sit_2);
-const void *pet_sit_images[] = {
-    &pet_sit_1, &pet_sit_2,
+// IDLE
+LV_IMG_DECLARE(pet_idle_1);
+LV_IMG_DECLARE(pet_idle_2);
+const void *pet_idle_images[] = {
+    &pet_idle_1, &pet_idle_2,
 };
 
-// WALK
-LV_IMG_DECLARE(pet_walk_1);
-LV_IMG_DECLARE(pet_walk_2);
-const void *pet_walk_images[] = {
-    &pet_walk_1, &pet_walk_2,
+// SLOW TYPING
+LV_IMG_DECLARE(pet_slow_typing_1);
+LV_IMG_DECLARE(pet_slow_typing_2);
+const void *pet_slow_typing_images[] = {
+    &pet_slow_typing_1, &pet_slow_typing_2,
 };
 
-// RUN
-LV_IMG_DECLARE(pet_run_1);
-LV_IMG_DECLARE(pet_run_2);
-const void *pet_run_images[] = {
-    &pet_run_1, &pet_run_2,
+// FAST TYPING
+LV_IMG_DECLARE(pet_fast_typing_1);
+LV_IMG_DECLARE(pet_fast_typing_2);
+const void *pet_fast_typing_images[] = {
+    &pet_fast_typing_1, &pet_fast_typing_2,
 };
 
 // SPACE
 const void *space_images[] = {
-    &pet_run1,
+    &pet_fast_typing_1,
 };
 
 // SHIFT
@@ -60,12 +60,12 @@ const void *pet_ctrl_images[] = {
 
 
 /* PET STATE */
-enum pet_running_state {
+enum pet_wpm_state {
     unknown,
-    sit,
-    walk,
-    run,
-} current_pet_running_state = unknown;
+    idle,
+    slow_typing,
+    fast_typing,
+} current_pet_wpm_state = unknown;
 
 enum pet_action_state {
     no_action,
@@ -99,12 +99,12 @@ void animate_images(void *var, lv_anim_value_t value) {
             images = ctrl_images;
         } else if (current_pet_action_state == shift) {
             images = shift_images;
-        } else if (current_pet_running_state == sit) {
-            images = sit_images;
-        } else if (current_pet_running_state == walk) {
-            images = walk_images;
-        } else if (current_pet_running_state == run) {
-            images = run_images;
+        } else if (current_pet_wpm_state == idle) {
+            images = idle_images;
+        } else if (current_pet_wpm_state == slow_typing) {
+            images = slow_typing_images;
+        } else if (current_pet_wpm_state == fast_typing) {
+            images = fast_typing_images;
         }
         current_pet_action_state = no_action;
     }
@@ -116,11 +116,11 @@ void init_anim(struct zmk_widget_pet_status *widget) {
     lv_anim_init(&anim);
     lv_anim_set_var(&anim, widget->obj);
     lv_anim_set_exec_cb(&anim, (lv_anim_exec_xcb_t) animate_images);
-    lv_anim_set_time(&anim, CONFIG_CUSTOM_WIDGET_PET_WIDGET_FRAME_DURATION);
+    lv_anim_set_time(&anim, CONFIG_CUSTOM_WIDGET_PET_FRAME_DURATION);
     lv_anim_set_values(&anim, 0, 1);
-    lv_anim_set_delay(&anim, CONFIG_CUSTOM_WIDGET_PET_WIDGET_FRAME_DURATION);
+    lv_anim_set_delay(&anim, CONFIG_CUSTOM_WIDGET_PET_FRAME_DURATION);
     lv_anim_set_repeat_count(&anim, LV_ANIM_REPEAT_INFINITE);
-    lv_anim_set_repeat_delay(&anim, CONFIG_CUSTOM_WIDGET_PET_WIDGET_FRAME_DURATION);
+    lv_anim_set_repeat_delay(&anim, CONFIG_CUSTOM_WIDGET_PET_FRAME_DURATION);
     lv_anim_start(&anim);
 }
 
@@ -129,7 +129,7 @@ int zmk_widget_pet_status_init(struct zmk_widget_pet_status *widget, lv_obj_t *p
 
     lv_img_set_auto_size(widget->obj, true);
 
-    current_pet_running_state = sit;
+    current_pet_wpm_state = idle;
     init_anim(widget);
 
     sys_slist_append(&widgets, &widget->node);
@@ -147,12 +147,12 @@ int pet_wpm_event_listener(const zmk_event_t *eh) {
         LOG_DBG("Set the WPM %d", ev->state);
 
         // update pet status based on wpm
-        if (ev->state < CONFIG_CUSTOM_WIDGET_PET_WIDGET_WALK_WPM) {
-            current_pet_running_state = sits;
-        } else if (ev->state < CONFIG_CUSTOM_WIDGET_PET_WIDGET_RUN_WPM) {
-            current_pet_running_state = walk;
+        if (ev->state < CONFIG_CUSTOM_WIDGET_PET_SLOW_TYPING_WPM) {
+            current_pet_wpm_state = idle;
+        } else if (ev->state < CONFIG_CUSTOM_WIDGET_PET_FAST_TYPING_WPM) {
+            current_pet_wpm_state = slow_typing;
         } else {
-            current_pet_running_state = run;
+            current_pet_wpm_state = fast_typing;
         }
     }
     return ZMK_EV_EVENT_BUBBLE;

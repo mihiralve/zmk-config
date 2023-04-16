@@ -12,14 +12,14 @@
 #endif
 
 
-// PET SIT
+// PET IDLE
 
-#ifndef LV_ATTRIBUTE_IMG_PET_SIT_1
-#define LV_ATTRIBUTE_IMG_PET_SIT_1
+#ifndef LV_ATTRIBUTE_IMG_PET_IDLE_1
+#define LV_ATTRIBUTE_IMG_PET_IDLE_1
 #endif
 
-const LV_ATTRIBUTE_MEM_ALIGN LV_ATTRIBUTE_IMG_PET_SIT_1 uint8_t
-    pet_sit_1_data[] = {
+const LV_ATTRIBUTE_MEM_ALIGN LV_ATTRIBUTE_IMG_PET_IDLE_1 uint8_t
+    pet_idle_1_data[] = {
     0xfc, 0xfe, 0xfc, 0xff, /*Color of index 1*/
     0x04, 0x02, 0x04, 0xff, /*Color of index 0*/
 
@@ -30,21 +30,21 @@ const LV_ATTRIBUTE_MEM_ALIGN LV_ATTRIBUTE_IMG_PET_SIT_1 uint8_t
 	0x02, 0x00, 0x07, 0x00, 0x01, 0x00, 0x8d, 0x00, 0x00, 0xc0, 0xcd, 0x00, 0x00, 0x41, 0xcd, 0x00,
 };
 
-const lv_img_dsc_t pet_sit_1 = {
+const lv_img_dsc_t pet_idle_1 = {
     .header.always_zero = 0,
     .header.w = 32,
     .header.h = 20,
     .data_size = 88,
     .header.cf = LV_IMG_CF_INDEXED_1BIT,
-    .data = pet_sit_1_data,
+    .data = pet_idle_1_data,
 };
 
-#ifndef LV_ATTRIBUTE_IMG_PET_SIT_2
-#define LV_ATTRIBUTE_IMG_PET_SIT_2
+#ifndef LV_ATTRIBUTE_IMG_PET_IDLE_2
+#define LV_ATTRIBUTE_IMG_PET_IDLE_2
 #endif
 
-const LV_ATTRIBUTE_MEM_ALIGN LV_ATTRIBUTE_IMG_PET_SIT_2 uint8_t
-    pet_sit_2_data[] = {
+const LV_ATTRIBUTE_MEM_ALIGN LV_ATTRIBUTE_IMG_PET_IDLE_2 uint8_t
+    pet_idle_2_data[] = {
     0xfc, 0xfe, 0xfc, 0xff, /*Color of index 1*/
     0x04, 0x02, 0x04, 0xff, /*Color of index 0*/
 
@@ -55,23 +55,23 @@ const LV_ATTRIBUTE_MEM_ALIGN LV_ATTRIBUTE_IMG_PET_SIT_2 uint8_t
 	0x02, 0x00, 0x07, 0x00, 0x01, 0x00, 0x8d, 0x00, 0x00, 0xc0, 0xcd, 0x00, 0x00, 0x41, 0xcd, 0x00,
 };
 
-const lv_img_dsc_t pet_sit_2 = {
+const lv_img_dsc_t pet_idle_2 = {
     .header.always_zero = 0,
     .header.w = 32,
     .header.h = 20,
     .data_size = 88,
     .header.cf = LV_IMG_CF_INDEXED_1BIT,
-    .data = pet_sit_2_data,
+    .data = pet_idle_2_data,
 };
 
 
-// PET WALK
+// PET SLOW TYPING
 
-#ifndef LV_ATTRIBUTE_IMG_PET_WALK_1
-#define LV_ATTRIBUTE_IMG_PET_WALK_1
+#ifndef LV_ATTRIBUTE_IMG_PET_SLOW_TYPING_1
+#define LV_ATTRIBUTE_IMG_PET_SLOW_TYPING_1
 #endif
 
-const LV_ATTRIBUTE_LARGE_CONST uint8_t pet_walk_1_data[] = {
+const LV_ATTRIBUTE_LARGE_CONST uint8_t pet_slow_typing_1_data[] = {
     0xfc, 0xfe, 0xfc, 0xff, /*Color of index 1*/
     0x04, 0x02, 0x04, 0xff, /*Color of index 0*/
 
@@ -82,20 +82,20 @@ const LV_ATTRIBUTE_LARGE_CONST uint8_t pet_walk_1_data[] = {
 	0x01, 0x0f, 0x00, 0x80, 0x01, 0x0b, 0x83, 0x00, 0x00, 0x9a, 0x8d, 0x00, 0x00, 0x9a, 0x4d, 0x00,
 };
 
-const lv_img_dsc_t pet_walk_1 = {
+const lv_img_dsc_t pet_slow_typing_1 = {
     .header.always_zero = 0,
     .header.w = 32,
     .header.h = 20,
     .data_size = 88,
     .header.cf = LV_IMG_CF_INDEXED_1BIT,
-    .data = pet_walk_1_data,
+    .data = pet_slow_typing_1_data,
 };
 
-#ifndef LV_ATTRIBUTE_IMG_PET_WALK_2
-#define LV_ATTRIBUTE_IMG_PET_WALK_2
+#ifndef LV_ATTRIBUTE_IMG_PET_SLOW_TYPING_2
+#define LV_ATTRIBUTE_IMG_PET_SLOW_TYPING_2
 #endif
 
-const LV_ATTRIBUTE_LARGE_CONST uint8_t pet_walk_2_data[] = {
+const LV_ATTRIBUTE_LARGE_CONST uint8_t pet_slow_typing_2_data[] = {
     0xfc, 0xfe, 0xfc, 0xff, /*Color of index 1*/
     0x04, 0x02, 0x04, 0xff, /*Color of index 0*/
 
@@ -106,23 +106,23 @@ const LV_ATTRIBUTE_LARGE_CONST uint8_t pet_walk_2_data[] = {
 	0x01, 0x0c, 0x00, 0x80, 0x01, 0x13, 0x81, 0x00, 0x01, 0x29, 0x62, 0x00, 0x01, 0x25, 0x52, 0x00,
 };
 
-const lv_img_dsc_t pet_walk_2 = {
+const lv_img_dsc_t pet_slow_typing_2 = {
     .header.always_zero = 0,
     .header.w = 32,
     .header.h = 20,
     .data_size = 88,
     .header.cf = LV_IMG_CF_INDEXED_1BIT,
-    .data = pet_walk_2_data,
+    .data = pet_slow_typing_2_data,
 };
 
 
-// PET RUN
+// PET FAST TYPING
 
-#ifndef LV_ATTRIBUTE_IMG_PET_RUN_1
-#define LV_ATTRIBUTE_IMG_PET_RUN_1
+#ifndef LV_ATTRIBUTE_IMG_PET_FAST_TYPING_1
+#define LV_ATTRIBUTE_IMG_PET_FAST_TYPING_1
 #endif
 
-const LV_ATTRIBUTE_LARGE_CONST uint8_t pet_run_1_data[] = {
+const LV_ATTRIBUTE_LARGE_CONST uint8_t pet_fast_typing_1_data[] = {
     0xfc, 0xfe, 0xfc, 0xff, /*Color of index 1*/
     0x04, 0x02, 0x04, 0xff, /*Color of index 0*/
 
@@ -133,20 +133,20 @@ const LV_ATTRIBUTE_LARGE_CONST uint8_t pet_run_1_data[] = {
 	0x02, 0x0b, 0x02, 0x40, 0x04, 0x1c, 0xc7, 0x20, 0x05, 0xe0, 0x24, 0xe0, 0x06, 0x00, 0x12, 0x00,
 };
 
-const lv_img_dsc_t pet_run_1 = {
+const lv_img_dsc_t pet_fast_typing_1 = {
     .header.always_zero = 0,
     .header.w = 32,
     .header.h = 20,
     .data_size = 88,
     .header.cf = LV_IMG_CF_INDEXED_1BIT,
-    .data = pet_run_1_data,
+    .data = pet_fast_typing_1_data,
 };
 
-#ifndef LV_ATTRIBUTE_IMG_PET_RUN_2
-#define LV_ATTRIBUTE_IMG_PET_RUN_2
+#ifndef LV_ATTRIBUTE_IMG_PET_FAST_TYPING_2
+#define LV_ATTRIBUTE_IMG_PET_FAST_TYPING_2
 #endif
 
-const LV_ATTRIBUTE_LARGE_CONST uint8_t pet_run_2_data[] = {
+const LV_ATTRIBUTE_LARGE_CONST uint8_t pet_fast_typing_2_data[] = {
     0xfc, 0xfe, 0xfc, 0xff, /*Color of index 1*/
     0x04, 0x02, 0x04, 0xff, /*Color of index 0*/
 
@@ -157,13 +157,13 @@ const LV_ATTRIBUTE_LARGE_CONST uint8_t pet_run_2_data[] = {
 	0x00, 0x41, 0x00, 0x80, 0x00, 0x21, 0xc1, 0x00, 0x00, 0x11, 0x47, 0x00, 0x00, 0x12, 0x4d, 0x00,
 };
 
-const lv_img_dsc_t pet_run_2 = {
+const lv_img_dsc_t pet_fast_typing_2 = {
     .header.always_zero = 0,
     .header.w = 32,
     .header.h = 20,
     .data_size = 88,
     .header.cf = LV_IMG_CF_INDEXED_1BIT,
-    .data = pet_run_2_data,
+    .data = pet_fast_typing_2_data,
 };
 
 

@@ -111,15 +111,15 @@ if BOARD_MANGO_LEFT || BOARD_MANGO_RIGHT
 
 	if CUSTOM_WIDGET_PET_STATUS
 
-		config CUSTOM_WIDGET_PET_WIDGET_WALK_WPM
+		config CUSTOM_WIDGET_PET_SLOW_TYPING_WPM
 			int "Lower limit for WPM for pet to start walking"
 			default 10
 
-		config CUSTOM_WIDGET_PET_WIDGET_RUN_WPM
+		config CONFIG_CUSTOM_WIDGET_PET_FAST_TYPING_WPM
 			int "Lower limit for WPM for pet to start running"
 			default 40
 
-		config CUSTOM_WIDGET_PET_WIDGET_FRAME_DURATION
+		config CUSTOM_WIDGET_PET_FRAME_DURATION
 			int "Pet animation frame duration in milliseconds"
 			default 200
 		
