@@ -1,6 +1,6 @@
 /*
  *
- * Copyright (c) 2021 Darryl deHaan
+ * Copyright (c) 2023 HellTM
  * SPDX-License-Identifier: MIT
  *
  */
@@ -22,19 +22,9 @@ LOG_MODULE_DECLARE(zmk, CONFIG_ZMK_LOG_LEVEL);
 #include <zmk/endpoints.h>
 
 LV_IMG_DECLARE(bluetooth_advertising);
-LV_IMG_DECLARE(bluetooth_connected_right);
-LV_IMG_DECLARE(bluetooth_disconnected_right);
-LV_IMG_DECLARE(bluetooth_connected_1);
-LV_IMG_DECLARE(bluetooth_connected_2);
-LV_IMG_DECLARE(bluetooth_connected_3);
-LV_IMG_DECLARE(bluetooth_connected_4);
-LV_IMG_DECLARE(bluetooth_connected_5);
-LV_IMG_DECLARE(bluetooth_advertising_1);
-LV_IMG_DECLARE(bluetooth_advertising_2);
-LV_IMG_DECLARE(bluetooth_advertising_3);
-LV_IMG_DECLARE(bluetooth_advertising_4);
-LV_IMG_DECLARE(bluetooth_advertising_5);
-LV_IMG_DECLARE(USB_connected);
+LV_IMG_DECLARE(bluetooth_connected);
+LV_IMG_DECLARE(bluetooth_disconnected);
+LV_IMG_DECLARE(usb_connected);
 
 static sys_slist_t widgets = SYS_SLIST_STATIC_INIT(&widgets);
 
@@ -57,50 +47,17 @@ static struct output_status_state get_state(const zmk_event_t *_eh) {
 static void set_status_symbol(lv_obj_t *icon, struct output_status_state state) {
     switch (state.selected_endpoint) {
     case ZMK_ENDPOINT_USB:
-        lv_img_set_src(icon, &USB_connected);
+        lv_img_set_src(icon, &usb_connected);
         break;
     case ZMK_ENDPOINT_BLE:
         if (state.active_profile_bonded) {
             if (state.active_profile_connected) {
-                // sprintf(text, LV_SYMBOL_BLUETOOTH "%i " LV_SYMBOL_OK, active_profile_index);
-                switch (state.active_profile_index) {
-                case 0:
-                    lv_img_set_src(icon, &bluetooth_connected_1);
-                    break;
-                case 1:
-                    lv_img_set_src(icon, &bluetooth_connected_2);
-                    break;
-                case 2:
-                    lv_img_set_src(icon, &bluetooth_connected_3);
-                    break;
-                case 3:
-                    lv_img_set_src(icon, &bluetooth_connected_4);
-                    break;
-                case 4:
-                    lv_img_set_src(icon, &bluetooth_connected_5);
-                    break;
-                }
+                lv_img_set_src(icon, &bluetooth_connected);
             } else {
-                lv_img_set_src(icon, &bluetooth_disconnected_right);
+                lv_img_set_src(icon, &bluetooth_disconnected);
             }
         } else {
-            switch (state.active_profile_index) {
-            case 0:
-                lv_img_set_src(icon, &bluetooth_advertising_1);
-                break;
-            case 1:
-                lv_img_set_src(icon, &bluetooth_advertising_2);
-                break;
-            case 2:
-                lv_img_set_src(icon, &bluetooth_advertising_3);
-                break;
-            case 3:
-                lv_img_set_src(icon, &bluetooth_advertising_4);
-                break;
-            case 4:
-                lv_img_set_src(icon, &bluetooth_advertising_5);
-                break;
-            }
+            lv_img_set_src(icon, &bluetooth_advertising);
         }
         break;
     }

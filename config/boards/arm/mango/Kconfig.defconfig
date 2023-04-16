@@ -94,34 +94,35 @@ if BOARD_MANGO_LEFT || BOARD_MANGO_RIGHT
 		default y
 
 	menuconfig CUSTOM_WIDGET_BATTERY_STATUS
-	bool "custom battery status widget"
+		bool "custom battery status widget"
 
 	menuconfig CUSTOM_WIDGET_OUTPUT_STATUS
-	bool "custom output status widget"
-
-	menuconfig CUSTOM_WIDGET_LAYER_STATUS
-	bool "custom layer status widget"
+		bool "custom output status widget"
 
 	menuconfig CUSTOM_WIDGET_PERIPHERAL_STATUS
-	bool "custom peripheral status widget"
+		bool "custom peripheral status widget"
 
-	config ZMK_WIDGET_LUNA_STATUS
-		bool "widget for displaying luna"
+	menuconfig CUSTOM_WIDGET_PET_STATUS
+		bool "custom pet status widget"
 		depends on !ZMK_SPLIT || ZMK_SPLIT_ROLE_CENTRAL
 		select LV_USE_IMG
 		select LV_USE_ANIMATION
 		select ZMK_WPM
 
-	config ZMK_WIDGET_LUNA_WIDGET_WALK_WPM
-		int "Lower limit for WPM for luna to start walking"
-		default 10
+	if CUSTOM_WIDGET_PET_STATUS
 
-	config ZMK_WIDGET_LUNA_WIDGET_RUN_WPM
-		int "Lower limit for WPM for luna to start running"
-		default 40
+		config CUSTOM_WIDGET_PET_WIDGET_WALK_WPM
+			int "Lower limit for WPM for pet to start walking"
+			default 10
 
-	config ZMK_WIDGET_LUNA_WIDGET_FRAME_DURATION
-		int "Luna animation frame duration"
-		default 200
+		config CUSTOM_WIDGET_PET_WIDGET_RUN_WPM
+			int "Lower limit for WPM for pet to start running"
+			default 40
+
+		config CUSTOM_WIDGET_PET_WIDGET_FRAME_DURATION
+			int "Pet animation frame duration in milliseconds"
+			default 200
+		
+	endif # CUSTOM_WIDGET_PET_STATUS
 
 endif # BOARD_MANGO_LEFT || BOARD_MANGO_RIGHT

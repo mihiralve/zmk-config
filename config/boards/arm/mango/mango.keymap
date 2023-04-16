@@ -72,7 +72,7 @@ game_layer {
 *     | ESC |  !  |-----|  3  |-----|_____|                     |_____|-----|  8  |-----|  )  | BSP |  
 *     |_____|-----|  2  |_____|  4  |  5  |                     |  6  |  7  |_____|  9  |-----|_____|  
 *     | TAB |  1  |-----|SCRSH|-----|_____|                     |_____|-----| [ { |-----|  0  | ' " |  
-*     |_____|-----|     |_____|     |     |                     | - _ | = + |_____| ] } |-----|_____|  
+*     |_____|-----|     |_____|     | - _ |                     | - _ | = + |_____| ] } |-----|_____|  
 *     |SHIFT| ` ~ |-----'   .-'---.=|_____|.-.._           _..-.|_____|=.---'-.   '-----| \ | |SHIFT|
 *     !_____!-----'         | GUI | CTRL| /     /         \     \ | BSP | ALT |         '-----!_____!
 *              |            '-----!_____!/ ENT /           \ SPC \!_____!-----'            |
@@ -94,7 +94,7 @@ numbers_layer {
     bindings = <
         &trans      &kp EXCL    &kp AT      &kp HASH    &kp DLLR    &kp PRCNT           &kp CARET   &kp AMPS    &kp ASTRK   &kp LPAR    &kp RPAR    &trans      
         &trans      &kp N1      &kp N2      &kp N3      &kp N4      &kp N5              &kp N6      &kp N7      &kp N8      &kp N9      &kp N0      &trans      
-        &trans  &mt LSHFT GRAVE &trans    &kp LG(LS(S)) &trans      &trans              &kp MINUS   &kp EQUAL   &kp LBKT    &kp RBKT &mt RSHFT BSLH &trans      
+        &trans  &mt LSHFT GRAVE &trans    &kp LG(LS(S)) &trans      &kp MINUS           &kp MINUS   &kp EQUAL   &kp LBKT    &kp RBKT &mt RSHFT BSLH &trans      
                                             &trans      &trans      &trans              &trans      &trans      &trans      
                                             
                     &trans      &trans      &trans      &trans      &trans              &trans      &trans      &trans      &trans      &trans

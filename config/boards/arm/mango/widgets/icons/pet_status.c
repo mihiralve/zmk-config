@@ -1,7 +1,25 @@
+/*
+ *
+ * Copyright (c) 2023 HellTM
+ * SPDX-License-Identifier: MIT
+ *
+ */
+
 #include <lvgl.h>
 
-// sits
-const LV_ATTRIBUTE_LARGE_CONST uint8_t luna_sit1_data[] = {
+#ifndef LV_ATTRIBUTE_MEM_ALIGN
+#define LV_ATTRIBUTE_MEM_ALIGN
+#endif
+
+
+// PET SIT
+
+#ifndef LV_ATTRIBUTE_IMG_PET_SIT_1
+#define LV_ATTRIBUTE_IMG_PET_SIT_1
+#endif
+
+const LV_ATTRIBUTE_MEM_ALIGN LV_ATTRIBUTE_IMG_PET_SIT_1 uint8_t
+    pet_sit_1_data[] = {
     0xfc, 0xfe, 0xfc, 0xff, /*Color of index 1*/
     0x04, 0x02, 0x04, 0xff, /*Color of index 0*/
 
@@ -11,16 +29,22 @@ const LV_ATTRIBUTE_LARGE_CONST uint8_t luna_sit1_data[] = {
 	0x01, 0x20, 0x00, 0x80, 0x02, 0x40, 0x00, 0x80, 0x02, 0x40, 0x00, 0x80, 0x02, 0x00, 0x01, 0x00, 
 	0x02, 0x00, 0x07, 0x00, 0x01, 0x00, 0x8d, 0x00, 0x00, 0xc0, 0xcd, 0x00, 0x00, 0x41, 0xcd, 0x00,
 };
-const lv_img_dsc_t luna_sit1 = {
+
+const lv_img_dsc_t pet_sit_1 = {
     .header.always_zero = 0,
     .header.w = 32,
     .header.h = 20,
     .data_size = 88,
     .header.cf = LV_IMG_CF_INDEXED_1BIT,
-    .data = luna_sit1_data,
+    .data = pet_sit_1_data,
 };
 
-const LV_ATTRIBUTE_LARGE_CONST uint8_t luna_sit2_data[] = {
+#ifndef LV_ATTRIBUTE_IMG_PET_SIT_2
+#define LV_ATTRIBUTE_IMG_PET_SIT_2
+#endif
+
+const LV_ATTRIBUTE_MEM_ALIGN LV_ATTRIBUTE_IMG_PET_SIT_2 uint8_t
+    pet_sit_2_data[] = {
     0xfc, 0xfe, 0xfc, 0xff, /*Color of index 1*/
     0x04, 0x02, 0x04, 0xff, /*Color of index 0*/
 
@@ -30,18 +54,24 @@ const LV_ATTRIBUTE_LARGE_CONST uint8_t luna_sit2_data[] = {
 	0x02, 0xa0, 0x00, 0x80, 0x04, 0x40, 0x00, 0x80, 0x04, 0x40, 0x00, 0x80, 0x06, 0x00, 0x01, 0x00, 
 	0x02, 0x00, 0x07, 0x00, 0x01, 0x00, 0x8d, 0x00, 0x00, 0xc0, 0xcd, 0x00, 0x00, 0x41, 0xcd, 0x00,
 };
-const lv_img_dsc_t luna_sit2 = {
+
+const lv_img_dsc_t pet_sit_2 = {
     .header.always_zero = 0,
     .header.w = 32,
     .header.h = 20,
     .data_size = 88,
     .header.cf = LV_IMG_CF_INDEXED_1BIT,
-    .data = luna_sit2_data,
+    .data = pet_sit_2_data,
 };
-// end sits
 
-// walks
-const LV_ATTRIBUTE_LARGE_CONST uint8_t luna_walk1_data[] = {
+
+// PET WALK
+
+#ifndef LV_ATTRIBUTE_IMG_PET_WALK_1
+#define LV_ATTRIBUTE_IMG_PET_WALK_1
+#endif
+
+const LV_ATTRIBUTE_LARGE_CONST uint8_t pet_walk_1_data[] = {
     0xfc, 0xfe, 0xfc, 0xff, /*Color of index 1*/
     0x04, 0x02, 0x04, 0xff, /*Color of index 0*/
 
@@ -51,16 +81,21 @@ const LV_ATTRIBUTE_LARGE_CONST uint8_t luna_walk1_data[] = {
 	0x01, 0x00, 0x00, 0xa0, 0x01, 0x00, 0x00, 0x40, 0x01, 0x00, 0x00, 0x40, 0x01, 0x04, 0x00, 0x40, 
 	0x01, 0x0f, 0x00, 0x80, 0x01, 0x0b, 0x83, 0x00, 0x00, 0x9a, 0x8d, 0x00, 0x00, 0x9a, 0x4d, 0x00,
 };
-const lv_img_dsc_t luna_walk1 = {
+
+const lv_img_dsc_t pet_walk_1 = {
     .header.always_zero = 0,
     .header.w = 32,
     .header.h = 20,
     .data_size = 88,
     .header.cf = LV_IMG_CF_INDEXED_1BIT,
-    .data = luna_walk1_data,
+    .data = pet_walk_1_data,
 };
 
-const LV_ATTRIBUTE_LARGE_CONST uint8_t luna_walk2_data[] = {
+#ifndef LV_ATTRIBUTE_IMG_PET_WALK_2
+#define LV_ATTRIBUTE_IMG_PET_WALK_2
+#endif
+
+const LV_ATTRIBUTE_LARGE_CONST uint8_t pet_walk_2_data[] = {
     0xfc, 0xfe, 0xfc, 0xff, /*Color of index 1*/
     0x04, 0x02, 0x04, 0xff, /*Color of index 0*/
 
@@ -70,18 +105,24 @@ const LV_ATTRIBUTE_LARGE_CONST uint8_t luna_walk2_data[] = {
 	0x05, 0x00, 0x01, 0xd0, 0x03, 0x00, 0x00, 0xa0, 0x01, 0x00, 0x00, 0x40, 0x01, 0x00, 0x00, 0x40, 
 	0x01, 0x0c, 0x00, 0x80, 0x01, 0x13, 0x81, 0x00, 0x01, 0x29, 0x62, 0x00, 0x01, 0x25, 0x52, 0x00,
 };
-const lv_img_dsc_t luna_walk2 = {
+
+const lv_img_dsc_t pet_walk_2 = {
     .header.always_zero = 0,
     .header.w = 32,
     .header.h = 20,
     .data_size = 88,
     .header.cf = LV_IMG_CF_INDEXED_1BIT,
-    .data = luna_walk2_data,
+    .data = pet_walk_2_data,
 };
-// end walks
 
-// runs
-const LV_ATTRIBUTE_LARGE_CONST uint8_t luna_run1_data[] = {
+
+// PET RUN
+
+#ifndef LV_ATTRIBUTE_IMG_PET_RUN_1
+#define LV_ATTRIBUTE_IMG_PET_RUN_1
+#endif
+
+const LV_ATTRIBUTE_LARGE_CONST uint8_t pet_run_1_data[] = {
     0xfc, 0xfe, 0xfc, 0xff, /*Color of index 1*/
     0x04, 0x02, 0x04, 0xff, /*Color of index 0*/
 
@@ -91,16 +132,21 @@ const LV_ATTRIBUTE_LARGE_CONST uint8_t luna_run1_data[] = {
 	0x00, 0x80, 0x00, 0x48, 0x01, 0x80, 0x00, 0x30, 0x02, 0x80, 0x00, 0xc0, 0x03, 0x84, 0x01, 0x80, 
 	0x02, 0x0b, 0x02, 0x40, 0x04, 0x1c, 0xc7, 0x20, 0x05, 0xe0, 0x24, 0xe0, 0x06, 0x00, 0x12, 0x00,
 };
-const lv_img_dsc_t luna_run1 = {
+
+const lv_img_dsc_t pet_run_1 = {
     .header.always_zero = 0,
     .header.w = 32,
     .header.h = 20,
     .data_size = 88,
     .header.cf = LV_IMG_CF_INDEXED_1BIT,
-    .data = luna_run1_data,
+    .data = pet_run_1_data,
 };
 
-const LV_ATTRIBUTE_LARGE_CONST uint8_t luna_run2_data[] = {
+#ifndef LV_ATTRIBUTE_IMG_PET_RUN_2
+#define LV_ATTRIBUTE_IMG_PET_RUN_2
+#endif
+
+const LV_ATTRIBUTE_LARGE_CONST uint8_t pet_run_2_data[] = {
     0xfc, 0xfe, 0xfc, 0xff, /*Color of index 1*/
     0x04, 0x02, 0x04, 0xff, /*Color of index 0*/
 
@@ -110,18 +156,24 @@ const LV_ATTRIBUTE_LARGE_CONST uint8_t luna_run2_data[] = {
 	0x03, 0x80, 0x00, 0xf4, 0x00, 0x80, 0x00, 0x48, 0x00, 0x80, 0x00, 0x30, 0x00, 0x80, 0x00, 0x40, 
 	0x00, 0x41, 0x00, 0x80, 0x00, 0x21, 0xc1, 0x00, 0x00, 0x11, 0x47, 0x00, 0x00, 0x12, 0x4d, 0x00,
 };
-const lv_img_dsc_t luna_run2 = {
+
+const lv_img_dsc_t pet_run_2 = {
     .header.always_zero = 0,
     .header.w = 32,
     .header.h = 20,
     .data_size = 88,
     .header.cf = LV_IMG_CF_INDEXED_1BIT,
-    .data = luna_run2_data,
+    .data = pet_run_2_data,
 };
-// end runs
 
-// barks
-const LV_ATTRIBUTE_LARGE_CONST uint8_t luna_bark1_data[] = {
+
+// PET SHIFT
+
+#ifndef LV_ATTRIBUTE_IMG_PET_SHIFT_1
+#define LV_ATTRIBUTE_IMG_PET_SHIFT_1
+#endif
+
+const LV_ATTRIBUTE_LARGE_CONST uint8_t pet_shift_1_data[] = {
     0xfc, 0xfe, 0xfc, 0xff, /*Color of index 1*/
     0x04, 0x02, 0x04, 0xff, /*Color of index 0*/
 
@@ -131,16 +183,21 @@ const LV_ATTRIBUTE_LARGE_CONST uint8_t luna_bark1_data[] = {
 	0x0e, 0x00, 0x00, 0x40, 0x02, 0x00, 0x01, 0x80, 0x02, 0x00, 0x06, 0x00, 0x02, 0x00, 0x0c, 0x00, 
 	0x01, 0x04, 0x09, 0x00, 0x00, 0x87, 0x1c, 0x80, 0x00, 0x44, 0x93, 0x80, 0x00, 0x48, 0x48, 0x00,
 };
-const lv_img_dsc_t luna_bark1 = {
+
+const lv_img_dsc_t pet_shift_1 = {
     .header.always_zero = 0,
     .header.w = 32,
     .header.h = 20,
     .data_size = 88,
     .header.cf = LV_IMG_CF_INDEXED_1BIT,
-    .data = luna_bark1_data,
+    .data = pet_shift_1_data,
 };
 
-const LV_ATTRIBUTE_LARGE_CONST uint8_t luna_bark2_data[] = {
+#ifndef LV_ATTRIBUTE_IMG_PET_SHIFT_2
+#define LV_ATTRIBUTE_IMG_PET_SHIFT_2
+#endif
+
+const LV_ATTRIBUTE_LARGE_CONST uint8_t pet_shift_2_data[] = {
     0xfc, 0xfe, 0xfc, 0xff, /*Color of index 1*/
     0x04, 0x02, 0x04, 0xff, /*Color of index 0*/
 
@@ -150,18 +207,24 @@ const LV_ATTRIBUTE_LARGE_CONST uint8_t luna_bark2_data[] = {
 	0x0e, 0x00, 0x00, 0x21, 0x02, 0x00, 0x00, 0xc8, 0x02, 0x00, 0x03, 0x04, 0x02, 0x00, 0x06, 0x00, 
 	0x01, 0x04, 0x09, 0x00, 0x00, 0x87, 0x1c, 0x80, 0x00, 0x44, 0x93, 0x80, 0x00, 0x48, 0x48, 0x00,
 };
-const lv_img_dsc_t luna_bark2 = {
+
+const lv_img_dsc_t pet_shift_2 = {
     .header.always_zero = 0,
     .header.w = 32,
     .header.h = 20,
     .data_size = 88,
     .header.cf = LV_IMG_CF_INDEXED_1BIT,
-    .data = luna_bark2_data,
+    .data = pet_shift_2_data,
 };
-// end barks
 
-// sneaks
-const LV_ATTRIBUTE_LARGE_CONST uint8_t luna_sneak1_data[] = {
+
+// PET CTRL
+
+#ifndef LV_ATTRIBUTE_IMG_PET_CTRL_1
+#define LV_ATTRIBUTE_IMG_PET_CTRL_1
+#endif
+
+const LV_ATTRIBUTE_LARGE_CONST uint8_t pet_ctrl_1_data[] = {
     0xfc, 0xfe, 0xfc, 0xff, /*Color of index 1*/
     0x04, 0x02, 0x04, 0xff, /*Color of index 0*/
 
@@ -171,16 +234,21 @@ const LV_ATTRIBUTE_LARGE_CONST uint8_t luna_sneak1_data[] = {
 	0x0a, 0x00, 0x00, 0x08, 0x06, 0x00, 0x00, 0x28, 0x02, 0x00, 0x00, 0x08, 0x02, 0x00, 0x00, 0xe8, 
 	0x02, 0x1c, 0x00, 0x10, 0x02, 0x17, 0x00, 0x60, 0x01, 0x35, 0x01, 0x80, 0x01, 0x34, 0x9a, 0x00,
 };
-const lv_img_dsc_t luna_sneak1 = {
+
+const lv_img_dsc_t pet_ctrl_1 = {
     .header.always_zero = 0,
     .header.w = 32,
     .header.h = 20,
     .data_size = 88,
     .header.cf = LV_IMG_CF_INDEXED_1BIT,
-    .data = luna_sneak1_data,
+    .data = pet_ctrl_1_data,
 };
 
-const LV_ATTRIBUTE_LARGE_CONST uint8_t luna_sneak2_data[] = {
+#ifndef LV_ATTRIBUTE_IMG_PET_CTRL_2
+#define LV_ATTRIBUTE_IMG_PET_CTRL_2
+#endif
+
+const LV_ATTRIBUTE_LARGE_CONST uint8_t pet_ctrl_2_data[] = {
     0xfc, 0xfe, 0xfc, 0xff, /*Color of index 1*/
     0x04, 0x02, 0x04, 0xff, /*Color of index 0*/
 
@@ -190,12 +258,12 @@ const LV_ATTRIBUTE_LARGE_CONST uint8_t luna_sneak2_data[] = {
 	0x0a, 0x00, 0x00, 0x28, 0x0a, 0x00, 0x00, 0x08, 0x06, 0x00, 0x00, 0xe8, 0x02, 0x00, 0x00, 0x10, 
 	0x02, 0x18, 0x00, 0x60, 0x02, 0x26, 0x01, 0x80, 0x02, 0x53, 0x03, 0x00, 0x02, 0x4a, 0xa4, 0x00,
 };
-const lv_img_dsc_t luna_sneak2 = {
+
+const lv_img_dsc_t pet_ctrl_2 = {
     .header.always_zero = 0,
     .header.w = 32,
     .header.h = 20,
     .data_size = 88,
     .header.cf = LV_IMG_CF_INDEXED_1BIT,
-    .data = luna_sneak2_data,
+    .data = pet_ctrl_2_data,
 };
-// end sneaks

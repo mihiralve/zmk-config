@@ -1,6 +1,6 @@
 /*
  *
- * Copyright (c) 2021 Darryl deHaan
+ * Copyright (c) 2023 HellTM
  * SPDX-License-Identifier: MIT
  *
  */
@@ -17,8 +17,8 @@ LOG_MODULE_DECLARE(zmk, CONFIG_ZMK_LOG_LEVEL);
 #include <zmk/split/bluetooth/peripheral.h>
 #include <zmk/events/split_peripheral_status_changed.h>
 
-LV_IMG_DECLARE(bluetooth_connected_right);
-LV_IMG_DECLARE(bluetooth_disconnected_right);
+LV_IMG_DECLARE(bluetooth_connected);
+LV_IMG_DECLARE(bluetooth_disconnected);
 
 static sys_slist_t widgets = SYS_SLIST_STATIC_INIT(&widgets);
 
@@ -34,7 +34,7 @@ static void set_status_symbol(lv_obj_t *icon, struct peripheral_status_state sta
     LOG_DBG("halves connected? %s", state.connected ? "true" : "false");
 
     lv_img_set_src(icon,
-                   state.connected ? &bluetooth_connected_right : &bluetooth_disconnected_right);
+                   state.connected ? &bluetooth_connected : &bluetooth_disconnected);
 }
 
 static void output_status_update_cb(struct peripheral_status_state state) {
