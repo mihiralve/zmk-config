@@ -14,7 +14,7 @@ LOG_MODULE_DECLARE(zmk, CONFIG_ZMK_LOG_LEVEL);
 #include <dt-bindings/zmk/keys.h>
 #include <zmk/events/keycode_state_changed.h>
 #include <dt-bindings/zmk/modifiers.h>
-#include <zmk/display/widgets/pet_status.h>
+#include "pet_status.h"
 
 static sys_slist_t widgets = SYS_SLIST_STATIC_INIT(&widgets);
 
