@@ -78,7 +78,7 @@ lv_anim_t anim;
 const void **images;
 
 
-void animate_images(void *var, lv_anim_value_t value) {
+void animate_images(void *var, lv_anim_var_t value) {
     lv_obj_t *obj = (lv_obj_t *)var;
 
     // end of space action, restore the y pos
