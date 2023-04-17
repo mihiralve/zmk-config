@@ -78,7 +78,7 @@ lv_anim_t anim;
 const void **images;
 
 
-void animate_images(void * var, void * value) {
+void animate_images(void * var, int value) {
     lv_obj_t *obj = (lv_obj_t *)var;
 
     // end of space action, restore the y pos
@@ -96,15 +96,15 @@ void animate_images(void * var, void * value) {
             lv_coord_t pet_y = lv_obj_get_y(obj);
             lv_obj_set_y(obj, pet_y - 10);
         } else if (current_pet_action_state == ctrl) {
-            images = ctrl_images;
+            images = pet_ctrl_images;
         } else if (current_pet_action_state == shift) {
-            images = shift_images;
+            images = pet_shift_images;
         } else if (current_pet_wpm_state == idle) {
-            images = idle_images;
+            images = pet_idle_images;
         } else if (current_pet_wpm_state == slow_typing) {
-            images = slow_typing_images;
+            images = pet_slow_typing_images;
         } else if (current_pet_wpm_state == fast_typing) {
-            images = fast_typing_images;
+            images = pet_fast_typing_images;
         }
         current_pet_action_state = no_action;
     }
