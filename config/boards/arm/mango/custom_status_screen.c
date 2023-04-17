@@ -29,6 +29,9 @@ lv_obj_t *zmk_display_status_screen() {
     lv_obj_t *screen;
     screen = lv_obj_create(NULL);
 
+#if IS_ENABLED(CONFIG_ZMK_DISPLAY_STATUS_SCREEN_CUSTOM)
+    lv_disp_set_rotation(screen, LV_DISP_ROT_90);
+#endif
 
 #if IS_ENABLED(CONFIG_CUSTOM_WIDGET_BATTERY_STATUS)
     zmk_widget_battery_status_init(&battery_status_widget, screen);
