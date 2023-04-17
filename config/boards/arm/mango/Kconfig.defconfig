@@ -111,7 +111,7 @@ if BOARD_MANGO_LEFT || BOARD_MANGO_RIGHT
 
 	if CUSTOM_WIDGET_PET_STATUS
 
-		config CUSTOM_WIDGET_PET_SLOW_TYPING_WPM
+		config CONFIG_CUSTOM_WIDGET_PET_SLOW_TYPING_WPM
 			int "Lower limit for WPM for pet to start walking"
 			default 10
 
