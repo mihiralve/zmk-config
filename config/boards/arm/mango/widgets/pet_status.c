@@ -125,7 +125,7 @@ void init_anim(struct zmk_widget_pet_status *widget) {
 }
 
 int zmk_widget_pet_status_init(struct zmk_widget_pet_status *widget, lv_obj_t *parent) {
-    widget->obj = lv_img_create(parent, NULL);
+    widget->obj = lv_img_create(parent);
 
     lv_img_set_auto_size(widget->obj, true);
 
