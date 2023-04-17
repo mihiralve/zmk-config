@@ -39,19 +39,27 @@ static void set_battery_symbol(lv_obj_t *icon, struct battery_status_state state
     uint8_t level = state.level;
 
 #if IS_ENABLED(CONFIG_USB_DEVICE_STACK)
-    if (level >= 90) {
-        lv_img_set_src(icon, &battery_100);
-    } else if (level >= 75) {
-        lv_img_set_src(icon, &battery_90);
-    } else if (level >= 50) {
-        lv_img_set_src(icon, &battery_75);
-    } else if (level >= 25) {
-        lv_img_set_src(icon, &battery_50);
-    } else if (level >= 10) {
-        lv_img_set_src(icon, &battery_25);
+
+    bool usb_present = state.usb_present;
+
+    if (usb_present) {
+        lv_img_set_src(icon, &battery_charging);
     } else {
-        lv_img_set_src(icon, &battery_10);
+        if (level >= 90) {
+            lv_img_set_src(icon, &battery_100);
+        } else if (level >= 75) {
+            lv_img_set_src(icon, &battery_90);
+        } else if (level >= 50) {
+            lv_img_set_src(icon, &battery_75);
+        } else if (level >= 25) {
+            lv_img_set_src(icon, &battery_50);
+        } else if (level >= 10) {
+            lv_img_set_src(icon, &battery_25);
+        } else {
+            lv_img_set_src(icon, &battery_10);
+        }
     }
+
 #endif /* IS_ENABLED(CONFIG_USB_DEVICE_STACK) */
 }
 
@@ -73,8 +81,9 @@ ZMK_DISPLAY_WIDGET_LISTENER(widget_battery_status, struct battery_status_state,
                             battery_status_update_cb, battery_status_get_state)
 
 ZMK_SUBSCRIPTION(widget_battery_status, zmk_battery_state_changed);
+
 #if IS_ENABLED(CONFIG_USB_DEVICE_STACK)
-ZMK_SUBSCRIPTION(widget_battery_status, zmk_usb_conn_state_changed);
+    ZMK_SUBSCRIPTION(widget_battery_status, zmk_usb_conn_state_changed);
 #endif /* IS_ENABLED(CONFIG_USB_DEVICE_STACK) */
 
 int zmk_widget_battery_status_init(struct zmk_widget_battery_status *widget, lv_obj_t *parent) {

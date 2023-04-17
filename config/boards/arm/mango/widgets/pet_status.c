@@ -28,8 +28,10 @@ const void *pet_idle_images[] = {
 // SLOW TYPING
 LV_IMG_DECLARE(pet_slow_typing_1);
 LV_IMG_DECLARE(pet_slow_typing_2);
+LV_IMG_DECLARE(pet_slow_typing_3);
+LV_IMG_DECLARE(pet_slow_typing_4);
 const void *pet_slow_typing_images[] = {
-    &pet_slow_typing_1, &pet_slow_typing_2,
+    &pet_slow_typing_1, &pet_slow_typing_2, &pet_slow_typing_3, &pet_slow_typing_4,
 };
 
 // FAST TYPING
