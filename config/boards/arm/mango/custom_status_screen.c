@@ -47,7 +47,7 @@ lv_obj_t *zmk_display_status_screen() {
 
 #if IS_ENABLED(CONFIG_CUSTOM_WIDGET_PET_STATUS)
     zmk_widget_pet_status_init(&pet_status_widget, screen);
-    lv_obj_align(zmk_widget_pet_status_obj(&pet_status_widget), NULL, LV_ALIGN_CENTER, 2, 0);
+    lv_obj_align(zmk_widget_pet_status_obj(&pet_status_widget), LV_ALIGN_CENTER, 2, 0);
 #endif
 
     return screen;
