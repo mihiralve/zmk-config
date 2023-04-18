@@ -125,7 +125,7 @@ void init_anim(struct zmk_widget_pet_status *widget) {
     lv_anim_init(&anim);
     lv_anim_set_var(&anim, widget->obj);
     lv_anim_set_exec_cb(&anim, (lv_anim_exec_xcb_t) animate_images);
-    lv_anim_set_time(&anim, CONFIG_CUSTOM_WIDGET_PET_FRAME_DURATION);
+    lv_anim_set_time(&anim, CONFIG_CUSTOM_WIDGET_PET_FRAME_DURATION * 2);
     lv_anim_set_values(&anim, 0, 3);
     lv_anim_set_delay(&anim, CONFIG_CUSTOM_WIDGET_PET_FRAME_DURATION);
     lv_anim_set_repeat_count(&anim, LV_ANIM_REPEAT_INFINITE);
