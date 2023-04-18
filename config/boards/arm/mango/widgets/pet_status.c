@@ -115,7 +115,7 @@ void animate_images(void * var, int value) {
     // note that the space animation is excluded from this behaviour
     int frame_to_show = value;
     if (value == 3 && anim_pet_action_state != space) {
-        frame_to_show = 1
+        frame_to_show = 1;
     }
 
     lv_img_set_src(obj, images[frame_to_show]);
