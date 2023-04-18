@@ -19,45 +19,53 @@ LOG_MODULE_DECLARE(zmk, CONFIG_ZMK_LOG_LEVEL);
 static sys_slist_t widgets = SYS_SLIST_STATIC_INIT(&widgets);
 
 // IDLE
+LV_IMG_DECLARE(pet_idle_0);
 LV_IMG_DECLARE(pet_idle_1);
 LV_IMG_DECLARE(pet_idle_2);
 const void *pet_idle_images[] = {
-    &pet_idle_1, &pet_idle_2,
+    &pet_idle_0, &pet_idle_1, &pet_idle_2,
 };
 
 // SLOW TYPING
+LV_IMG_DECLARE(pet_slow_typing_0);
 LV_IMG_DECLARE(pet_slow_typing_1);
 LV_IMG_DECLARE(pet_slow_typing_2);
-LV_IMG_DECLARE(pet_slow_typing_3);
-LV_IMG_DECLARE(pet_slow_typing_4);
 const void *pet_slow_typing_images[] = {
-    &pet_slow_typing_1, &pet_slow_typing_2, &pet_slow_typing_3, &pet_slow_typing_4,
+    &pet_slow_typing_0, &pet_slow_typing_1, &pet_slow_typing_2,
 };
 
 // FAST TYPING
+LV_IMG_DECLARE(pet_fast_typing_0);
 LV_IMG_DECLARE(pet_fast_typing_1);
 LV_IMG_DECLARE(pet_fast_typing_2);
 const void *pet_fast_typing_images[] = {
-    &pet_fast_typing_1, &pet_fast_typing_2,
+    &pet_fast_typing_0, &pet_fast_typing_1, &pet_fast_typing_2,
 };
 
 // SPACE
+// note that this animation requires 4 frames
+LV_IMG_DECLARE(pet_space_0);
+LV_IMG_DECLARE(pet_space_1);
+LV_IMG_DECLARE(pet_space_2);
+LV_IMG_DECLARE(pet_space_3);
 const void *space_images[] = {
-    &pet_fast_typing_1,
+    &pet_space_0, &pet_space_1, &pet_space_2, &pet_space_3,
 };
 
 // SHIFT
+LV_IMG_DECLARE(pet_shift_0);
 LV_IMG_DECLARE(pet_shift_1);
 LV_IMG_DECLARE(pet_shift_2);
 const void *pet_shift_images[] = {
-    &pet_shift_1, &pet_shift_2,
+    &pet_shift_0, &pet_shift_1, &pet_shift_2,
 };
 
 // CTRL
+LV_IMG_DECLARE(pet_ctrl_0);
 LV_IMG_DECLARE(pet_ctrl_1);
 LV_IMG_DECLARE(pet_ctrl_2);
 const void *pet_ctrl_images[] = {
-    &pet_ctrl_1, &pet_ctrl_2,
+    &pet_ctrl_0, &pet_ctrl_1, &pet_ctrl_2,
 };
 
 
@@ -83,20 +91,12 @@ const void **images;
 void animate_images(void * var, int value) {
     lv_obj_t *obj = (lv_obj_t *)var;
 
-    // end of space action, restore the y pos
-    if (value == 1 && anim_pet_action_state == space) {
-        lv_coord_t pet_y = lv_obj_get_y(obj);
-        lv_obj_set_y(obj, pet_y + 10);
-    }
-
-    // change action on frame 0
+    // change state only on frame 0
     if (value == 0) {
         anim_pet_action_state = current_pet_action_state;
 
         if (current_pet_action_state == space) {
             images = space_images;
-            lv_coord_t pet_y = lv_obj_get_y(obj);
-            lv_obj_set_y(obj, pet_y - 10);
         } else if (current_pet_action_state == ctrl) {
             images = pet_ctrl_images;
         } else if (current_pet_action_state == shift) {
@@ -111,7 +111,14 @@ void animate_images(void * var, int value) {
         current_pet_action_state = no_action;
     }
 
-    lv_img_set_src(obj, images[value]);
+    // this makes so the middle frame is reused as 4th frame allowing smoother animation
+    // note that the space animation is excluded from this behaviour
+    int frame_to_show = value;
+    if (value == 3 && anim_pet_action_state != space) {
+        frame_to_show = 1
+    }
+
+    lv_img_set_src(obj, images[frame_to_show]);
 }
 
 void init_anim(struct zmk_widget_pet_status *widget) {
@@ -119,7 +126,7 @@ void init_anim(struct zmk_widget_pet_status *widget) {
     lv_anim_set_var(&anim, widget->obj);
     lv_anim_set_exec_cb(&anim, (lv_anim_exec_xcb_t) animate_images);
     lv_anim_set_time(&anim, CONFIG_CUSTOM_WIDGET_PET_FRAME_DURATION);
-    lv_anim_set_values(&anim, 0, 1);
+    lv_anim_set_values(&anim, 0, 3);
     lv_anim_set_delay(&anim, CONFIG_CUSTOM_WIDGET_PET_FRAME_DURATION);
     lv_anim_set_repeat_count(&anim, LV_ANIM_REPEAT_INFINITE);
     lv_anim_set_repeat_delay(&anim, CONFIG_CUSTOM_WIDGET_PET_FRAME_DURATION);
@@ -144,7 +151,6 @@ int pet_wpm_event_listener(const zmk_event_t *eh) {
     struct zmk_wpm_state_changed *ev = as_zmk_wpm_state_changed(eh);
 
     SYS_SLIST_FOR_EACH_CONTAINER(&widgets, widget, node) {
-        LOG_DBG("Set the WPM %d", ev->state);
 
         // update pet status based on wpm
         if (ev->state < CONFIG_CUSTOM_WIDGET_PET_SLOW_TYPING_WPM) {
