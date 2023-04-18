@@ -129,7 +129,7 @@ void init_anim(struct zmk_widget_pet_status *widget) {
     lv_anim_set_values(&anim, 0, 3);
     lv_anim_set_delay(&anim, CONFIG_CUSTOM_WIDGET_PET_FRAME_DURATION);
     lv_anim_set_repeat_count(&anim, LV_ANIM_REPEAT_INFINITE);
-    lv_anim_set_repeat_delay(&anim, CONFIG_CUSTOM_WIDGET_PET_FRAME_DURATION);
+    lv_anim_set_repeat_delay(&anim, 0);
     lv_anim_start(&anim);
 }
 
