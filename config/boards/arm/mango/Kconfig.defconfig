@@ -123,7 +123,7 @@ if BOARD_MANGO_LEFT || BOARD_MANGO_RIGHT
 
 		config CUSTOM_WIDGET_PET_FRAME_DURATION
 			int "Pet animation frame duration in milliseconds"
-			default 300
+			default 250
 		
 	endif # CUSTOM_WIDGET_PET_STATUS
 
