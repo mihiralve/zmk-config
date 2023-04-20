@@ -113,12 +113,12 @@ if BOARD_MANGO_LEFT || BOARD_MANGO_RIGHT
 
 	if CUSTOM_WIDGET_PET_STATUS
 
-		config CUSTOM_WIDGET_PET_SLOW_TYPING_WPM
-			int "Lower limit for WPM for pet to start walking"
+		config CUSTOM_WIDGET_PET_WALK_WPM
+			int "Lower WPM limit for pet to start walking"
 			default 10
 
-		config CUSTOM_WIDGET_PET_FAST_TYPING_WPM
-			int "Lower limit for WPM for pet to start running"
+		config CUSTOM_WIDGET_PET_RUN_WPM
+			int "Lower WPM limit for pet to start running"
 			default 40
 		
 	endif # CUSTOM_WIDGET_PET_STATUS
