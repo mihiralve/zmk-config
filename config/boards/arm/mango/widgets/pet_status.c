@@ -175,23 +175,23 @@ int pet_wpm_event_listener(const zmk_event_t *eh) {
 int pet_keycode_event_listener(const zmk_event_t *eh) {
     const struct zmk_keycode_state_changed *ev = as_zmk_keycode_state_changed(eh);
 
-    if ((zmk_hid_get_explicit_mods() & (MOD_LCTRL | MOD_RCTRL | MOD_LGUI | MOD_RGUI)) != 0) {
-        current_pet_action_state = down;
+    // modifiers
+    if (zmk_hid_get_explicit_mods() != 0) {
+        if ((MOD_LCTL | MOD_RCTL | MOD_LGUI | MOD_RGUI) != 0) {
+            current_pet_action_state = down;
+        } else if ((MOD_LSFT | MOD_RSFT) != 0) {
+            current_pet_action_state = bark;
+        }
     }
 
     // insert here caps lock behavior 
-
+    
+    // key presses
     if (ev) {
         switch (ev->keycode) {
             case HID_USAGE_KEY_KEYBOARD_SPACEBAR:
                 if (ev->state) {
                     current_pet_action_state = jump;
-                }
-                break;
-            case HID_USAGE_KEY_KEYBOARD_RIGHTSHIFT:
-            case HID_USAGE_KEY_KEYBOARD_LEFTSHIFT:
-                if (ev->state) {
-                    current_pet_action_state = bark;
                 }
                 break;
             default:
