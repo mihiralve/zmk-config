@@ -99,22 +99,22 @@ void animate_images(void * var, int value) {
 
         if (current_pet_action_state == jump) {
             images = jump_images;
-            current_frame_duration = 200;
+            current_frame_duration = 70;
         } else if (current_pet_action_state == down) {
             images = pet_down_images;
             current_frame_duration = 290;
         } else if (current_pet_action_state == bark) {
             images = pet_bark_images;
-            current_frame_duration = 200;
+            current_frame_duration = 100;
         } else if (current_pet_wpm_state == sit) {
             images = pet_sit_images;
-            current_frame_duration = 300;
+            current_frame_duration = 400;
         } else if (current_pet_wpm_state == walk) {
             images = pet_walk_images;
             current_frame_duration = 250;
         } else if (current_pet_wpm_state == run) {
             images = pet_run_images;
-            current_frame_duration = 180;
+            current_frame_duration = 100;
         }
         current_pet_action_state = no_action;
     }
@@ -176,16 +176,14 @@ int pet_keycode_event_listener(const zmk_event_t *eh) {
     const struct zmk_keycode_state_changed *ev = as_zmk_keycode_state_changed(eh);
 
     // modifiers
-    if (zmk_hid_get_explicit_mods() != 0) {
-        if ((MOD_LCTL | MOD_RCTL | MOD_LGUI | MOD_RGUI) != 0) {
-            current_pet_action_state = down;
-        } else if ((MOD_LSFT | MOD_RSFT) != 0) {
-            current_pet_action_state = bark;
-        }
+    if (zmk_hid_mod_is_pressed(MOD_LCTL) || zmk_hid_mod_is_pressed(MOD_RCTL) || zmk_hid_mod_is_pressed(MOD_LGUI) || zmk_hid_mod_is_pressed(MOD_RGUI)) {
+        current_pet_action_state = down;
+    } else if (zmk_hid_mod_is_pressed(MOD_LSFT) || zmk_hid_mod_is_pressed(MOD_RSFT)) {
+        current_pet_action_state = bark;
     }
 
     // insert here caps lock behavior 
-    
+
     // key presses
     if (ev) {
         switch (ev->keycode) {
