@@ -120,10 +120,6 @@ if BOARD_MANGO_LEFT || BOARD_MANGO_RIGHT
 		config CUSTOM_WIDGET_PET_FAST_TYPING_WPM
 			int "Lower limit for WPM for pet to start running"
 			default 40
-
-		config CUSTOM_WIDGET_PET_FRAME_DURATION
-			int "Pet animation frame duration in milliseconds"
-			default 250
 		
 	endif # CUSTOM_WIDGET_PET_STATUS
 

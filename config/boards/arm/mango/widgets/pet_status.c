@@ -6,6 +6,7 @@
  */
 
 #include <zmk/event_manager.h>
+#include <zmk/hid.h>
 #include <zmk/events/wpm_state_changed.h>
 
 #include <zephyr/logging/log.h>
@@ -18,74 +19,75 @@ LOG_MODULE_DECLARE(zmk, CONFIG_ZMK_LOG_LEVEL);
 
 static sys_slist_t widgets = SYS_SLIST_STATIC_INIT(&widgets);
 
-// IDLE
-LV_IMG_DECLARE(pet_idle_0);
-LV_IMG_DECLARE(pet_idle_1);
-LV_IMG_DECLARE(pet_idle_2);
-const void *pet_idle_images[] = {
-    &pet_idle_0, &pet_idle_1, &pet_idle_2,
+// SIT
+LV_IMG_DECLARE(pet_sit_0);
+LV_IMG_DECLARE(pet_sit_1);
+LV_IMG_DECLARE(pet_sit_2);
+const void *pet_sit_images[] = {
+    &pet_sit_0, &pet_sit_1, &pet_sit_2,
 };
 
 // SLOW TYPING
-LV_IMG_DECLARE(pet_slow_typing_0);
-LV_IMG_DECLARE(pet_slow_typing_1);
-LV_IMG_DECLARE(pet_slow_typing_2);
-const void *pet_slow_typing_images[] = {
-    &pet_slow_typing_0, &pet_slow_typing_1, &pet_slow_typing_2,
+LV_IMG_DECLARE(pet_walk_0);
+LV_IMG_DECLARE(pet_walk_1);
+LV_IMG_DECLARE(pet_walk_2);
+const void *pet_walk_images[] = {
+    &pet_walk_0, &pet_walk_1, &pet_walk_2,
 };
 
 // FAST TYPING
-LV_IMG_DECLARE(pet_fast_typing_0);
-LV_IMG_DECLARE(pet_fast_typing_1);
-LV_IMG_DECLARE(pet_fast_typing_2);
-const void *pet_fast_typing_images[] = {
-    &pet_fast_typing_0, &pet_fast_typing_1, &pet_fast_typing_2,
+LV_IMG_DECLARE(pet_run_0);
+LV_IMG_DECLARE(pet_run_1);
+LV_IMG_DECLARE(pet_run_2);
+const void *pet_run_images[] = {
+    &pet_run_0, &pet_run_1, &pet_run_2,
 };
 
-// SPACE
+// JUMP
 // note that this animation requires 4 frames
-LV_IMG_DECLARE(pet_space_0);
-LV_IMG_DECLARE(pet_space_1);
-LV_IMG_DECLARE(pet_space_2);
-LV_IMG_DECLARE(pet_space_3);
-const void *space_images[] = {
-    &pet_space_0, &pet_space_1, &pet_space_2, &pet_space_3,
+LV_IMG_DECLARE(pet_jump_0);
+LV_IMG_DECLARE(pet_jump_1);
+LV_IMG_DECLARE(pet_jump_2);
+LV_IMG_DECLARE(pet_jump_3);
+const void *jump_images[] = {
+    &pet_jump_0, &pet_jump_1, &pet_jump_2, &pet_jump_3,
 };
 
-// SHIFT
-LV_IMG_DECLARE(pet_shift_0);
-LV_IMG_DECLARE(pet_shift_1);
-LV_IMG_DECLARE(pet_shift_2);
-const void *pet_shift_images[] = {
-    &pet_shift_0, &pet_shift_1, &pet_shift_2,
+// BARK
+LV_IMG_DECLARE(pet_bark_0);
+LV_IMG_DECLARE(pet_bark_1);
+LV_IMG_DECLARE(pet_bark_2);
+const void *pet_bark_images[] = {
+    &pet_bark_0, &pet_bark_1, &pet_bark_2,
 };
 
-// CTRL
-LV_IMG_DECLARE(pet_ctrl_0);
-LV_IMG_DECLARE(pet_ctrl_1);
-LV_IMG_DECLARE(pet_ctrl_2);
-const void *pet_ctrl_images[] = {
-    &pet_ctrl_0, &pet_ctrl_1, &pet_ctrl_2,
+// DOWN
+LV_IMG_DECLARE(pet_down_0);
+LV_IMG_DECLARE(pet_down_1);
+LV_IMG_DECLARE(pet_down_2);
+const void *pet_down_images[] = {
+    &pet_down_0, &pet_down_1, &pet_down_2,
 };
 
 
 /* PET STATE */
 enum pet_wpm_state {
     unknown,
-    idle,
-    slow_typing,
-    fast_typing,
+    sit,
+    walk,
+    run,
 } current_pet_wpm_state = unknown;
 
 enum pet_action_state {
     no_action,
-    ctrl,
-    shift,
-    space,
+    down,
+    bark,
+    jump,
 } current_pet_action_state = no_action, anim_pet_action_state = no_action;
 
 lv_anim_t anim;
 const void **images;
+int current_frame_duration = 250;
 
 
 void animate_images(void * var, int value) {
@@ -95,26 +97,32 @@ void animate_images(void * var, int value) {
     if (value == 0) {
         anim_pet_action_state = current_pet_action_state;
 
-        if (current_pet_action_state == space) {
-            images = space_images;
-        } else if (current_pet_action_state == ctrl) {
-            images = pet_ctrl_images;
-        } else if (current_pet_action_state == shift) {
-            images = pet_shift_images;
-        } else if (current_pet_wpm_state == idle) {
-            images = pet_idle_images;
-        } else if (current_pet_wpm_state == slow_typing) {
-            images = pet_slow_typing_images;
-        } else if (current_pet_wpm_state == fast_typing) {
-            images = pet_fast_typing_images;
+        if (current_pet_action_state == jump) {
+            images = jump_images;
+            current_frame_duration = 200;
+        } else if (current_pet_action_state == down) {
+            images = pet_down_images;
+            current_frame_duration = 290;
+        } else if (current_pet_action_state == bark) {
+            images = pet_bark_images;
+            current_frame_duration = 200;
+        } else if (current_pet_wpm_state == sit) {
+            images = pet_sit_images;
+            current_frame_duration = 300;
+        } else if (current_pet_wpm_state == walk) {
+            images = pet_walk_images;
+            current_frame_duration = 250;
+        } else if (current_pet_wpm_state == run) {
+            images = pet_run_images;
+            current_frame_duration = 180;
         }
         current_pet_action_state = no_action;
     }
 
     // this makes so the middle frame is reused as 4th frame allowing smoother animation
-    // note that the space animation is excluded from this behaviour
+    // note that the jump animation is excluded from this behaviour
     int frame_to_show = value;
-    if (value == 3 && anim_pet_action_state != space) {
+    if (value == 3 && anim_pet_action_state != jump) {
         frame_to_show = 1;
     }
 
@@ -125,18 +133,18 @@ void init_anim(struct zmk_widget_pet_status *widget) {
     lv_anim_init(&anim);
     lv_anim_set_var(&anim, widget->obj);
     lv_anim_set_exec_cb(&anim, (lv_anim_exec_xcb_t) animate_images);
-    lv_anim_set_time(&anim, CONFIG_CUSTOM_WIDGET_PET_FRAME_DURATION * 3);
+    lv_anim_set_time(&anim, current_frame_duration * 3);
     lv_anim_set_values(&anim, 0, 3);
     lv_anim_set_delay(&anim, 0);
     lv_anim_set_repeat_count(&anim, LV_ANIM_REPEAT_INFINITE);
-    lv_anim_set_repeat_delay(&anim, CONFIG_CUSTOM_WIDGET_PET_FRAME_DURATION);
+    lv_anim_set_repeat_delay(&anim, current_frame_duration);
     lv_anim_start(&anim);
 }
 
 int zmk_widget_pet_status_init(struct zmk_widget_pet_status *widget, lv_obj_t *parent) {
     widget->obj = lv_img_create(parent);
 
-    current_pet_wpm_state = idle;
+    current_pet_wpm_state = sit;
     init_anim(widget);
 
     sys_slist_append(&widgets, &widget->node);
@@ -153,12 +161,12 @@ int pet_wpm_event_listener(const zmk_event_t *eh) {
     SYS_SLIST_FOR_EACH_CONTAINER(&widgets, widget, node) {
 
         // update pet status based on wpm
-        if (ev->state < CONFIG_CUSTOM_WIDGET_PET_SLOW_TYPING_WPM) {
-            current_pet_wpm_state = idle;
-        } else if (ev->state < CONFIG_CUSTOM_WIDGET_PET_FAST_TYPING_WPM) {
-            current_pet_wpm_state = slow_typing;
+        if (ev->state < CONFIG_CUSTOM_WIDGET_PET_WALK_WPM) {
+            current_pet_wpm_state = sit;
+        } else if (ev->state < CONFIG_CUSTOM_WIDGET_PET_RUN_WPM) {
+            current_pet_wpm_state = walk;
         } else {
-            current_pet_wpm_state = fast_typing;
+            current_pet_wpm_state = run;
         }
     }
     return ZMK_EV_EVENT_BUBBLE;
@@ -167,18 +175,24 @@ int pet_wpm_event_listener(const zmk_event_t *eh) {
 int pet_keycode_event_listener(const zmk_event_t *eh) {
     const struct zmk_keycode_state_changed *ev = as_zmk_keycode_state_changed(eh);
 
+    if ((zmk_hid_get_explicit_mods() & (MOD_LCTRL | MOD_RCTRL | MOD_LGUI | MOD_RGUI)) != 0) {
+        current_pet_action_state = down;
+    }
+
+    // insert here caps lock behavior 
+
     if (ev) {
         switch (ev->keycode) {
             case HID_USAGE_KEY_KEYBOARD_SPACEBAR:
-                current_pet_action_state = space;
+                if (ev->state) {
+                    current_pet_action_state = jump;
+                }
                 break;
             case HID_USAGE_KEY_KEYBOARD_RIGHTSHIFT:
             case HID_USAGE_KEY_KEYBOARD_LEFTSHIFT:
-                current_pet_action_state = shift;
-                break;
-            case HID_USAGE_KEY_KEYBOARD_LEFTCONTROL:
-            case HID_USAGE_KEY_KEYBOARD_RIGHTCONTROL:
-                current_pet_action_state = ctrl;
+                if (ev->state) {
+                    current_pet_action_state = bark;
+                }
                 break;
             default:
                 break;
