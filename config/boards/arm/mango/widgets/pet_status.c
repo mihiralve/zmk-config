@@ -107,7 +107,7 @@ void animate_images(void * var, int value) {
         // restart animation with current frame duration
         struct zmk_widget_pet_status *widget;
         SYS_SLIST_FOR_EACH_CONTAINER(&widgets, widget, node) {
-            init_anim(widget);
+            //init_anim(widget);
         }
     }
 
