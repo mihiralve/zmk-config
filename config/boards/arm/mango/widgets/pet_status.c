@@ -83,7 +83,8 @@ enum pet_action_state {
     down,
     bark,
     jump,
-} current_pet_action_state = no_action, anim_pet_action_state = no_action;
+} current_pet_action_state = no_action;
+bool showed_jump = true;
 
 lv_anim_t anim;
 const void **images;
@@ -95,7 +96,17 @@ void animate_images(void * var, int value) {
     lv_obj_t *obj = (lv_obj_t *)var;
 
     frame_to_show = value;
-    anim_pet_action_state = current_pet_action_state;
+
+    // end jump animation if it was shown
+    if (frame_to_show == 0 && showed_jump == true;) {
+        showed_jump = false;
+        current_pet_action_state == no_action;
+    }
+
+    // set action based on modifiers if pet is not jumping
+    if (current_pet_action_state != jump) {
+        set_pet_action_state_based_on_modifiers();
+    }
 
     // change state only on frame 0 if pet is jumping
     if (current_pet_action_state != jump || frame_to_show == 0) {
@@ -112,14 +123,17 @@ void animate_images(void * var, int value) {
         } else if (current_pet_wpm_state == run) {
             images = pet_run_images;
         }
+    }
 
-        set_pet_action_state_based_on_modifiers();
+    // signal the jump animation has been shown completely
+    if (current_pet_action_state == jump && frame_to_show == 3) {
+        showed_jump = true;
     }
 
     // This makes so the middle frame is reused as 4th frame allowing smoother animation.
     // NOTE that the jump animation is excluded from this behaviour.
     // More info about this in icons/pet_status.c
-    if (frame_to_show == 3 && anim_pet_action_state != jump) {
+    if (frame_to_show == 3 && current_pet_action_state != jump) {
         frame_to_show = 1;
     }
 
@@ -195,6 +209,7 @@ int pet_keycode_event_listener(const zmk_event_t *eh) {
         switch (ev->keycode) {
             case HID_USAGE_KEY_KEYBOARD_SPACEBAR:
                 current_pet_action_state = jump;
+                showed_jump = false;
                 break;
             default:
                 break;
