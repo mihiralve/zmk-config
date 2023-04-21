@@ -96,9 +96,11 @@ int current_frame_duration = 150;
 
 void animate_images(void * var, int value) {
     lv_obj_t *obj = (lv_obj_t *)var;
+    int frame_to_show = value;
     current_frame = value;
 
-    // change state only on frame 0 if pet is jumping
+    // Change image set every frame.
+    // This only happens on frame 0 if pet is jumping.
     if (current_pet_action_state != jump || value == 0) {
         if (current_pet_action_state == jump) {
             images = jump_images;
@@ -115,11 +117,11 @@ void animate_images(void * var, int value) {
         }
     }
 
-    int frame_to_show = value;
     if (value == 3) {
         // This makes so the middle frame is reused as 4th frame allowing smoother animation.
         // NOTE that the jump animation is excluded from this behaviour.
         // More info about this in icons/pet_status.c
+        int frame_to_show = value;
         if (current_pet_action_state != jump) {
             frame_to_show = 1;
         }
@@ -175,10 +177,9 @@ int pet_wpm_event_listener(const zmk_event_t *eh) {
             }
 
             // restart animation with current frame duration
-            if (current_pet_action_state != jump || frame_to_show == 0) {
-                init_anim(widget);
-            }
+            init_anim(widget);
 
+            // prevent frame duration change until next cycle
             allow_frame_duration_change = false;
         }
 
