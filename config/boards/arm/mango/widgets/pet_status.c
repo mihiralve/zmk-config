@@ -18,6 +18,7 @@ LOG_MODULE_DECLARE(zmk, CONFIG_ZMK_LOG_LEVEL);
 #include "pet_status.h"
 
 static sys_slist_t widgets = SYS_SLIST_STATIC_INIT(&widgets);
+struct zmk_widget_pet_status *widget;
 
 // SIT
 LV_IMG_DECLARE(pet_sit_0);
@@ -128,16 +129,13 @@ void animate_images(void * var, int value) {
         frame_to_show = 1;
     }
 
-    // set the frame duration based on the animation
-    set_anim_frame_duration(current_frame_duration);
+    // on frame 0, restart animation with the new frame duration
+    if (value == 0) {
+        init_anim(widget);
+    }
 
     // set the image to show next
     lv_img_set_src(obj, images[frame_to_show]);
-}
-
-void set_anim_frame_duration(int frame_duration) {
-    lv_anim_set_time(&anim, current_frame_duration * 3);
-    lv_anim_set_repeat_delay(&anim, current_frame_duration);
 }
 
 void set_pet_action_state_based_on_modifiers() {
@@ -189,7 +187,6 @@ int zmk_widget_pet_status_init(struct zmk_widget_pet_status *widget, lv_obj_t *p
 lv_obj_t *zmk_widget_pet_status_obj(struct zmk_widget_pet_status *widget) { return widget->obj; }
 
 int pet_wpm_event_listener(const zmk_event_t *eh) {
-    struct zmk_widget_pet_status *widget;
     struct zmk_wpm_state_changed *ev = as_zmk_wpm_state_changed(eh);
 
     SYS_SLIST_FOR_EACH_CONTAINER(&widgets, widget, node) {
