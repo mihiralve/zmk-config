@@ -102,6 +102,9 @@ void animate_images(void * var, int value) {
     // Change image set every frame.
     // This only happens on frame 0 if pet is jumping.
     if (current_pet_action_state != jump || value == 0) {
+
+        set_pet_action_state_based_on_modifiers();
+
         if (current_pet_action_state == jump) {
             images = jump_images;
         } else if (current_pet_action_state == down) {
@@ -177,6 +180,7 @@ int pet_wpm_event_listener(const zmk_event_t *eh) {
             }
 
             // restart animation with current frame duration
+            lv_anim_del(&anim, widget->obj)
             init_anim(widget);
 
             // prevent frame duration change until next cycle
@@ -202,22 +206,10 @@ int pet_keycode_event_listener(const zmk_event_t *eh) {
     // key presses
     if (ev) {
         switch (ev->keycode) {
-            case HID_USAGE_KEY_KEYBOARD_LEFTCONTROL:
-            case HID_USAGE_KEY_KEYBOARD_RIGHTCONTROL:
-            case HID_USAGE_KEY_KEYBOARD_RIGHT_GUI:
-            case HID_USAGE_KEY_KEYBOARD_LEFT_GUI:
-            case HID_USAGE_KEY_KEYBOARD_LEFTSHIFT:
-            case HID_USAGE_KEY_KEYBOARD_RIGHTSHIFT:
-                // check if it's a modifier and set the correct action
-                set_pet_action_state_based_on_modifiers();
-                break;
             case HID_USAGE_KEY_KEYBOARD_SPACEBAR:
+                // on space press, jump
                 if (ev->state) {
-                    // on space press, jump
                     current_pet_action_state = jump;
-                } else {
-                    // on space release, check again for modifiers
-                    set_pet_action_state_based_on_modifiers();
                 }
                 break;
             default:
