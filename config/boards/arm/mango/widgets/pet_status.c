@@ -100,7 +100,7 @@ void animate_images(void * var, int value) {
     current_frame = value;
 
     // Recreate animation based on WPM
-    if(allow_frame_duration_change == true && value == 0) {
+    if(allow_frame_duration_change && value == 0) {
         // prevent frame duration change until next cycle
         allow_frame_duration_change = false;
 
@@ -114,9 +114,6 @@ void animate_images(void * var, int value) {
     // Change image set every frame.
     // This only happens on frame 0 if pet is jumping.
     if (current_pet_action_state != jump || value == 0) {
-
-        set_pet_action_state_based_on_modifiers();
-
         if (current_pet_action_state == jump) {
             images = jump_images;
         } else if (current_pet_action_state == down) {
@@ -130,6 +127,8 @@ void animate_images(void * var, int value) {
         } else if (current_pet_wpm_state == run) {
             images = pet_run_images;
         }
+
+        set_pet_action_state_based_on_modifiers();
     }
 
     if (value == 3) {
@@ -140,9 +139,6 @@ void animate_images(void * var, int value) {
         if (current_pet_action_state != jump) {
             frame_to_show = 1;
         }
-
-        // limit the amount of changes to the frame duration to one per cycle
-        allow_frame_duration_change = true;
     }
 
     // set the image to show next
@@ -182,7 +178,7 @@ int pet_wpm_event_listener(const zmk_event_t *eh) {
     SYS_SLIST_FOR_EACH_CONTAINER(&widgets, widget, node) {
 
         // To save some calculations, the animation speed changes once every 4 frames only
-        if (allow_frame_duration_change && (ev->state > 0)) {
+        if (current_frame == 3 && (ev->state > 5)) {
             // Calculate current frame duration
             current_frame_duration = (max_frame_duration - (ev->state * 3));
 
@@ -190,6 +186,8 @@ int pet_wpm_event_listener(const zmk_event_t *eh) {
             if (current_frame_duration <= min_frame_duration) {
                 current_frame_duration = min_frame_duration;
             }
+
+            allow_frame_duration_change = true;
         }
 
         // Update pet status based on WPM.
