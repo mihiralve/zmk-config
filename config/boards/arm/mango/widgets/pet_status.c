@@ -88,39 +88,49 @@ enum pet_action_state {
 lv_anim_t anim;
 const void **images;
 int frame_to_show = 0;
-int max_frame_duration = 300;
-int min_frame_duration = 100;
 int current_frame_duration = 150;
 
 
 void animate_images(void * var, int value) {
     lv_obj_t *obj = (lv_obj_t *)var;
+    struct zmk_widget_pet_status *widget;
 
+    frame_to_show = value;
     anim_pet_action_state = current_pet_action_state;
 
     // change state only on frame 0 if pet is jumping
-    if (current_pet_action_state != jump || value == 0) {
+    if (current_pet_action_state != jump || frame_to_show == 0) {
         if (current_pet_action_state == jump) {
+            current_frame_duration = 100;
             images = jump_images;
         } else if (current_pet_action_state == down) {
+            current_frame_duration = 300;
             images = pet_down_images;
         } else if (current_pet_action_state == bark) {
+            current_frame_duration = 80;
             images = pet_bark_images;
         } else if (current_pet_wpm_state == sit) {
+            current_frame_duration = 300;
             images = pet_sit_images;
         } else if (current_pet_wpm_state == walk) {
+            current_frame_duration = 170;
             images = pet_walk_images;
         } else if (current_pet_wpm_state == run) {
+            current_frame_duration = 100;
             images = pet_run_images;
         }
 
         set_pet_action_state_based_on_modifiers();
     }
 
+    // restart animation with current frame duration
+    if (frame_to_show == 0 && current_pet_action_state != jump) {
+        init_anim(widget);
+    }
+
     // This makes so the middle frame is reused as 4th frame allowing smoother animation.
     // NOTE that the jump animation is excluded from this behaviour.
     // More info about this in icons/pet_status.c
-    frame_to_show = value;
     if (frame_to_show == 3 && anim_pet_action_state != jump) {
         frame_to_show = 1;
     }
@@ -175,19 +185,6 @@ int pet_wpm_event_listener(const zmk_event_t *eh) {
     struct zmk_wpm_state_changed *ev = as_zmk_wpm_state_changed(eh);
 
     SYS_SLIST_FOR_EACH_CONTAINER(&widgets, widget, node) {
-
-        // Calculate current frame duration
-        current_frame_duration = (max_frame_duration - (ev->state * 3));
-
-        // Clamp the frame duration value
-        if (current_frame_duration <= min_frame_duration) {
-            current_frame_duration = min_frame_duration;
-        }
-
-        // restart animation with current frame duration
-        if (current_pet_action_state != jump || frame_to_show == 0) {
-            init_anim(widget);
-        }
 
         // Update pet status based on WPM.
         // Configurable in Kconfig.defconfig
