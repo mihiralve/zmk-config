@@ -180,7 +180,6 @@ int pet_wpm_event_listener(const zmk_event_t *eh) {
             }
 
             // restart animation with current frame duration
-            lv_anim_del(&anim, widget->obj)
             init_anim(widget);
 
             // prevent frame duration change until next cycle
