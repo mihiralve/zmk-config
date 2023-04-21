@@ -98,7 +98,7 @@ void animate_images(void * var, int value) {
     frame_to_show = value;
 
     // end jump animation if it was shown
-    if (frame_to_show == 0 && showed_jump == true;) {
+    if (frame_to_show == 0 && showed_jump == true) {
         showed_jump = false;
         current_pet_action_state == no_action;
     }
