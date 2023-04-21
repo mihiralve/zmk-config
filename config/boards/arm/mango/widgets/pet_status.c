@@ -87,7 +87,10 @@ enum pet_action_state {
 
 lv_anim_t anim;
 const void **images;
-int current_frame_duration = 250;
+int frame_to_show = 0;
+int max_frame_duration = 300;
+int min_frame_duration = 100;
+int current_frame_duration = 150;
 
 
 void animate_images(void * var, int value) {
@@ -99,22 +102,16 @@ void animate_images(void * var, int value) {
     if (current_pet_action_state != jump || value == 0) {
         if (current_pet_action_state == jump) {
             images = jump_images;
-            current_frame_duration = 70;
         } else if (current_pet_action_state == down) {
             images = pet_down_images;
-            current_frame_duration = 290;
         } else if (current_pet_action_state == bark) {
             images = pet_bark_images;
-            current_frame_duration = 100;
         } else if (current_pet_wpm_state == sit) {
             images = pet_sit_images;
-            current_frame_duration = 400;
         } else if (current_pet_wpm_state == walk) {
             images = pet_walk_images;
-            current_frame_duration = 250;
         } else if (current_pet_wpm_state == run) {
             images = pet_run_images;
-            current_frame_duration = 100;
         }
 
         set_pet_action_state_based_on_modifiers();
@@ -123,38 +120,23 @@ void animate_images(void * var, int value) {
     // This makes so the middle frame is reused as 4th frame allowing smoother animation.
     // NOTE that the jump animation is excluded from this behaviour.
     // More info about this in icons/pet_status.c
-    int frame_to_show = value;
+    frame_to_show = value;
     if (frame_to_show == 3 && anim_pet_action_state != jump) {
         frame_to_show = 1;
     }
 
-    // set the frame duration based on the animation
-    set_anim_frame_duration(current_frame_duration);
-
     // set the image to show next
     lv_img_set_src(obj, images[frame_to_show]);
-}
-
-void set_anim_frame_duration(int frame_duration) {
-    lv_anim_set_time(&anim, current_frame_duration * 3);
-    lv_anim_set_repeat_delay(&anim, current_frame_duration);
 }
 
 void set_pet_action_state_based_on_modifiers() {
 
     // control and gui -> down
     // shift -> bark
-    if ((zmk_hid_get_explicit_mods() & MOD_LCTL) != 0) {
+    if (((zmk_hid_get_explicit_mods() & MOD_LCTL) != 0) || ((zmk_hid_get_explicit_mods() & MOD_RCTL) != 0) || 
+        ((zmk_hid_get_explicit_mods() & MOD_LGUI) != 0) || ((zmk_hid_get_explicit_mods() & MOD_RGUI) != 0)) {
         current_pet_action_state = down;
-    } else if ((zmk_hid_get_explicit_mods() & MOD_RCTL) != 0) {
-        current_pet_action_state = down;
-    } else if ((zmk_hid_get_explicit_mods() & MOD_LGUI) != 0) {
-        current_pet_action_state = down;
-    } else if ((zmk_hid_get_explicit_mods() & MOD_RGUI) != 0) {
-        current_pet_action_state = down;
-    } else if ((zmk_hid_get_explicit_mods() & MOD_LSFT) != 0) {
-        current_pet_action_state = bark;
-    } else if ((zmk_hid_get_explicit_mods() & MOD_RSFT) != 0) {
+    } else if (((zmk_hid_get_explicit_mods() & MOD_LSFT) != 0) || ((zmk_hid_get_explicit_mods() & MOD_RSFT) != 0)) {
         current_pet_action_state = bark;
     } else {
         current_pet_action_state = no_action;
@@ -193,6 +175,19 @@ int pet_wpm_event_listener(const zmk_event_t *eh) {
     struct zmk_wpm_state_changed *ev = as_zmk_wpm_state_changed(eh);
 
     SYS_SLIST_FOR_EACH_CONTAINER(&widgets, widget, node) {
+
+        // Calculate current frame duration
+        current_frame_duration = (max_frame_duration - (ev->state * 3));
+
+        // Clamp the frame duration value
+        if (current_frame_duration <= min_frame_duration) {
+            current_frame_duration = min_frame_duration;
+        }
+
+        // restart animation with current frame duration
+        if (current_pet_action_state != jump || frame_to_show == 0) {
+            init_anim(widget);
+        }
 
         // Update pet status based on WPM.
         // Configurable in Kconfig.defconfig
