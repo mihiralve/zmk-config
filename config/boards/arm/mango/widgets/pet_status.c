@@ -141,9 +141,20 @@ void set_anim_frame_duration(int frame_duration) {
 }
 
 void set_pet_action_state_based_on_modifiers() {
-    if (zmk_hid_mod_is_pressed(MOD_LCTL) || zmk_hid_mod_is_pressed(MOD_RCTL) || zmk_hid_mod_is_pressed(MOD_LGUI) || zmk_hid_mod_is_pressed(MOD_RGUI)) {
+
+    // control and gui -> down
+    // shift -> bark
+    if ((zmk_hid_get_explicit_mods() & MOD_LCTL) != 0) {
         current_pet_action_state = down;
-    } else if (zmk_hid_mod_is_pressed(MOD_LSFT) || zmk_hid_mod_is_pressed(MOD_RSFT)) {
+    } else if ((zmk_hid_get_explicit_mods() & MOD_RCTL) != 0) {
+        current_pet_action_state = down;
+    } else if ((zmk_hid_get_explicit_mods() & MOD_LGUI) != 0) {
+        current_pet_action_state = down;
+    } else if ((zmk_hid_get_explicit_mods() & MOD_RGUI) != 0) {
+        current_pet_action_state = down;
+    } else if ((zmk_hid_get_explicit_mods() & MOD_LSFT) != 0) {
+        current_pet_action_state = bark;
+    } else if ((zmk_hid_get_explicit_mods() & MOD_RSFT) != 0) {
         current_pet_action_state = bark;
     } else {
         current_pet_action_state = no_action;
