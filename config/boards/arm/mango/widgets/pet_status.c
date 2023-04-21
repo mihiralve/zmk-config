@@ -99,6 +99,18 @@ void animate_images(void * var, int value) {
     int frame_to_show = value;
     current_frame = value;
 
+    // Recreate animation based on WPM
+    if(allow_frame_duration_change == true && value == 0) {
+        // prevent frame duration change until next cycle
+        allow_frame_duration_change = false;
+
+        // restart animation with current frame duration
+        struct zmk_widget_pet_status *widget;
+        SYS_SLIST_FOR_EACH_CONTAINER(&widgets, widget, node) {
+            init_anim(widget);
+        }
+    }
+
     // Change image set every frame.
     // This only happens on frame 0 if pet is jumping.
     if (current_pet_action_state != jump || value == 0) {
@@ -170,7 +182,7 @@ int pet_wpm_event_listener(const zmk_event_t *eh) {
     SYS_SLIST_FOR_EACH_CONTAINER(&widgets, widget, node) {
 
         // To save some calculations, the animation speed changes once every 4 frames only
-        if (allow_frame_duration_change && current_frame == 0) {
+        if (allow_frame_duration_change && (ev->state > 0)) {
             // Calculate current frame duration
             current_frame_duration = (max_frame_duration - (ev->state * 3));
 
@@ -178,12 +190,6 @@ int pet_wpm_event_listener(const zmk_event_t *eh) {
             if (current_frame_duration <= min_frame_duration) {
                 current_frame_duration = min_frame_duration;
             }
-
-            // restart animation with current frame duration
-            init_anim(widget);
-
-            // prevent frame duration change until next cycle
-            allow_frame_duration_change = false;
         }
 
         // Update pet status based on WPM.
