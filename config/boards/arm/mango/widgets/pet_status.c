@@ -93,7 +93,6 @@ int current_frame_duration = 150;
 
 void animate_images(void * var, int value) {
     lv_obj_t *obj = (lv_obj_t *)var;
-    struct zmk_widget_pet_status *widget;
 
     frame_to_show = value;
     anim_pet_action_state = current_pet_action_state;
@@ -101,31 +100,20 @@ void animate_images(void * var, int value) {
     // change state only on frame 0 if pet is jumping
     if (current_pet_action_state != jump || frame_to_show == 0) {
         if (current_pet_action_state == jump) {
-            current_frame_duration = 100;
             images = jump_images;
         } else if (current_pet_action_state == down) {
-            current_frame_duration = 300;
             images = pet_down_images;
         } else if (current_pet_action_state == bark) {
-            current_frame_duration = 80;
             images = pet_bark_images;
         } else if (current_pet_wpm_state == sit) {
-            current_frame_duration = 300;
             images = pet_sit_images;
         } else if (current_pet_wpm_state == walk) {
-            current_frame_duration = 170;
             images = pet_walk_images;
         } else if (current_pet_wpm_state == run) {
-            current_frame_duration = 100;
             images = pet_run_images;
         }
 
         set_pet_action_state_based_on_modifiers();
-    }
-
-    // restart animation with current frame duration
-    if (frame_to_show == 0 && current_pet_action_state != jump) {
-        init_anim(widget);
     }
 
     // This makes so the middle frame is reused as 4th frame allowing smoother animation.
