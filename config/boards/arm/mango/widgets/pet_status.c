@@ -84,32 +84,22 @@ enum pet_action_state {
     bark,
     jump,
 } current_pet_action_state = no_action;
-bool showed_jump = true;
 
 lv_anim_t anim;
 const void **images;
-int frame_to_show = 0;
+int current_frame = 0;
+bool allow_frame_duration_change = false;
+int max_frame_duration = 300;
+int min_frame_duration = 100;
 int current_frame_duration = 150;
 
 
 void animate_images(void * var, int value) {
     lv_obj_t *obj = (lv_obj_t *)var;
-
-    frame_to_show = value;
-
-    // end jump animation if it was shown
-    if (frame_to_show == 0 && showed_jump == true) {
-        showed_jump = false;
-        current_pet_action_state == no_action;
-    }
-
-    // set action based on modifiers if pet is not jumping
-    if (current_pet_action_state != jump) {
-        set_pet_action_state_based_on_modifiers();
-    }
+    current_frame = value;
 
     // change state only on frame 0 if pet is jumping
-    if (current_pet_action_state != jump || frame_to_show == 0) {
+    if (current_pet_action_state != jump || value == 0) {
         if (current_pet_action_state == jump) {
             images = jump_images;
         } else if (current_pet_action_state == down) {
@@ -125,39 +115,25 @@ void animate_images(void * var, int value) {
         }
     }
 
-    // signal the jump animation has been shown completely
-    if (current_pet_action_state == jump && frame_to_show == 3) {
-        showed_jump = true;
-    }
+    int frame_to_show = value;
+    if (value == 3) {
+        // This makes so the middle frame is reused as 4th frame allowing smoother animation.
+        // NOTE that the jump animation is excluded from this behaviour.
+        // More info about this in icons/pet_status.c
+        if (current_pet_action_state != jump) {
+            frame_to_show = 1;
+        }
 
-    // This makes so the middle frame is reused as 4th frame allowing smoother animation.
-    // NOTE that the jump animation is excluded from this behaviour.
-    // More info about this in icons/pet_status.c
-    if (frame_to_show == 3 && current_pet_action_state != jump) {
-        frame_to_show = 1;
+        // limit the amount of changes to the frame duration to one per cycle
+        allow_frame_duration_change = true;
     }
 
     // set the image to show next
     lv_img_set_src(obj, images[frame_to_show]);
 }
 
-void set_pet_action_state_based_on_modifiers() {
-
-    // control and gui -> down
-    // shift -> bark
-    if (((zmk_hid_get_explicit_mods() & MOD_LCTL) != 0) || ((zmk_hid_get_explicit_mods() & MOD_RCTL) != 0) || 
-        ((zmk_hid_get_explicit_mods() & MOD_LGUI) != 0) || ((zmk_hid_get_explicit_mods() & MOD_RGUI) != 0)) {
-        current_pet_action_state = down;
-    } else if (((zmk_hid_get_explicit_mods() & MOD_LSFT) != 0) || ((zmk_hid_get_explicit_mods() & MOD_RSFT) != 0)) {
-        current_pet_action_state = bark;
-    } else {
-        current_pet_action_state = no_action;
-    }
-
-    // TODO add caps lock behavior here
-}
-
 void init_anim(struct zmk_widget_pet_status *widget) {
+    // Initialize the animation
     lv_anim_init(&anim);
     lv_anim_set_var(&anim, widget->obj);
     lv_anim_set_exec_cb(&anim, (lv_anim_exec_xcb_t) animate_images);
@@ -188,6 +164,24 @@ int pet_wpm_event_listener(const zmk_event_t *eh) {
 
     SYS_SLIST_FOR_EACH_CONTAINER(&widgets, widget, node) {
 
+        // To save some calculations, the animation speed changes once every 4 frames only
+        if (allow_frame_duration_change && current_frame == 0) {
+            // Calculate current frame duration
+            current_frame_duration = (max_frame_duration - (ev->state * 3));
+
+            // Clamp the frame duration value
+            if (current_frame_duration <= min_frame_duration) {
+                current_frame_duration = min_frame_duration;
+            }
+
+            // restart animation with current frame duration
+            if (current_pet_action_state != jump || frame_to_show == 0) {
+                init_anim(widget);
+            }
+
+            allow_frame_duration_change = false;
+        }
+
         // Update pet status based on WPM.
         // Configurable in Kconfig.defconfig
         if (ev->state < CONFIG_CUSTOM_WIDGET_PET_WALK_WPM) {
@@ -205,11 +199,25 @@ int pet_keycode_event_listener(const zmk_event_t *eh) {
     const struct zmk_keycode_state_changed *ev = as_zmk_keycode_state_changed(eh);
 
     // key presses
-    if (ev && ev->state) {
+    if (ev) {
         switch (ev->keycode) {
+            case HID_USAGE_KEY_KEYBOARD_LEFTCONTROL:
+            case HID_USAGE_KEY_KEYBOARD_RIGHTCONTROL:
+            case HID_USAGE_KEY_KEYBOARD_RIGHT_GUI:
+            case HID_USAGE_KEY_KEYBOARD_LEFT_GUI:
+            case HID_USAGE_KEY_KEYBOARD_LEFTSHIFT:
+            case HID_USAGE_KEY_KEYBOARD_RIGHTSHIFT:
+                // check if it's a modifier and set the correct action
+                set_pet_action_state_based_on_modifiers();
+                break;
             case HID_USAGE_KEY_KEYBOARD_SPACEBAR:
-                current_pet_action_state = jump;
-                showed_jump = false;
+                if (ev->state) {
+                    // on space press, jump
+                    current_pet_action_state = jump;
+                } else {
+                    // on space release, check again for modifiers
+                    set_pet_action_state_based_on_modifiers();
+                }
                 break;
             default:
                 break;
@@ -218,6 +226,23 @@ int pet_keycode_event_listener(const zmk_event_t *eh) {
 
     return ZMK_EV_EVENT_BUBBLE;
 }
+
+void set_pet_action_state_based_on_modifiers() {
+    // This allows better precision for held down keys
+    // control and gui -> down
+    // shift -> bark
+    if (((zmk_hid_get_explicit_mods() & MOD_LCTL) != 0) || ((zmk_hid_get_explicit_mods() & MOD_RCTL) != 0) || 
+        ((zmk_hid_get_explicit_mods() & MOD_LGUI) != 0) || ((zmk_hid_get_explicit_mods() & MOD_RGUI) != 0)) {
+        current_pet_action_state = down;
+    } else if (((zmk_hid_get_explicit_mods() & MOD_LSFT) != 0) || ((zmk_hid_get_explicit_mods() & MOD_RSFT) != 0)) {
+        current_pet_action_state = bark;
+    } else {
+        current_pet_action_state = no_action;
+    }
+
+    // TODO add caps lock behavior here
+}
+
 
 ZMK_LISTENER(zmk_widget_pet_status, pet_wpm_event_listener);
 ZMK_SUBSCRIPTION(zmk_widget_pet_status, zmk_wpm_state_changed);
