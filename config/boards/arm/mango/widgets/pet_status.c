@@ -93,10 +93,10 @@ int current_frame_duration = 250;
 void animate_images(void * var, int value) {
     lv_obj_t *obj = (lv_obj_t *)var;
 
-    // change state only on frame 0
-    if (value == 0) {
-        anim_pet_action_state = current_pet_action_state;
+    anim_pet_action_state = current_pet_action_state;
 
+    // change state only on frame 0 if pet is jumping
+    if (current_pet_action_state != jump || value == 0) {
         if (current_pet_action_state == jump) {
             images = jump_images;
             current_frame_duration = 70;
@@ -116,17 +116,40 @@ void animate_images(void * var, int value) {
             images = pet_run_images;
             current_frame_duration = 100;
         }
-        current_pet_action_state = no_action;
+
+        set_pet_action_state_based_on_modifiers();
     }
 
-    // this makes so the middle frame is reused as 4th frame allowing smoother animation
-    // note that the jump animation is excluded from this behaviour
+    // This makes so the middle frame is reused as 4th frame allowing smoother animation.
+    // NOTE that the jump animation is excluded from this behaviour.
+    // More info about this in icons/pet_status.c
     int frame_to_show = value;
-    if (value == 3 && anim_pet_action_state != jump) {
+    if (frame_to_show == 3 && anim_pet_action_state != jump) {
         frame_to_show = 1;
     }
 
+    // set the frame duration based on the animation
+    set_anim_frame_duration(current_frame_duration);
+
+    // set the image to show next
     lv_img_set_src(obj, images[frame_to_show]);
+}
+
+void set_anim_frame_duration(int frame_duration) {
+    lv_anim_set_time(&anim, current_frame_duration * 3);
+    lv_anim_set_repeat_delay(&anim, current_frame_duration);
+}
+
+void set_pet_action_state_based_on_modifiers() {
+    if (zmk_hid_mod_is_pressed(MOD_LCTL) || zmk_hid_mod_is_pressed(MOD_RCTL) || zmk_hid_mod_is_pressed(MOD_LGUI) || zmk_hid_mod_is_pressed(MOD_RGUI)) {
+        current_pet_action_state = down;
+    } else if (zmk_hid_mod_is_pressed(MOD_LSFT) || zmk_hid_mod_is_pressed(MOD_RSFT)) {
+        current_pet_action_state = bark;
+    } else {
+        current_pet_action_state = no_action;
+    }
+
+    // TODO add caps lock behavior here
 }
 
 void init_anim(struct zmk_widget_pet_status *widget) {
@@ -160,7 +183,8 @@ int pet_wpm_event_listener(const zmk_event_t *eh) {
 
     SYS_SLIST_FOR_EACH_CONTAINER(&widgets, widget, node) {
 
-        // update pet status based on wpm
+        // Update pet status based on WPM.
+        // Configurable in Kconfig.defconfig
         if (ev->state < CONFIG_CUSTOM_WIDGET_PET_WALK_WPM) {
             current_pet_wpm_state = sit;
         } else if (ev->state < CONFIG_CUSTOM_WIDGET_PET_RUN_WPM) {
@@ -175,22 +199,11 @@ int pet_wpm_event_listener(const zmk_event_t *eh) {
 int pet_keycode_event_listener(const zmk_event_t *eh) {
     const struct zmk_keycode_state_changed *ev = as_zmk_keycode_state_changed(eh);
 
-    // modifiers
-    if (zmk_hid_mod_is_pressed(MOD_LCTL) || zmk_hid_mod_is_pressed(MOD_RCTL) || zmk_hid_mod_is_pressed(MOD_LGUI) || zmk_hid_mod_is_pressed(MOD_RGUI)) {
-        current_pet_action_state = down;
-    } else if (zmk_hid_mod_is_pressed(MOD_LSFT) || zmk_hid_mod_is_pressed(MOD_RSFT)) {
-        current_pet_action_state = bark;
-    }
-
-    // insert here caps lock behavior 
-
     // key presses
-    if (ev) {
+    if (ev && ev->state) {
         switch (ev->keycode) {
             case HID_USAGE_KEY_KEYBOARD_SPACEBAR:
-                if (ev->state) {
-                    current_pet_action_state = jump;
-                }
+                current_pet_action_state = jump;
                 break;
             default:
                 break;
