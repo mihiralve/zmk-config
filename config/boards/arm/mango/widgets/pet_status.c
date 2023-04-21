@@ -107,7 +107,7 @@ void animate_images(void * var, int value) {
         // restart animation with current frame duration
         struct zmk_widget_pet_status *widget;
         SYS_SLIST_FOR_EACH_CONTAINER(&widgets, widget, node) {
-            //init_anim(widget);
+            init_anim(widget);
         }
     }
 
@@ -135,7 +135,6 @@ void animate_images(void * var, int value) {
         // This makes so the middle frame is reused as 4th frame allowing smoother animation.
         // NOTE that the jump animation is excluded from this behaviour.
         // More info about this in icons/pet_status.c
-        int frame_to_show = value;
         if (current_pet_action_state != jump) {
             frame_to_show = 1;
         }
