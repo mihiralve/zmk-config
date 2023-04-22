@@ -96,48 +96,6 @@ int current_frame_duration = 150;
 
 lv_obj_t *zmk_widget_pet_status_obj(struct zmk_widget_pet_status *widget) { return widget->obj; }
 
-void init_anim(struct zmk_widget_pet_status *widget) {
-    // Initialize the animation
-    lv_anim_init(&anim);
-    lv_anim_set_var(&anim, widget->obj);
-    lv_anim_set_exec_cb(&anim, (lv_anim_exec_xcb_t) animate_images);
-    lv_anim_set_time(&anim, current_frame_duration * 3);
-    lv_anim_set_values(&anim, 0, 3);
-    lv_anim_set_delay(&anim, 0);
-    lv_anim_set_repeat_count(&anim, LV_ANIM_REPEAT_INFINITE);
-    lv_anim_set_repeat_delay(&anim, current_frame_duration);
-    lv_anim_start(&anim);
-}
-
-int zmk_widget_pet_status_init(struct zmk_widget_pet_status *widget, lv_obj_t *parent) {
-    widget->obj = lv_img_create(parent);
-
-    current_pet_wpm_state = sit;
-    init_anim(widget);
-
-    sys_slist_append(&widgets, &widget->node);
-
-    return 0;
-}
-
-void set_pet_action_state_based_on_modifiers() {
-    // This allows better precision for held down keys
-    // control and gui -> down
-    // shift -> bark
-    if (((zmk_hid_get_explicit_mods() & MOD_LCTL) != 0) || ((zmk_hid_get_explicit_mods() & MOD_RCTL) != 0) || 
-        ((zmk_hid_get_explicit_mods() & MOD_LGUI) != 0) || ((zmk_hid_get_explicit_mods() & MOD_RGUI) != 0)) {
-        current_pet_action_state = down;
-    } else if (((zmk_hid_get_explicit_mods() & MOD_LSFT) != 0) || ((zmk_hid_get_explicit_mods() & MOD_RSFT) != 0)) {
-        current_pet_action_state = bark;
-    } else {
-        if (current_pet_action_state != jump) {
-            current_pet_action_state = no_action;
-        }
-    }
-
-    // TODO add caps lock behavior here
-}
-
 void animate_images(void * var, int value) {
     lv_obj_t *obj = (lv_obj_t *)var;
     int frame_to_show = value;
@@ -194,6 +152,48 @@ void animate_images(void * var, int value) {
 
     // set the image to show next
     lv_img_set_src(obj, images[frame_to_show]);
+}
+
+void init_anim(struct zmk_widget_pet_status *widget) {
+    // Initialize the animation
+    lv_anim_init(&anim);
+    lv_anim_set_var(&anim, widget->obj);
+    lv_anim_set_exec_cb(&anim, (lv_anim_exec_xcb_t) animate_images);
+    lv_anim_set_time(&anim, current_frame_duration * 3);
+    lv_anim_set_values(&anim, 0, 3);
+    lv_anim_set_delay(&anim, 0);
+    lv_anim_set_repeat_count(&anim, LV_ANIM_REPEAT_INFINITE);
+    lv_anim_set_repeat_delay(&anim, current_frame_duration);
+    lv_anim_start(&anim);
+}
+
+int zmk_widget_pet_status_init(struct zmk_widget_pet_status *widget, lv_obj_t *parent) {
+    widget->obj = lv_img_create(parent);
+
+    current_pet_wpm_state = sit;
+    init_anim(widget);
+
+    sys_slist_append(&widgets, &widget->node);
+
+    return 0;
+}
+
+void set_pet_action_state_based_on_modifiers() {
+    // This allows better precision for held down keys
+    // control and gui -> down
+    // shift -> bark
+    if (((zmk_hid_get_explicit_mods() & MOD_LCTL) != 0) || ((zmk_hid_get_explicit_mods() & MOD_RCTL) != 0) || 
+        ((zmk_hid_get_explicit_mods() & MOD_LGUI) != 0) || ((zmk_hid_get_explicit_mods() & MOD_RGUI) != 0)) {
+        current_pet_action_state = down;
+    } else if (((zmk_hid_get_explicit_mods() & MOD_LSFT) != 0) || ((zmk_hid_get_explicit_mods() & MOD_RSFT) != 0)) {
+        current_pet_action_state = bark;
+    } else {
+        if (current_pet_action_state != jump) {
+            current_pet_action_state = no_action;
+        }
+    }
+
+    // TODO add caps lock behavior here
 }
 
 int pet_wpm_event_listener(const zmk_event_t *eh) {
