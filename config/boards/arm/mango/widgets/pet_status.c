@@ -124,8 +124,9 @@ void animate_images(void * var, int value) {
     if (current_pet_action_state != jump || current_frame == 0) {
 
         set_pet_action_state_based_on_modifiers();
-
-        if (current_pet_action_state == down) {
+        if (current_pet_action_state == jump) {
+            images = jump_images;
+        } else if (current_pet_action_state == down) {
             images = pet_down_images;
         } else if (current_pet_action_state == bark) {
             images = pet_bark_images;
