@@ -104,6 +104,14 @@ if BOARD_MANGO_LEFT || BOARD_MANGO_RIGHT
 		bool "custom peripheral status widget"
 		depends on ZMK_SPLIT && !ZMK_SPLIT_ROLE_CENTRAL
 
+	menuconfig CUSTOM_WIDGET_PROFILE_STATUS
+		bool "custom profile status widget"
+		depends on !ZMK_SPLIT || ZMK_SPLIT_ROLE_CENTRAL
+
+	menuconfig CUSTOM_WIDGET_LAYER_STATUS
+		bool "custom layer status widget"
+		depends on !ZMK_SPLIT || ZMK_SPLIT_ROLE_CENTRAL
+
 	menuconfig CUSTOM_WIDGET_PET_STATUS
 		bool "custom pet status widget"
 		depends on !ZMK_SPLIT || ZMK_SPLIT_ROLE_CENTRAL

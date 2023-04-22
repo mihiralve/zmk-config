@@ -28,12 +28,22 @@ struct battery_status_state {
 };
 
 LV_IMG_DECLARE(battery_charging);
-LV_IMG_DECLARE(battery_100);
-LV_IMG_DECLARE(battery_90);
-LV_IMG_DECLARE(battery_75);
-LV_IMG_DECLARE(battery_50);
-LV_IMG_DECLARE(battery_25);
-LV_IMG_DECLARE(battery_10);
+LV_IMG_DECLARE(battery_99);
+LV_IMG_DECLARE(battery_93);
+LV_IMG_DECLARE(battery_87);
+LV_IMG_DECLARE(battery_80);
+LV_IMG_DECLARE(battery_73);
+LV_IMG_DECLARE(battery_67);
+LV_IMG_DECLARE(battery_60);
+LV_IMG_DECLARE(battery_53);
+LV_IMG_DECLARE(battery_47);
+LV_IMG_DECLARE(battery_40);
+LV_IMG_DECLARE(battery_33);
+LV_IMG_DECLARE(battery_27);
+LV_IMG_DECLARE(battery_20);
+LV_IMG_DECLARE(battery_13);
+LV_IMG_DECLARE(battery_7);
+LV_IMG_DECLARE(battery_2);
 
 static void set_battery_symbol(lv_obj_t *icon, struct battery_status_state state) {
     uint8_t level = state.level;
@@ -45,18 +55,38 @@ static void set_battery_symbol(lv_obj_t *icon, struct battery_status_state state
     if (usb_present) {
         lv_img_set_src(icon, &battery_charging);
     } else {
-        if (level >= 90) {
-            lv_img_set_src(icon, &battery_100);
-        } else if (level >= 75) {
-            lv_img_set_src(icon, &battery_90);
-        } else if (level >= 50) {
-            lv_img_set_src(icon, &battery_75);
-        } else if (level >= 25) {
-            lv_img_set_src(icon, &battery_50);
-        } else if (level >= 10) {
-            lv_img_set_src(icon, &battery_25);
+        if (level >= 99) {
+            lv_img_set_src(icon, &battery_99);
+        } else if (level >= 93) {
+            lv_img_set_src(icon, &battery_93);
+        } else if (level >= 87) {
+            lv_img_set_src(icon, &battery_87);
+        } else if (level >= 80) {
+            lv_img_set_src(icon, &battery_80);
+        } else if (level >= 73) {
+            lv_img_set_src(icon, &battery_73);
+        } else if (level >= 67) {
+            lv_img_set_src(icon, &battery_67);
+        } else if (level >= 60) {
+            lv_img_set_src(icon, &battery_60);
+        } else if (level >= 53) {
+            lv_img_set_src(icon, &battery_53);
+        } else if (level >= 47) {
+            lv_img_set_src(icon, &battery_47);
+        } else if (level >= 40) {
+            lv_img_set_src(icon, &battery_40);                
+        } else if (level >= 33) {
+            lv_img_set_src(icon, &battery_33);
+        } else if (level >= 27) {
+            lv_img_set_src(icon, &battery_27);
+        } else if (level >= 20) {
+            lv_img_set_src(icon, &battery_20);
+        } else if (level >= 13) {
+            lv_img_set_src(icon, &battery_13);
+        } else if (level >= 7) {
+            lv_img_set_src(icon, &battery_7);
         } else {
-            lv_img_set_src(icon, &battery_10);
+            lv_img_set_src(icon, &battery_2);
         }
     }
 

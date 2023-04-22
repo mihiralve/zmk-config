@@ -182,11 +182,12 @@ int zmk_widget_pet_status_init(struct zmk_widget_pet_status *widget, lv_obj_t *p
 void set_pet_action_state_based_on_modifiers() {
     // This allows better precision for held down keys
     // control and gui -> down
-    // shift -> bark
+    // alt and shift -> bark
     if (((zmk_hid_get_explicit_mods() & MOD_LCTL) != 0) || ((zmk_hid_get_explicit_mods() & MOD_RCTL) != 0) || 
         ((zmk_hid_get_explicit_mods() & MOD_LGUI) != 0) || ((zmk_hid_get_explicit_mods() & MOD_RGUI) != 0)) {
         current_pet_action_state = down;
-    } else if (((zmk_hid_get_explicit_mods() & MOD_LSFT) != 0) || ((zmk_hid_get_explicit_mods() & MOD_RSFT) != 0)) {
+    } else if (((zmk_hid_get_explicit_mods() & MOD_LSFT) != 0) || ((zmk_hid_get_explicit_mods() & MOD_RSFT) != 0) ||
+               ((zmk_hid_get_explicit_mods() & MOD_LALT) != 0) || ((zmk_hid_get_explicit_mods() & MOD_RALT) != 0)) {
         current_pet_action_state = bark;
     } else {
         if (current_pet_action_state != jump) {
@@ -236,10 +237,21 @@ int pet_keycode_event_listener(const zmk_event_t *eh) {
     // key presses
     if (ev) {
         switch (ev->keycode) {
-            case HID_USAGE_KEY_KEYBOARD_SPACEBAR:
-                // on space press, jump
+            case HID_USAGE_KEY_KEYBOARD_DELETE_BACKSPACE:
+            case HID_USAGE_KEY_KEYBOARD_ESCAPE:
+            case HID_USAGE_KEY_KEYBOARD_RETURN_ENTER:
                 if (ev->state) {
-                    current_pet_action_state = jump;
+                    if (current_pet_action_state != jump) {
+
+                        // Init jump
+                        current_pet_action_state = jump;
+
+                        // restart animation with current frame duration
+                        struct zmk_widget_pet_status *widget;
+                        SYS_SLIST_FOR_EACH_CONTAINER(&widgets, widget, node) {
+                            init_anim(widget);
+                        }
+                    }
                 }
                 break;
             default:

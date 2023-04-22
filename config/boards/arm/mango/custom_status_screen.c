@@ -1,6 +1,8 @@
 #include "widgets/battery_status.h"
 #include "widgets/peripheral_status.h"
 #include "widgets/output_status.h"
+#include "widgets/profile_status.h"
+#include "widgets/layer_status.h"
 #include "widgets/pet_status.h"
 #include "custom_status_screen.h"
 
@@ -14,6 +16,14 @@ static struct zmk_widget_battery_status battery_status_widget;
 
 #if IS_ENABLED(CONFIG_CUSTOM_WIDGET_OUTPUT_STATUS)
 static struct zmk_widget_output_status output_status_widget;
+#endif
+
+#if IS_ENABLED(CONFIG_CUSTOM_WIDGET_PROFILE_STATUS)
+static struct zmk_widget_profile_status profile_status_widget;
+#endif
+
+#if IS_ENABLED(CONFIG_CUSTOM_WIDGET_LAYER_STATUS)
+static struct zmk_widget_layer_status profile_layer_widget;
 #endif
 
 #if IS_ENABLED(CONFIG_CUSTOM_WIDGET_PERIPHERAL_STATUS)
@@ -37,6 +47,16 @@ lv_obj_t *zmk_display_status_screen() {
 #if IS_ENABLED(CONFIG_CUSTOM_WIDGET_OUTPUT_STATUS)
     zmk_widget_output_status_init(&output_status_widget, screen);
     lv_obj_align(zmk_widget_output_status_obj(&output_status_widget), LV_ALIGN_BOTTOM_LEFT, 0, 0);
+#endif
+
+#if IS_ENABLED(CONFIG_CUSTOM_WIDGET_PROFILE_STATUS)
+    zmk_widget_profile_status_init(&profile_status_widget, screen);
+    lv_obj_align(zmk_widget_profile_status_obj(&profile_status_widget), LV_ALIGN_LEFT_MID, 10, 0);
+#endif
+
+#if IS_ENABLED(CONFIG_CUSTOM_WIDGET_LAYER_STATUS)
+    zmk_widget_layer_status_init(&layer_status_widget, screen);
+    lv_obj_align(zmk_widget_layer_status_obj(&layer_status_widget), LV_ALIGN_LEFT_MID, 30, 0);
 #endif
 
 #if IS_ENABLED(CONFIG_CUSTOM_WIDGET_PERIPHERAL_STATUS)
