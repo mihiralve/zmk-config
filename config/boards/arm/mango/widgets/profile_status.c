@@ -36,9 +36,8 @@ struct output_status_state {
     bool active_profile_bonded;
     uint8_t active_profile_index;
 };
-uint8_t active_bluetooth_profile_index;
 
-static void set_profile_indicator(lv_obj_t *icon, uint8_t current_bluetooth_profile) {
+static void set_profile_indicator(lv_obj_t *icon, struct layer_status_state state) {
     switch (state.selected_endpoint) {
     case ZMK_ENDPOINT_USB:
         lv_img_set_src(icon, &usb_profile_1);
