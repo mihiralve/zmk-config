@@ -96,11 +96,11 @@ int current_frame_duration = 150;
 
 void animate_images(void * var, int value) {
     lv_obj_t *obj = (lv_obj_t *)var;
-    int frame_to_show = value;
     current_frame = value;
 
     // Recreate animation based on WPM
-    if(allow_frame_duration_change && value == 0) {
+    // This only happens on frame 0 and only if pet is not jumping.
+    if(allow_frame_duration_change && current_frame == 0 && current_pet_action_state != jump) {
         // prevent frame duration change until next cycle
         allow_frame_duration_change = false;
 
@@ -111,12 +111,18 @@ void animate_images(void * var, int value) {
         }
     }
 
+    // Jumping always overrides everything else
+    if (current_pet_action_state == jump) {
+        images = jump_images;
+    }
+
     // Change image set every frame.
     // This only happens on frame 0 if pet is jumping.
-    if (current_pet_action_state != jump || value == 0) {
-        if (current_pet_action_state == jump) {
-            images = jump_images;
-        } else if (current_pet_action_state == down) {
+    if (current_pet_action_state != jump || current_frame == 0) {
+
+        set_pet_action_state_based_on_modifiers();
+
+        if (current_pet_action_state == down) {
             images = pet_down_images;
         } else if (current_pet_action_state == bark) {
             images = pet_bark_images;
@@ -127,14 +133,25 @@ void animate_images(void * var, int value) {
         } else if (current_pet_wpm_state == run) {
             images = pet_run_images;
         }
-
-        set_pet_action_state_based_on_modifiers();
     }
 
-    if (value == 3) {
-        // This makes so the middle frame is reused as 4th frame allowing smoother animation.
-        // NOTE that the jump animation is excluded from this behaviour.
-        // More info about this in icons/pet_status.c
+    if (current_frame == 3) {
+        if (current_pet_action_state == jump) {
+            // Reset jump state
+            current_pet_action_state = no_action;
+        } else {
+            // This makes so the middle frame is reused as 4th frame allowing smoother animation.
+            // NOTE that the jump animation is excluded from this behaviour.
+            // More info about this in icons/pet_status.c
+            frame_to_show = 1;
+        }
+    }
+
+    // This makes so the middle frame is reused as 4th frame allowing smoother animation.
+    // NOTE that the jump animation is excluded from this behaviour.
+    // More info about this in icons/pet_status.c
+    int frame_to_show = value;
+    if (current_frame == 3 && current_pet_action_state != jump) {
         if (current_pet_action_state != jump) {
             frame_to_show = 1;
         }
@@ -177,7 +194,7 @@ int pet_wpm_event_listener(const zmk_event_t *eh) {
     SYS_SLIST_FOR_EACH_CONTAINER(&widgets, widget, node) {
 
         // To save some calculations, the animation speed changes once every 4 frames only
-        if (current_frame == 3 && (ev->state > 5)) {
+        if (current_frame == 3 && (ev->state > 0)) {
             // Calculate current frame duration
             current_frame_duration = (max_frame_duration - (ev->state * 3));
 
@@ -186,6 +203,7 @@ int pet_wpm_event_listener(const zmk_event_t *eh) {
                 current_frame_duration = min_frame_duration;
             }
 
+            // Signal a frame duration change during the next frame 0
             allow_frame_duration_change = true;
         }
 
@@ -232,7 +250,9 @@ void set_pet_action_state_based_on_modifiers() {
     } else if (((zmk_hid_get_explicit_mods() & MOD_LSFT) != 0) || ((zmk_hid_get_explicit_mods() & MOD_RSFT) != 0)) {
         current_pet_action_state = bark;
     } else {
-        current_pet_action_state = no_action;
+        if (current_pet_action_state != jump) {
+            current_pet_action_state = no_action;
+        }
     }
 
     // TODO add caps lock behavior here

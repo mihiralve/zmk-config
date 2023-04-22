@@ -119,7 +119,7 @@ if BOARD_MANGO_LEFT || BOARD_MANGO_RIGHT
 
 		config CUSTOM_WIDGET_PET_RUN_WPM
 			int "Lower WPM limit for pet to start running"
-			default 40
+			default 50
 		
 	endif # CUSTOM_WIDGET_PET_STATUS
 
