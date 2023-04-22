@@ -24,10 +24,16 @@ LV_IMG_DECLARE(layer_3);
 LV_IMG_DECLARE(layer_unknown);
 
 static sys_slist_t widgets = SYS_SLIST_STATIC_INIT(&widgets);
-uint8_t active_layer_index;
 
-static void set_layer_indicator(lv_obj_t *icon, uint8_t current_layer) {
-    switch (current_layer) {
+struct layer_status_state {
+    uint8_t index;
+    const char *label;
+};
+
+static void set_layer_indicator(lv_obj_t *label, struct layer_status_state state) {
+    uint8_t active_layer_index = state.index;
+
+    switch (active_layer_index) {
     case 0:
         lv_img_set_src(icon, &layer_0);
         break;
@@ -46,22 +52,23 @@ static void set_layer_indicator(lv_obj_t *icon, uint8_t current_layer) {
     }
 }
 
-static void layer_status_update_cb(uint8_t current_layer_index) {
+static void layer_status_update_cb(struct layer_status_state state) {
     struct zmk_widget_layer_status *widget;
-    SYS_SLIST_FOR_EACH_CONTAINER(&widgets, widget, node) { set_layer_indicator(widget->obj, current_layer_index); }
+    SYS_SLIST_FOR_EACH_CONTAINER(&widgets, widget, node) { set_layer_symbol(widget->obj, state); }
 }
 
-uint8_t current_layer_state current_layer_get_state(const zmk_event_t *eh) {
+static struct layer_status_state layer_status_get_state(const zmk_event_t *eh) {
     uint8_t index = zmk_keymap_highest_layer_active();
-    return index;
+    return (struct layer_status_state){.index = index, .label = zmk_keymap_layer_label(index)};
 }
 
-ZMK_DISPLAY_WIDGET_LISTENER(widget_layer_status, uint8_t current_layer_index, layer_status_update_cb, current_layer_get_state)
+ZMK_DISPLAY_WIDGET_LISTENER(widget_layer_status, struct layer_status_state, layer_status_update_cb,
+                            layer_status_get_state)
 
 ZMK_SUBSCRIPTION(widget_layer_status, zmk_layer_state_changed);
 
 int zmk_widget_layer_status_init(struct zmk_widget_layer_status *widget, lv_obj_t *parent) {
-    widget->obj = lv_img_create(parent);
+    widget->obj = lv_label_create(parent);
 
     sys_slist_append(&widgets, &widget->node);
 
