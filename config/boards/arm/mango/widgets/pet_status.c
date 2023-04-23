@@ -88,7 +88,7 @@ enum pet_action_state {
 lv_anim_t anim;
 const void **images;
 int current_frame = 0;
-bool restart_animation = false;
+bool jump = false;
 bool allow_frame_duration_change = false;
 int max_frame_duration = 300;
 int min_frame_duration = 100;
@@ -101,6 +101,12 @@ void animate_images(void * var, int value) {
     lv_obj_t *obj = (lv_obj_t *)var;
     int frame_to_show = value;
     current_frame = value;
+
+    if (jump && current_pet_action_state != jump) {
+        current_pet_action_state = jump;
+        restart_animation == true;
+        jump == false;
+    }
 
     // Recreate animation based on WPM
     // This only happens on frame 0 and only if pet is not jumping.
@@ -244,8 +250,7 @@ int pet_keycode_event_listener(const zmk_event_t *eh) {
                     if (current_pet_action_state != jump) {
 
                         // Init jump
-                        current_pet_action_state = jump;
-                        restart_animation = true;
+                        jump = true;
                     }
                 }
                 break;

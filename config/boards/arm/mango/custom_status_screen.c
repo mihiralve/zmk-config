@@ -9,6 +9,9 @@
 #include <zephyr/logging/log.h>
 LOG_MODULE_DECLARE(zmk, CONFIG_ZMK_LOG_LEVEL);
 
+// LOGOS
+LV_IMG_DECLARE(keyboard_logo);
+LV_IMG_DECLARE(user_logo);
 
 #if IS_ENABLED(CONFIG_CUSTOM_WIDGET_BATTERY_STATUS)
 static struct zmk_widget_battery_status battery_status_widget;
@@ -51,12 +54,12 @@ lv_obj_t *zmk_display_status_screen() {
 
 #if IS_ENABLED(CONFIG_CUSTOM_WIDGET_PROFILE_STATUS)
     zmk_widget_profile_status_init(&profile_status_widget, screen);
-    lv_obj_align(zmk_widget_profile_status_obj(&profile_status_widget), LV_ALIGN_LEFT_MID, 30, 0);
+    lv_obj_align(zmk_widget_profile_status_obj(&profile_status_widget), LV_ALIGN_LEFT_MID, 40, 0);
 #endif
 
 #if IS_ENABLED(CONFIG_CUSTOM_WIDGET_LAYER_STATUS)
     zmk_widget_layer_status_init(&layer_status_widget, screen);
-    lv_obj_align(zmk_widget_layer_status_obj(&layer_status_widget), LV_ALIGN_LEFT_MID, 60, 0);
+    lv_obj_align(zmk_widget_layer_status_obj(&layer_status_widget), LV_ALIGN_LEFT_MID, 70, 0);
 #endif
 
 #if IS_ENABLED(CONFIG_CUSTOM_WIDGET_PERIPHERAL_STATUS)
@@ -67,6 +70,18 @@ lv_obj_t *zmk_display_status_screen() {
 #if IS_ENABLED(CONFIG_CUSTOM_WIDGET_PET_STATUS)
     zmk_widget_pet_status_init(&pet_status_widget, screen);
     lv_obj_align(zmk_widget_pet_status_obj(&pet_status_widget), LV_ALIGN_RIGHT_MID, 0, 0);
+#endif
+
+#if !IS_ENABLED(CONFIG_ZMK_SPLIT_ROLE_CENTRAL)
+    lv_obj_t *keyboard_logo_icon;
+    keyboard_logo_icon = lv_img_create(screen);
+    lv_img_set_src(keyboard_logo_icon, &keyboard_logo);
+    lv_obj_align(keyboard_logo_icon, LV_ALIGN_LEFT_MID, 50, 0);
+
+    lv_obj_t *user_logo_icon;
+    user_logo_icon = lv_img_create(screen);
+    lv_img_set_src(user_logo_icon, &user_logo);
+    lv_obj_align(user_logo_icon, LV_ALIGN_RIGHT_MID, 0, 0);
 #endif
 
     return screen;
