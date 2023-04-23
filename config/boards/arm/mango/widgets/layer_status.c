@@ -53,7 +53,7 @@ static void set_layer_indicator(lv_obj_t *icon, struct layer_status_state state)
 
 static void layer_status_update_cb(struct layer_status_state state) {
     struct zmk_widget_layer_status *widget;
-    SYS_SLIST_FOR_EACH_CONTAINER(&widgets, widget, node) { set_layer_symbol(widget->obj, state); }
+    SYS_SLIST_FOR_EACH_CONTAINER(&widgets, widget, node) { set_layer_indicator(widget->obj, state); }
 }
 
 static struct layer_status_state layer_status_get_state(const zmk_event_t *eh) {
