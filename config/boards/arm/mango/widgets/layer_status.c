@@ -24,13 +24,12 @@ LV_IMG_DECLARE(layer_3);
 LV_IMG_DECLARE(layer_unknown);
 
 static sys_slist_t widgets = SYS_SLIST_STATIC_INIT(&widgets);
-
 struct layer_status_state {
     uint8_t index;
     const char *label;
 };
 
-static void set_layer_indicator(lv_obj_t *label, struct layer_status_state state) {
+static void set_layer_indicator(lv_obj_t *icon, struct layer_status_state state) {
     uint8_t active_layer_index = state.index;
 
     switch (active_layer_index) {
@@ -68,7 +67,7 @@ ZMK_DISPLAY_WIDGET_LISTENER(widget_layer_status, struct layer_status_state, laye
 ZMK_SUBSCRIPTION(widget_layer_status, zmk_layer_state_changed);
 
 int zmk_widget_layer_status_init(struct zmk_widget_layer_status *widget, lv_obj_t *parent) {
-    widget->obj = lv_label_create(parent);
+    widget->obj = lv_img_create(parent);
 
     sys_slist_append(&widgets, &widget->node);
 
