@@ -88,6 +88,7 @@ enum pet_action_state {
 lv_anim_t anim;
 const void **images;
 int current_frame = 0;
+bool restart_animation = false;
 bool allow_frame_duration_change = false;
 int max_frame_duration = 300;
 int min_frame_duration = 100;
@@ -103,7 +104,7 @@ void animate_images(void * var, int value) {
 
     // Recreate animation based on WPM
     // This only happens on frame 0 and only if pet is not jumping.
-    if(allow_frame_duration_change && current_frame == 0 && current_pet_action_state != jump) {
+    if(restart_animation || (allow_frame_duration_change && current_frame == 0 && current_pet_action_state != jump)) {
         // prevent frame duration change until next cycle
         allow_frame_duration_change = false;
 
@@ -112,11 +113,6 @@ void animate_images(void * var, int value) {
         SYS_SLIST_FOR_EACH_CONTAINER(&widgets, widget, node) {
             init_anim(widget);
         }
-    }
-
-    // Jumping always overrides everything else
-    if (current_pet_action_state == jump) {
-        images = jump_images;
     }
 
     // Change image set every frame.
@@ -232,6 +228,7 @@ int pet_wpm_event_listener(const zmk_event_t *eh) {
 }
 
 int pet_keycode_event_listener(const zmk_event_t *eh) {
+    struct zmk_widget_pet_status *widget;
     const struct zmk_keycode_state_changed *ev = as_zmk_keycode_state_changed(eh);
 
     // key presses
@@ -245,12 +242,7 @@ int pet_keycode_event_listener(const zmk_event_t *eh) {
 
                         // Init jump
                         current_pet_action_state = jump;
-
-                        // restart animation with current frame duration
-                        struct zmk_widget_pet_status *widget;
-                        SYS_SLIST_FOR_EACH_CONTAINER(&widgets, widget, node) {
-                            init_anim(widget);
-                        }
+                        restart_animation = true;
                     }
                 }
                 break;
