@@ -47,7 +47,7 @@ static struct output_status_state get_state(const zmk_event_t *_eh) {
     ;
 }
 
-static void set_profile_indicator(lv_obj_t *icon, struct layer_status_state state) {
+static void set_profile_indicator(lv_obj_t *icon, struct output_status_state state) {
     switch (state.selected_endpoint) {
     case ZMK_ENDPOINT_USB:
         lv_img_set_src(icon, &usb_profile_1);
