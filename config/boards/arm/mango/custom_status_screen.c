@@ -51,12 +51,12 @@ lv_obj_t *zmk_display_status_screen() {
 
 #if IS_ENABLED(CONFIG_CUSTOM_WIDGET_PROFILE_STATUS)
     zmk_widget_profile_status_init(&profile_status_widget, screen);
-    lv_obj_align(zmk_widget_profile_status_obj(&profile_status_widget), LV_ALIGN_LEFT_MID, 10, 0);
+    lv_obj_align(zmk_widget_profile_status_obj(&profile_status_widget), LV_ALIGN_LEFT_MID, 30, 0);
 #endif
 
 #if IS_ENABLED(CONFIG_CUSTOM_WIDGET_LAYER_STATUS)
     zmk_widget_layer_status_init(&layer_status_widget, screen);
-    lv_obj_align(zmk_widget_layer_status_obj(&layer_status_widget), LV_ALIGN_LEFT_MID, 30, 0);
+    lv_obj_align(zmk_widget_layer_status_obj(&layer_status_widget), LV_ALIGN_LEFT_MID, 60, 0);
 #endif
 
 #if IS_ENABLED(CONFIG_CUSTOM_WIDGET_PERIPHERAL_STATUS)
