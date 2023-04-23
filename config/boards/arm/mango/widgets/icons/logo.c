@@ -80,8 +80,8 @@ const LV_ATTRIBUTE_MEM_ALIGN LV_ATTRIBUTE_IMG_USER_LOGO uint8_t user_logo_map[] 
 
 const lv_img_dsc_t user_logo = {
     .header.always_zero = 0,
-    .header.w = 25,
-    .header.h = 25,
+    .header.w = 28,
+    .header.h = 54,
     .data_size = 224,
     .header.cf = LV_IMG_CF_INDEXED_1BIT,
     .data = user_logo_map,
