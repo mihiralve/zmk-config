@@ -30,12 +30,22 @@ LV_IMG_DECLARE(bluetooth_profile_5);
 LV_IMG_DECLARE(bluetooth_profile_unknown);
 
 static sys_slist_t widgets = SYS_SLIST_STATIC_INIT(&widgets);
+
 struct output_status_state {
     enum zmk_endpoint selected_endpoint;
     bool active_profile_connected;
     bool active_profile_bonded;
     uint8_t active_profile_index;
 };
+
+static struct output_status_state get_state(const zmk_event_t *_eh) {
+    return (struct output_status_state){.selected_endpoint = zmk_endpoints_selected(),
+                                        .active_profile_connected =
+                                            zmk_ble_active_profile_is_connected(),
+                                        .active_profile_bonded = !zmk_ble_active_profile_is_open(),
+                                        .active_profile_index = zmk_ble_active_profile_index()};
+    ;
+}
 
 static void set_profile_indicator(lv_obj_t *icon, struct layer_status_state state) {
     switch (state.selected_endpoint) {
@@ -71,7 +81,7 @@ static void set_profile_indicator(lv_obj_t *icon, struct layer_status_state stat
 
 static void output_status_update_cb(struct output_status_state state) {
     struct zmk_widget_output_status *widget;
-    SYS_SLIST_FOR_EACH_CONTAINER(&widgets, widget, node) { set_status_symbol(widget->obj, state); }
+    SYS_SLIST_FOR_EACH_CONTAINER(&widgets, widget, node) { set_profile_indicator(widget->obj, state); }
 }
 
 ZMK_DISPLAY_WIDGET_LISTENER(widget_profile_status, struct output_status_state,
@@ -81,6 +91,7 @@ ZMK_SUBSCRIPTION(widget_profile_status, zmk_endpoint_selection_changed);
 #if IS_ENABLED(CONFIG_USB_DEVICE_STACK)
 ZMK_SUBSCRIPTION(widget_profile_status, zmk_usb_conn_state_changed);
 #endif
+
 #if defined(CONFIG_ZMK_BLE)
 ZMK_SUBSCRIPTION(widget_profile_status, zmk_ble_active_profile_changed);
 #endif
