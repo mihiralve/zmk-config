@@ -23,7 +23,7 @@ static struct zmk_widget_profile_status profile_status_widget;
 #endif
 
 #if IS_ENABLED(CONFIG_CUSTOM_WIDGET_LAYER_STATUS)
-static struct zmk_widget_layer_status profile_layer_widget;
+static struct zmk_widget_layer_status layer_status_widget;
 #endif
 
 #if IS_ENABLED(CONFIG_CUSTOM_WIDGET_PERIPHERAL_STATUS)
