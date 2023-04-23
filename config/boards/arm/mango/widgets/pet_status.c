@@ -105,6 +105,9 @@ void animate_images(void * var, int value) {
     // Recreate animation based on WPM
     // This only happens on frame 0 and only if pet is not jumping.
     if(restart_animation || (allow_frame_duration_change && current_frame == 0 && current_pet_action_state != jump)) {
+        // reset bool if animation is restarted
+        restart_animation = false;
+
         // prevent frame duration change until next cycle
         allow_frame_duration_change = false;
 
