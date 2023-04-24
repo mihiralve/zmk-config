@@ -89,7 +89,7 @@ lv_anim_t anim;
 const void **images;
 int current_frame = 0;
 bool jump_interrupt = false;
-restart_animation == false;
+bool restart_animation = false;
 bool allow_frame_duration_change = false;
 int max_frame_duration = 300;
 int min_frame_duration = 100;
@@ -105,8 +105,8 @@ void animate_images(void * var, int value) {
 
     if (jump_interrupt && current_pet_action_state != jump) {
         current_pet_action_state = jump;
-        restart_animation == true;
-        jump_interrupt == false;
+        restart_animation = true;
+        jump_interrupt = false;
     }
 
     // Recreate animation based on WPM
