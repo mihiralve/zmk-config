@@ -103,15 +103,19 @@ void animate_images(void * var, int value) {
     int frame_to_show = value;
     current_frame = value;
 
-    if (jump_interrupt && current_pet_action_state != jump) {
+    if (jump_interrupt) {
         current_pet_action_state = jump;
-        restart_animation = true;
-        jump_interrupt = false;
+
+        // restart animation with current frame duration
+        struct zmk_widget_pet_status *widget;
+        SYS_SLIST_FOR_EACH_CONTAINER(&widgets, widget, node) {
+            init_anim(widget);
+        }
     }
 
     // Recreate animation based on WPM
-    // This only happens on frame 0 and only if pet is not jumping.
-    if(restart_animation || (allow_frame_duration_change && current_frame == 0 && current_pet_action_state != jump && !jump_interrupt)) {
+    // This only happens on frame 0
+    if(restart_animation || (allow_frame_duration_change && current_frame == 0)) {
         // reset bool if animation is restarted
         restart_animation = false;
 
@@ -126,39 +130,68 @@ void animate_images(void * var, int value) {
     }
 
     // Change image set every frame.
-    // This only happens on frame 0 if pet is jumping.
-    if ((current_pet_action_state != jump && !jump_interrupt) || current_frame == 0) {
-
-        set_pet_action_state_based_on_modifiers();
-        if (current_pet_action_state == jump && !jump_interrupt) {
-            images = jump_images;
-        } else if (current_pet_action_state == down) {
-            images = pet_down_images;
-        } else if (current_pet_action_state == bark) {
-            images = pet_bark_images;
-        } else if (current_pet_wpm_state == sit) {
-            images = pet_sit_images;
-        } else if (current_pet_wpm_state == walk) {
-            images = pet_walk_images;
-        } else if (current_pet_wpm_state == run) {
-            images = pet_run_images;
-        }
+    if (current_pet_action_state == down) {
+        images = pet_down_images;
+    } else if (current_pet_action_state == bark) {
+        images = pet_bark_images;
+    } else if (current_pet_wpm_state == sit) {
+        images = pet_sit_images;
+    } else if (current_pet_wpm_state == walk) {
+        images = pet_walk_images;
+    } else if (current_pet_wpm_state == run) {
+        images = pet_run_images;
     }
-
+    
+    // This makes so the middle frame is reused as 4th frame allowing smoother animation.
+    // NOTE that the jump animation is excluded from this behaviour.
+    // More info about this in icons/pet_status.c
     if (current_frame == 3) {
-        if (current_pet_action_state == jump && !jump_interrupt) {
-            // Reset jump state
-            current_pet_action_state = no_action;
-        } else {
-            // This makes so the middle frame is reused as 4th frame allowing smoother animation.
-            // NOTE that the jump animation is excluded from this behaviour.
-            // More info about this in icons/pet_status.c
-            frame_to_show = 1;
-        }
+        frame_to_show = 1;
     }
 
     // set the image to show next
     lv_img_set_src(obj, images[frame_to_show]);
+
+    set_pet_action_state_based_on_modifiers();
+}
+
+void animate_jump_images(void * var, int value) {
+    lv_obj_t *obj = (lv_obj_t *)var;
+    current_frame = value;
+
+    if (current_frame == 0 && jump_interrupt == false) {
+        // reset jump variable
+        if (pet_action_state == jump) {
+            pet_action_state = no_action;
+        }
+
+        // restart normal animation
+        struct zmk_widget_pet_status *widget;
+        SYS_SLIST_FOR_EACH_CONTAINER(&widgets, widget, node) {
+            init_anim(widget);
+        }
+    }
+
+    images = jump_images;
+
+    // set the image to show next
+    lv_img_set_src(obj, images[value]);
+
+    // reset interrupt value
+    jump_interrupt == false;
+}
+
+void init_jump_anim(struct zmk_widget_pet_status *widget) {
+    // Initialize the animation
+    lv_anim_init(&anim);
+    lv_anim_set_var(&anim, widget->obj);
+    lv_anim_set_exec_cb(&anim, (lv_anim_exec_xcb_t) animate_jump_images);
+    lv_anim_set_time(&anim, current_frame_duration * 3);
+    lv_anim_set_values(&anim, 0, 3);
+    lv_anim_set_delay(&anim, 0);
+    lv_anim_set_repeat_count(&anim, 1);
+    lv_anim_set_repeat_delay(&anim, current_frame_duration);
+    lv_anim_start(&anim);
 }
 
 void init_anim(struct zmk_widget_pet_status *widget) {
@@ -196,7 +229,7 @@ void set_pet_action_state_based_on_modifiers() {
                ((zmk_hid_get_explicit_mods() & MOD_LALT) != 0) || ((zmk_hid_get_explicit_mods() & MOD_RALT) != 0)) {
         current_pet_action_state = bark;
     } else {
-        if (current_pet_action_state != jump && !jump_interrupt) {
+        if (current_pet_action_state != jump) {
             current_pet_action_state = no_action;
         }
     }
