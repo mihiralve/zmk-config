@@ -130,7 +130,7 @@ void animate_images(void * var, int value) {
     if ((current_pet_action_state != jump && !jump_interrupt) || current_frame == 0) {
 
         set_pet_action_state_based_on_modifiers();
-        if (current_pet_action_state == jump) {
+        if (current_pet_action_state == jump && !jump_interrupt) {
             images = jump_images;
         } else if (current_pet_action_state == down) {
             images = pet_down_images;
@@ -196,7 +196,7 @@ void set_pet_action_state_based_on_modifiers() {
                ((zmk_hid_get_explicit_mods() & MOD_LALT) != 0) || ((zmk_hid_get_explicit_mods() & MOD_RALT) != 0)) {
         current_pet_action_state = bark;
     } else {
-        if (current_pet_action_state != jump) {
+        if (current_pet_action_state != jump && !jump_interrupt) {
             current_pet_action_state = no_action;
         }
     }
@@ -248,7 +248,7 @@ int pet_keycode_event_listener(const zmk_event_t *eh) {
             case HID_USAGE_KEY_KEYBOARD_ESCAPE:
             case HID_USAGE_KEY_KEYBOARD_RETURN_ENTER:
                 if (ev->state) {
-                    if (current_pet_action_state != jump) {
+                    if (current_pet_action_state != jump && !jump_interrupt) {
 
                         // Init jump
                         jump_interrupt = true;
