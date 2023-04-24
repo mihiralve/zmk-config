@@ -111,7 +111,7 @@ void animate_images(void * var, int value) {
 
     // Recreate animation based on WPM
     // This only happens on frame 0 and only if pet is not jumping.
-    if(restart_animation || (allow_frame_duration_change && current_frame == 0 && current_pet_action_state != jump)) {
+    if(restart_animation || (allow_frame_duration_change && current_frame == 0 && current_pet_action_state != jump && !jump_interrupt)) {
         // reset bool if animation is restarted
         restart_animation = false;
 
@@ -127,7 +127,7 @@ void animate_images(void * var, int value) {
 
     // Change image set every frame.
     // This only happens on frame 0 if pet is jumping.
-    if (current_pet_action_state != jump || current_frame == 0) {
+    if ((current_pet_action_state != jump && !jump_interrupt) || current_frame == 0) {
 
         set_pet_action_state_based_on_modifiers();
         if (current_pet_action_state == jump) {
@@ -146,7 +146,7 @@ void animate_images(void * var, int value) {
     }
 
     if (current_frame == 3) {
-        if (current_pet_action_state == jump) {
+        if (current_pet_action_state == jump && !jump_interrupt) {
             // Reset jump state
             current_pet_action_state = no_action;
         } else {
