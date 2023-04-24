@@ -70,12 +70,9 @@ static void set_profile_indicator(lv_obj_t *icon, struct profile_status_state st
             lv_img_set_src(icon, &bluetooth_profile_5);
             break;
         default:
-            lv_img_set_src(icon, &bluetooth_profile_4);
+            lv_img_set_src(icon, &bluetooth_profile_unknown);
             break;
         }
-    default:
-        lv_img_set_src(icon, &bluetooth_profile_5);
-        break;
     }
 }
 
