@@ -123,8 +123,8 @@ void animate_images(void * var, int value) {
 
         // reset jump variable
         if (current_frame == 3 && jump_interrupt == false) {
-            if (pet_action_state == jump) {
-                pet_action_state = no_action;
+            if (current_pet_action_state == jump) {
+                current_pet_action_state = no_action;
                 set_pet_action_state_based_on_modifiers();
                 restart_animation = true;
             }
@@ -164,6 +164,10 @@ void animate_images(void * var, int value) {
         }
 
         set_pet_action_state_based_on_modifiers();
+
+        if (current_pet_action_state == jump) {
+            restart_animation = true;
+        }
     }
 
     // set the image to show next
