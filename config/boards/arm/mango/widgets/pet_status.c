@@ -112,25 +112,30 @@ void animate_images(void * var, int value) {
         // prevent frame duration change until next cycle
         allow_frame_duration_change = false;
 
-        // restart animation with current frame duration
+        // make sure there is a frame at screen
+        if (current_frame == 3 && !(current_pet_action_state == jump || jump_interrupt == true)) {
+                frame_to_show = 1;
+        }
+        lv_img_set_src(obj, images[frame_to_show]);
+
+        // restart animation
         struct zmk_widget_pet_status *widget;
         SYS_SLIST_FOR_EACH_CONTAINER(&widgets, widget, node) {
+            lv_anim_del(var, (lv_anim_exec_xcb_t) animate_images);
             init_anim(widget);
         }
     } else {
-        if (current_pet_action_state == jump) {
+        if (current_pet_action_state == jump || jump_interrupt == true) {
 
             // reset jump variable
             if (current_frame == 3 && jump_interrupt == false) {
-                if (current_pet_action_state == jump) {
-                    current_pet_action_state = no_action;
-                    set_pet_action_state_based_on_modifiers();
-                    restart_animation = true;
-                }
+                current_pet_action_state = no_action;
+                set_pet_action_state_based_on_modifiers();
+                restart_animation = true;
             }
 
             // start jump only on frame 0
-            if (current_frame == 0) {
+            if (current_frame == 0 && jump_interrupt == true) {
                 images = jump_images;
                 jump_interrupt == true;
             }
@@ -168,10 +173,9 @@ void animate_images(void * var, int value) {
                 restart_animation = true;
             }
         }
-
-        // set the image to show next
-        lv_img_set_src(obj, images[frame_to_show]);
     }
+    // set the image to show next
+    lv_img_set_src(obj, images[frame_to_show]);
 }
 
 void init_anim(struct zmk_widget_pet_status *widget) {
