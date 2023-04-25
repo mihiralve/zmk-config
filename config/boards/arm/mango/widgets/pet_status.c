@@ -49,7 +49,7 @@ LV_IMG_DECLARE(pet_jump_0);
 LV_IMG_DECLARE(pet_jump_1);
 LV_IMG_DECLARE(pet_jump_2);
 LV_IMG_DECLARE(pet_jump_3);
-const void *jump_images[] = {
+const void *pet_jump_images[] = {
     &pet_jump_0, &pet_jump_1, &pet_jump_2, &pet_jump_3,
 };
 
@@ -113,7 +113,7 @@ void animate_images(void * var, int value) {
         allow_frame_duration_change = false;
 
         // make sure there is a frame at screen
-        if (current_frame == 3 && !(current_pet_action_state == jump || jump_interrupt == true)) {
+        if (current_frame == 3 && images != pet_jump_images) {
                 frame_to_show = 1;
         }
         lv_img_set_src(obj, images[frame_to_show]);
@@ -125,23 +125,22 @@ void animate_images(void * var, int value) {
             init_anim(widget);
         }
     } else {
-        if (current_pet_action_state == jump || jump_interrupt == true) {
+        if (current_pet_action_state == jump) {
 
             // reset jump variable
-            if (current_frame == 3 && jump_interrupt == false) {
+            if (current_frame == 3 && jump_interrupt == false && images == pet_jump_images) {
                 current_pet_action_state = no_action;
                 set_pet_action_state_based_on_modifiers();
-                restart_animation = true;
             }
 
             // start jump only on frame 0
-            if (current_frame == 0 && jump_interrupt == true) {
-                images = jump_images;
+            if (current_frame == 0) {
+                images = pet_jump_images;
                 jump_interrupt == true;
             }
 
             // reset interrupt value
-            if (current_frame == 2) {
+            if (current_frame == 2 && images == pet_jump_images) {
                 jump_interrupt == false;
             }
 
@@ -159,13 +158,6 @@ void animate_images(void * var, int value) {
             } else if (current_pet_wpm_state == run) {
                 images = pet_run_images;
             }
-            
-            // This makes so the middle frame is reused as 4th frame allowing smoother animation.
-            // NOTE that the jump animation is excluded from this behaviour.
-            // More info about this in icons/pet_status.c
-            if (current_frame == 3) {
-                frame_to_show = 1;
-            }
 
             set_pet_action_state_based_on_modifiers();
 
@@ -174,6 +166,14 @@ void animate_images(void * var, int value) {
             }
         }
     }
+
+    // This makes so the middle frame is reused as 4th frame allowing smoother animation.
+    // NOTE that the jump animation is excluded from this behaviour.
+    // More info about this in icons/pet_status.c
+    if (current_frame == 3 && images != pet_jump_images) {
+        frame_to_show = 1;
+    }
+
     // set the image to show next
     lv_img_set_src(obj, images[frame_to_show]);
 }
