@@ -117,57 +117,61 @@ void animate_images(void * var, int value) {
         SYS_SLIST_FOR_EACH_CONTAINER(&widgets, widget, node) {
             init_anim(widget);
         }
-    }
+    } else {
+        if (current_pet_action_state == jump) {
 
-    if (current_pet_action_state == jump) {
+            // reset jump variable
+            if (current_frame == 3 && jump_interrupt == false) {
+                if (current_pet_action_state == jump) {
+                    current_pet_action_state = no_action;
+                    set_pet_action_state_based_on_modifiers();
+                    restart_animation = true;
+                }
+            }
 
-        // reset jump variable
-        if (current_frame == 3 && jump_interrupt == false) {
+            // start jump only on frame 0
+            if (current_frame == 0) {
+                images = jump_images;
+                jump_interrupt == true;
+            }
+
+            // reset interrupt value
+            if (current_frame == 2) {
+                jump_interrupt == false;
+            }
+
+        } else {
+
+            // Change image set every frame.
+            if (current_pet_action_state == down) {
+                images = pet_down_images;
+            } else if (current_pet_action_state == bark) {
+                images = pet_bark_images;
+            } else if (current_pet_wpm_state == sit) {
+                images = pet_sit_images;
+            } else if (current_pet_wpm_state == walk) {
+                images = pet_walk_images;
+            } else if (current_pet_wpm_state == run) {
+                images = pet_run_images;
+            }
+            
+            // This makes so the middle frame is reused as 4th frame allowing smoother animation.
+            // NOTE that the jump animation is excluded from this behaviour.
+            // More info about this in icons/pet_status.c
+            if (current_frame == 3) {
+                frame_to_show = 1;
+            }
+
+            set_pet_action_state_based_on_modifiers();
+
             if (current_pet_action_state == jump) {
-                current_pet_action_state = no_action;
-                set_pet_action_state_based_on_modifiers();
                 restart_animation = true;
             }
         }
 
-        // start jump only on frame 0
-        if (current_frame == 0) {
-            images = jump_images;
-            jump_interrupt == true;
-        }
-
-        // reset interrupt value
-        if (current_frame == 2) {
-            jump_interrupt == false;
-        }
-
-    } else {
-
-        // Change image set every frame.
-        if (current_pet_action_state == down) {
-            images = pet_down_images;
-        } else if (current_pet_action_state == bark) {
-            images = pet_bark_images;
-        } else if (current_pet_wpm_state == sit) {
-            images = pet_sit_images;
-        } else if (current_pet_wpm_state == walk) {
-            images = pet_walk_images;
-        } else if (current_pet_wpm_state == run) {
-            images = pet_run_images;
-        }
-        
-        // This makes so the middle frame is reused as 4th frame allowing smoother animation.
-        // NOTE that the jump animation is excluded from this behaviour.
-        // More info about this in icons/pet_status.c
-        if (current_frame == 3) {
-            frame_to_show = 1;
-        }
-
-        set_pet_action_state_based_on_modifiers();
+        // set the image to show next
+        lv_img_set_src(obj, images[frame_to_show]);
     }
-
-    // set the image to show next
-    lv_img_set_src(obj, images[frame_to_show]);
 }
 
 void init_anim(struct zmk_widget_pet_status *widget) {
