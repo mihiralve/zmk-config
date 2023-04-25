@@ -164,10 +164,6 @@ void animate_images(void * var, int value) {
         }
 
         set_pet_action_state_based_on_modifiers();
-
-        if (current_pet_action_state == jump) {
-            restart_animation = true;
-        }
     }
 
     // set the image to show next
