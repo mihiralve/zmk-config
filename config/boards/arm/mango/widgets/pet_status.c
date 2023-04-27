@@ -93,6 +93,7 @@ bool restart_animation = false;
 bool allow_frame_duration_change = false;
 int max_frame_duration = 300;
 int min_frame_duration = 100;
+int max_jump_frame_duration = 150;
 int current_frame_duration = 150;
 
 
@@ -167,6 +168,11 @@ void animate_images(void * var, int value) {
         }
     }
 
+    // Signal a frame duration change during the next frame 0
+    if (current_frame == 3) {
+        allow_frame_duration_change = true;
+    }
+
     // This makes so the middle frame is reused as 4th frame allowing smoother animation.
     // NOTE that the jump animation is excluded from this behaviour.
     // More info about this in icons/pet_status.c
@@ -227,23 +233,17 @@ int pet_wpm_event_listener(const zmk_event_t *eh) {
 
     SYS_SLIST_FOR_EACH_CONTAINER(&widgets, widget, node) {
 
-        // To save some calculations, the animation speed changes once every 4 frames only
-        if (current_frame == 3 && (ev->state > 0)) {
-            // Calculate current frame duration
-            current_frame_duration = (max_frame_duration - (ev->state * 3));
+        // Calculate current frame duration
+        current_frame_duration = (max_frame_duration - (ev->state * 3));
 
-            // Clamp the frame duration value
-            if (current_frame_duration <= min_frame_duration) {
-                current_frame_duration = min_frame_duration;
-            }
+        // Clamp the frame duration value
+        if (current_frame_duration <= min_frame_duration) {
+            current_frame_duration = min_frame_duration;
+        }
 
-            // Max jump frame duration
-            if (current_pet_action_state == jump && current_frame_duration > 150) {
-                current_frame_duration == 150;
-            }
-
-            // Signal a frame duration change during the next frame 0
-            allow_frame_duration_change = true;
+        // Max jump frame duration
+        if (current_pet_action_state == jump && current_frame_duration > max_jump_frame_duration) {
+            current_frame_duration = max_jump_frame_duration;
         }
 
         // Update pet status based on WPM.
