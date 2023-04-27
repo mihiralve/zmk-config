@@ -237,6 +237,11 @@ int pet_wpm_event_listener(const zmk_event_t *eh) {
                 current_frame_duration = min_frame_duration;
             }
 
+            // Max jump frame duration
+            if (current_pet_action_state == jump && current_frame_duration > 150) {
+                current_frame_duration == 150;
+            }
+
             // Signal a frame duration change during the next frame 0
             allow_frame_duration_change = true;
         }
