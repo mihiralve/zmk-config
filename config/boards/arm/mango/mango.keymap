@@ -280,10 +280,17 @@ combos {
         bindings = <&kp LG(V)>;
     };
 
+// ctrl b
+    combo_ctrl_b {
+        timeout-ms = <20>;
+        key-positions = <26 29>;
+        bindings = <&kp LG(B)>;
+    };
+
 // ctrl alt v
     combo_ctrl_alt_v {
         timeout-ms = <20>;
-        key-positions = <28 292>;
+        key-positions = <28 29>;
         bindings = <&kp LG(LA(V))>;
     };
 
