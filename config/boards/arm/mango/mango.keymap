@@ -290,7 +290,7 @@ combos {
 // ctrl alt v
     combo_ctrl_alt_v {
         timeout-ms = <20>;
-        key-positions = <28 29>;
+        key-positions = <26 28>;
         bindings = <&kp LG(LA(V))>;
     };
 
