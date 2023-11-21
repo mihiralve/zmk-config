@@ -329,6 +329,12 @@ combos {
         bindings = <&kp LG(DOWN)>;
     };
 
+// ctrl r
+    combo_ctrl_r {
+        timeout-ms = <20>;
+        key-positions = <27 4>;
+        bindings = <&kp LG(R)>;
+    };
 
 
 };
