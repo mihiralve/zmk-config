@@ -32,10 +32,10 @@ LV_IMG_DECLARE(bluetooth_profile_unknown);
 static sys_slist_t widgets = SYS_SLIST_STATIC_INIT(&widgets);
 
 struct profile_status_state {
-    enum zmk_endpoint_instance selected_endpoint;
+    struct zmk_endpoint_instance selected_endpoint;
     bool active_profile_connected;
     bool active_profile_bonded;
-    uint8_t active_profile_index;
+    int active_profile_index;
 };
 
 static struct profile_status_state get_state(const zmk_event_t *_eh) {
@@ -48,11 +48,11 @@ static struct profile_status_state get_state(const zmk_event_t *_eh) {
 }
 
 static void set_profile_indicator(lv_obj_t *icon, struct profile_status_state state) {
-    switch (state.selected_endpoint) {
-    case ZMK_ENDPOINT_USB:
+    switch (state.selected_endpoint.transport) {
+    case ZMK_TRANSPORT_USB:
         lv_img_set_src(icon, &usb_profile);
         break;
-    case ZMK_ENDPOINT_BLE:
+    case ZMK_TRANSPORT_BLE:
         switch (state.active_profile_index) {
         case 0:
             lv_img_set_src(icon, &bluetooth_profile_1);
