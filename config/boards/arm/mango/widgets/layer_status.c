@@ -33,7 +33,7 @@ struct layer_status_state {
 static struct layer_status_state get_state(const zmk_event_t *eh) {
     uint8_t index = zmk_keymap_highest_layer_active();
     return (struct layer_status_state){.index = index, 
-                                       .label = zmk_keymap_layer_label(index)};
+                                       .label = zmk_keymap_layer_name(index)};
 }
 
 static void set_layer_indicator(lv_obj_t *icon, struct layer_status_state state) {
