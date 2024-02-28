@@ -29,7 +29,7 @@ LV_IMG_DECLARE(usb_connected);
 static sys_slist_t widgets = SYS_SLIST_STATIC_INIT(&widgets);
 
 struct output_status_state {
-    enum zmk_endpoint selected_endpoint;
+    enum zmk_endpoint_instance selected_endpoint;
     bool active_profile_connected;
     bool active_profile_bonded;
     uint8_t active_profile_index;
