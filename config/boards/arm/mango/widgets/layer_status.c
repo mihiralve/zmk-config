@@ -37,10 +37,10 @@ static struct layer_status_state get_state(const zmk_event_t *eh) {
 }
 
 static void set_layer_indicator(lv_obj_t *icon, struct layer_status_state state) {
-    int index = -1;
-    
-    if (state.label == NULL) {
-        index = (int) state.index;
+    int index = (int) state.index;
+
+    if (index < 0 && index > 5) {
+        index = 0;
     }
 
     if (index == 0) {
