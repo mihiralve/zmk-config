@@ -37,7 +37,7 @@ static struct layer_status_state get_state(const zmk_event_t *eh) {
 }
 
 static void set_layer_indicator(lv_obj_t *icon, struct layer_status_state state) {
-    switch (state.index) {
+    /*switch (state.index) {
     case 0:
         lv_img_set_src(icon, &layer_0);
         break;
@@ -53,7 +53,7 @@ static void set_layer_indicator(lv_obj_t *icon, struct layer_status_state state)
     default:
         lv_img_set_src(icon, &layer_unknown);
         break;
-    }
+    }*/
 }
 
 static void layer_status_update_cb(struct layer_status_state state) {
