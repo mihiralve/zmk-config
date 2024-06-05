@@ -37,7 +37,19 @@ static struct layer_status_state get_state(const zmk_event_t *eh) {
 }
 
 static void set_layer_indicator(lv_obj_t *icon, struct layer_status_state state) {
+    int index = (int) state.index;
 
+    if (index == 0) {
+        //lv_img_set_src(icon, &layer_0);
+    } else if (index == 1) {
+        //lv_img_set_src(icon, &layer_1);
+    } else if (index == 2) {
+        //lv_img_set_src(icon, &layer_2);
+    } else if (index == 3) {
+        //lv_img_set_src(icon, &layer_3);
+    } else {
+        //lv_img_set_src(icon, &layer_unknown);
+    }
 }
 
 static void layer_status_update_cb(struct layer_status_state state) {
