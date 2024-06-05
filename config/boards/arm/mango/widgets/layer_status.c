@@ -23,6 +23,8 @@ LV_IMG_DECLARE(layer_2);
 LV_IMG_DECLARE(layer_3);
 LV_IMG_DECLARE(layer_unknown);
 
+int counter = 0;
+
 static sys_slist_t widgets = SYS_SLIST_STATIC_INIT(&widgets);
 
 struct layer_status_state {
@@ -39,8 +41,11 @@ static struct layer_status_state get_state(const zmk_event_t *eh) {
 static void set_layer_indicator(lv_obj_t *icon, struct layer_status_state state) {
     int index = (int) state.index;
 
-    if (index < 0 && index > 5) {
-        index = 0;
+    index = counter;
+    counter++;
+
+    if (counter > 4) {
+        counter = 0;
     }
 
     if (index == 0) {
