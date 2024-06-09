@@ -42,7 +42,7 @@ static void set_layer_indicator(lv_obj_t *icon, struct layer_status_state state)
     int index = (int) state.index;
 
     // TODO: fix this
-    if (setfirst != false) {
+    if (setfirst == false) {
         lv_img_set_src(icon, &layer_0);
         setfirst = true;
     }
