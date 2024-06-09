@@ -17,7 +17,6 @@ LOG_MODULE_DECLARE(zmk, CONFIG_ZMK_LOG_LEVEL);
 #include <zmk/endpoints.h>
 #include <zmk/keymap.h>
 
-LV_IMG_DECLARE(usb_profile);
 LV_IMG_DECLARE(layer_0);
 LV_IMG_DECLARE(layer_1);
 LV_IMG_DECLARE(layer_2);
@@ -41,15 +40,15 @@ static void set_layer_indicator(lv_obj_t *icon, struct layer_status_state state)
     int index = (int) state.index;
 
     if (index == 0) {
-        lv_img_set_src(icon, &usb_profile);
+        lv_img_set_src(icon, &layer_0);
     } else if (index == 1) {
-        lv_img_set_src(icon, &usb_profile);
+        lv_img_set_src(icon, &layer_0);
     } else if (index == 2) {
-        lv_img_set_src(icon, &usb_profile);
+        lv_img_set_src(icon, &layer_0);
     } else if (index == 3) {
-        lv_img_set_src(icon, &usb_profile);
+        lv_img_set_src(icon, &layer_0);
     } else {
-        lv_img_set_src(icon, &usb_profile);
+        lv_img_set_src(icon, &layer_0);
     }
 }
 
