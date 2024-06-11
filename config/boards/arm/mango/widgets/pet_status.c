@@ -124,7 +124,7 @@ void animate_images(void * var, int value) {
         lv_img_set_src(obj, images[frame_to_show]);
 
         // restart animation
-        // struct zmk_widget_pet_status *widget;
+        struct zmk_widget_pet_status *widget;
         SYS_SLIST_FOR_EACH_CONTAINER(&widgets, widget, node) {
             lv_anim_del(var, (lv_anim_exec_xcb_t) animate_images);
             init_anim(widget);
