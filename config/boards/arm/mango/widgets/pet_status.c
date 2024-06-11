@@ -117,12 +117,16 @@ void animate_images(void * var, int value) {
         if (current_frame == 3 && images != pet_jump_images) {
                 frame_to_show = 1;
         }
+        lv_lock();
         lv_img_set_src(obj, images[frame_to_show]);
+        lv_unlock();
 
         // restart animation
         struct zmk_widget_pet_status *widget;
         SYS_SLIST_FOR_EACH_CONTAINER(&widgets, widget, node) {
+            lv_lock();
             lv_anim_del(var, (lv_anim_exec_xcb_t) animate_images);
+            lv_unlock();
             init_anim(widget);
         }
     } else {
@@ -186,6 +190,7 @@ void animate_images(void * var, int value) {
 
 void init_anim(struct zmk_widget_pet_status *widget) {
     // Initialize the animation
+    lv_lock();
     lv_anim_init(&anim);
     lv_anim_set_var(&anim, widget->obj);
     lv_anim_set_exec_cb(&anim, (lv_anim_exec_xcb_t) animate_images);
@@ -195,10 +200,13 @@ void init_anim(struct zmk_widget_pet_status *widget) {
     lv_anim_set_repeat_count(&anim, LV_ANIM_REPEAT_INFINITE);
     lv_anim_set_repeat_delay(&anim, current_frame_duration);
     lv_anim_start(&anim);
+    lv_unlock();
 }
 
 int zmk_widget_pet_status_init(struct zmk_widget_pet_status *widget, lv_obj_t *parent) {
+    lv_lock();
     widget->obj = lv_img_create(parent);
+    lv_unlock();
 
     current_pet_wpm_state = sit;
     init_anim(widget);

@@ -52,6 +52,7 @@ static void set_battery_symbol(lv_obj_t *icon, struct battery_status_state state
 
     bool usb_present = state.usb_present;
 
+    lv_lock();
     if (usb_present) {
         lv_img_set_src(icon, &battery_charging);
     } else {
@@ -89,6 +90,7 @@ static void set_battery_symbol(lv_obj_t *icon, struct battery_status_state state
             lv_img_set_src(icon, &battery_2);
         }
     }
+    lv_unlock();
 
 #endif /* IS_ENABLED(CONFIG_USB_DEVICE_STACK) */
 }
@@ -117,7 +119,9 @@ ZMK_SUBSCRIPTION(widget_battery_status, zmk_battery_state_changed);
 #endif /* IS_ENABLED(CONFIG_USB_DEVICE_STACK) */
 
 int zmk_widget_battery_status_init(struct zmk_widget_battery_status *widget, lv_obj_t *parent) {
+    lv_lock();
     widget->obj = lv_img_create(parent);
+    lv_unlock();
 
     sys_slist_append(&widgets, &widget->node);
     widget_battery_status_init();
