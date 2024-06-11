@@ -37,7 +37,7 @@ static struct layer_status_state layer_status_get_state(const zmk_event_t *eh) {
 }
 
 static void set_layer_indicator(lv_obj_t *icon, struct layer_status_state state) {
-    const char *layer_label = state.label;
+    // const char *layer_label = state.label;
     uint8_t active_layer_index = state.index;
 
     if (active_layer_index == 0) {

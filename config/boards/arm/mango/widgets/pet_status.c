@@ -86,7 +86,7 @@ enum pet_action_state {
 } current_pet_action_state = no_action;
 
 // explicit function declarations
-void init_anim(struct zmk_widget_pet_status);
+void init_anim(struct zmk_widget_pet_status *widget);
 void set_pet_action_state_based_on_modifiers();
 
 lv_anim_t anim;
@@ -124,7 +124,7 @@ void animate_images(void * var, int value) {
         lv_img_set_src(obj, images[frame_to_show]);
 
         // restart animation
-        struct zmk_widget_pet_status *widget;
+        // struct zmk_widget_pet_status *widget;
         SYS_SLIST_FOR_EACH_CONTAINER(&widgets, widget, node) {
             lv_anim_del(var, (lv_anim_exec_xcb_t) animate_images);
             init_anim(widget);
