@@ -48,7 +48,6 @@ static struct profile_status_state get_state(const zmk_event_t *_eh) {
 }
 
 static void set_profile_indicator(lv_obj_t *icon, struct profile_status_state state) {
-    lv_lock();
     switch (state.selected_endpoint.transport) {
     case ZMK_TRANSPORT_USB:
         lv_img_set_src(icon, &usb_profile);
@@ -75,7 +74,6 @@ static void set_profile_indicator(lv_obj_t *icon, struct profile_status_state st
             break;
         }
     }
-    lv_unlock();
 }
 
 static void profile_status_update_cb(struct profile_status_state state) {
@@ -96,9 +94,7 @@ ZMK_SUBSCRIPTION(widget_profile_status, zmk_ble_active_profile_changed);
 #endif
 
 int zmk_widget_profile_status_init(struct zmk_widget_profile_status *widget, lv_obj_t *parent) {
-    lv_lock();
     widget->obj = lv_img_create(parent);
-    lv_unlock();
 
     sys_slist_append(&widgets, &widget->node);
 

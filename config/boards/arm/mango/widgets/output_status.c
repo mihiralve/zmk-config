@@ -45,7 +45,6 @@ static struct output_status_state get_state(const zmk_event_t *_eh) {
 }
 
 static void set_status_symbol(lv_obj_t *icon, struct output_status_state state) {
-    lv_lock();
     switch (state.selected_endpoint.transport) {
     case ZMK_TRANSPORT_USB:
         lv_img_set_src(icon, &usb_connected);
@@ -62,7 +61,6 @@ static void set_status_symbol(lv_obj_t *icon, struct output_status_state state) 
         }
         break;
     }
-    lv_unlock();
 }
 
 static void output_status_update_cb(struct output_status_state state) {
@@ -83,9 +81,7 @@ ZMK_SUBSCRIPTION(widget_output_status, zmk_endpoint_changed);
 #endif
 
 int zmk_widget_output_status_init(struct zmk_widget_output_status *widget, lv_obj_t *parent) {
-    lv_lock();
     widget->obj = lv_img_create(parent);
-    lv_unlock();
 
     sys_slist_append(&widgets, &widget->node);
 

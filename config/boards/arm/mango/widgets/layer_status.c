@@ -23,6 +23,8 @@ LV_IMG_DECLARE(layer_2);
 LV_IMG_DECLARE(layer_3);
 LV_IMG_DECLARE(layer_unknown);
 
+bool setfirst = false;
+
 static sys_slist_t widgets = SYS_SLIST_STATIC_INIT(&widgets);
 
 struct layer_status_state {
@@ -39,19 +41,23 @@ static struct layer_status_state get_state(const zmk_event_t *eh) {
 static void set_layer_indicator(lv_obj_t *icon, struct layer_status_state state) {
     int index = (int) state.index;
 
-    lv_lock();
-    if (index == 0) {
+    // TODO: fix this
+    if (setfirst == false) {
         lv_img_set_src(icon, &layer_0);
-    } else if (index == 1) {
-        lv_img_set_src(icon, &layer_1);
-    } else if (index == 2) {
-        lv_img_set_src(icon, &layer_2);
-    } else if (index == 3) {
-        lv_img_set_src(icon, &layer_3);
-    } else {
-        lv_img_set_src(icon, &layer_unknown);
+        setfirst = true;
     }
-    lv_unlock();
+
+    if (index == 0) {
+        // layer_0
+    } else if (index == 1) {
+        // layer_1
+    } else if (index == 2) {
+        // layer_2
+    } else if (index == 3) {
+        // layer_3
+    } else {
+        // layer_unknown
+    }
 }
 
 static void layer_status_update_cb(struct layer_status_state state) {
@@ -63,10 +69,7 @@ ZMK_DISPLAY_WIDGET_LISTENER(widget_layer_status, struct layer_status_state, laye
 ZMK_SUBSCRIPTION(widget_layer_status, zmk_layer_state_changed);
 
 int zmk_widget_layer_status_init(struct zmk_widget_layer_status *widget, lv_obj_t *parent) {
-
-    lv_lock();
     widget->obj = lv_img_create(parent);
-    lv_unlock();
 
     sys_slist_append(&widgets, &widget->node);
 
