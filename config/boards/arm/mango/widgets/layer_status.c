@@ -6,7 +6,6 @@
  */
 
 #include <zephyr/kernel.h>
-
 #include <zephyr/logging/log.h>
 LOG_MODULE_DECLARE(zmk, CONFIG_ZMK_LOG_LEVEL);
 
@@ -32,31 +31,25 @@ struct layer_status_state {
     const char *label;
 };
 
-static struct layer_status_state get_state(const zmk_event_t *eh) {
+static struct layer_status_state layer_status_get_state(const zmk_event_t *eh) {
     uint8_t index = zmk_keymap_highest_layer_active();
-    return (struct layer_status_state){.index = index, 
-                                       .label = zmk_keymap_layer_name(index)};
+    return (struct layer_status_state){.index = index, .label = zmk_keymap_layer_name(index)};
 }
 
 static void set_layer_indicator(lv_obj_t *icon, struct layer_status_state state) {
-    int index = (int) state.index;
+    const char *layer_label = state.label;
+    uint8_t active_layer_index = state.index;
 
-    // TODO: fix this
-    if (setfirst == false) {
+    if (active_layer_index == 0) {
         lv_img_set_src(icon, &layer_0);
-        setfirst = true;
-    }
-
-    if (index == 0) {
-        // layer_0
-    } else if (index == 1) {
-        // layer_1
-    } else if (index == 2) {
-        // layer_2
-    } else if (index == 3) {
-        // layer_3
+    } else if (active_layer_index == 1) {
+        lv_img_set_src(icon, &layer_1);
+    } else if (active_layer_index == 2) {
+        lv_img_set_src(icon, &layer_2);
+    } else if (active_layer_index == 3) {
+        lv_img_set_src(icon, &layer_3);
     } else {
-        // layer_unknown
+        lv_img_set_src(icon, &layer_unknown);
     }
 }
 
@@ -65,7 +58,8 @@ static void layer_status_update_cb(struct layer_status_state state) {
     SYS_SLIST_FOR_EACH_CONTAINER(&widgets, widget, node) { set_layer_indicator(widget->obj, state); }
 }
 
-ZMK_DISPLAY_WIDGET_LISTENER(widget_layer_status, struct layer_status_state, layer_status_update_cb, get_state)
+ZMK_DISPLAY_WIDGET_LISTENER(widget_layer_status, struct layer_status_state, layer_status_update_cb, layer_status_get_state)
+
 ZMK_SUBSCRIPTION(widget_layer_status, zmk_layer_state_changed);
 
 int zmk_widget_layer_status_init(struct zmk_widget_layer_status *widget, lv_obj_t *parent) {

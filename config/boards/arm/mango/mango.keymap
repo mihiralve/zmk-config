@@ -273,7 +273,7 @@ macros {
 
 // Screenshot
     SCRSHT: scrsht {
-        label = "Screenshot";
+        // label = "Screenshot";
         compatible = "zmk,behavior-macro";
         #binding-cells = <0>;
         bindings
@@ -292,7 +292,7 @@ behaviors {
 
     lhkt: layer_hold_key_tap {
         compatible = "zmk,behavior-hold-tap";
-        label = "LAYER_HOLD_KEY_TAP";
+        // label = "LAYER_HOLD_KEY_TAP";
         #binding-cells = <2>;
         tapping-term-ms = <200>;    // <---[[moderate duration]]
         quick-tap-ms = <0>;

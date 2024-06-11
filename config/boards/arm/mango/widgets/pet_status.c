@@ -85,6 +85,10 @@ enum pet_action_state {
     jump,
 } current_pet_action_state = no_action;
 
+// explicit function declarations
+void init_anim(struct zmk_widget_pet_status);
+void set_pet_action_state_based_on_modifiers();
+
 lv_anim_t anim;
 const void **images;
 int current_frame = 0;
@@ -137,12 +141,12 @@ void animate_images(void * var, int value) {
             // start jump only on frame 0
             if (current_frame == 0) {
                 images = pet_jump_images;
-                jump_interrupt == true;
+                jump_interrupt = true;
             }
 
             // reset interrupt value
             if (current_frame == 2 && images == pet_jump_images) {
-                jump_interrupt == false;
+                jump_interrupt = false;
             }
 
         } else {
