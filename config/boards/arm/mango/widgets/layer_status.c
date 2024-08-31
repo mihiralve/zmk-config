@@ -38,7 +38,7 @@ static void set_layer_indicator(lv_obj_t *icon, struct layer_status_state state)
     const char *layer_label = state.label;
     uint8_t active_layer_index = state.index;
 
-    lv_img_set_src(icon, &layer_unknown);
+    /*lv_img_set_src(icon, &layer_unknown);
 
     switch (active_layer_index) {
     case 0:
@@ -53,7 +53,7 @@ static void set_layer_indicator(lv_obj_t *icon, struct layer_status_state state)
     case 3:
         lv_img_set_src(icon, &layer_3);
         break;
-    }
+    }*/
 }
 
 static void layer_status_update_cb(struct layer_status_state state) {
