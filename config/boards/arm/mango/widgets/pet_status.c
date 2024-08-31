@@ -264,7 +264,6 @@ int pet_wpm_event_listener(const zmk_event_t *eh) {
 }
 
 int pet_keycode_event_listener(const zmk_event_t *eh) {
-    struct zmk_widget_pet_status *widget;
     const struct zmk_keycode_state_changed *ev = as_zmk_keycode_state_changed(eh);
 
     // key presses

@@ -22,8 +22,6 @@ LV_IMG_DECLARE(layer_2);
 LV_IMG_DECLARE(layer_3);
 LV_IMG_DECLARE(layer_unknown);
 
-bool setfirst = false;
-
 static sys_slist_t widgets = SYS_SLIST_STATIC_INIT(&widgets);
 
 struct layer_status_state {
@@ -37,19 +35,24 @@ static struct layer_status_state layer_status_get_state(const zmk_event_t *eh) {
 }
 
 static void set_layer_indicator(lv_obj_t *icon, struct layer_status_state state) {
-    // const char *layer_label = state.label;
+    const char *layer_label = state.label;
     uint8_t active_layer_index = state.index;
 
-    if (active_layer_index == 0) {
+    lv_img_set_src(icon, &layer_unknown);
+
+    switch (active_layer_index) {
+    case 0:
         lv_img_set_src(icon, &layer_0);
-    } else if (active_layer_index == 1) {
+        break;
+    case 1:
         lv_img_set_src(icon, &layer_1);
-    } else if (active_layer_index == 2) {
+        break;
+    case 2:
         lv_img_set_src(icon, &layer_2);
-    } else if (active_layer_index == 3) {
+        break;
+    case 3:
         lv_img_set_src(icon, &layer_3);
-    } else {
-        lv_img_set_src(icon, &layer_unknown);
+        break;
     }
 }
 
