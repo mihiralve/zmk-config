@@ -85,6 +85,10 @@ enum pet_action_state {
     jump,
 } current_pet_action_state = no_action;
 
+// explicit function declarations
+void init_anim(struct zmk_widget_pet_status *widget);
+void set_pet_action_state_based_on_modifiers();
+
 lv_anim_t anim;
 const void **images;
 int current_frame = 0;
@@ -137,12 +141,12 @@ void animate_images(void * var, int value) {
             // start jump only on frame 0
             if (current_frame == 0) {
                 images = pet_jump_images;
-                jump_interrupt == true;
+                jump_interrupt = true;
             }
 
             // reset interrupt value
             if (current_frame == 2 && images == pet_jump_images) {
-                jump_interrupt == false;
+                jump_interrupt = false;
             }
 
         } else {
@@ -260,7 +264,6 @@ int pet_wpm_event_listener(const zmk_event_t *eh) {
 }
 
 int pet_keycode_event_listener(const zmk_event_t *eh) {
-    struct zmk_widget_pet_status *widget;
     const struct zmk_keycode_state_changed *ev = as_zmk_keycode_state_changed(eh);
 
     // key presses

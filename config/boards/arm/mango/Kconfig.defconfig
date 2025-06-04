@@ -6,6 +6,9 @@ if BOARD_MANGO_LEFT
 	config ZMK_SPLIT_BLE_ROLE_CENTRAL
     default y
 
+	config ZMK_USB
+	default y
+
 endif # BOARD_MANGO_LEFT
 
 if BOARD_MANGO_RIGHT
@@ -88,9 +91,6 @@ if BOARD_MANGO_LEFT || BOARD_MANGO_RIGHT
 	default BT
 
 	config ZMK_BLE
-		default y
-
-	config ZMK_USB
 		default y
 
 	menuconfig CUSTOM_WIDGET_BATTERY_STATUS

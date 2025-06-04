@@ -16,7 +16,7 @@ LOG_MODULE_DECLARE(zmk, CONFIG_ZMK_LOG_LEVEL);
 #include <zmk/event_manager.h>
 #include <zmk/events/usb_conn_state_changed.h>
 #include <zmk/events/ble_active_profile_changed.h>
-#include <zmk/events/endpoint_selection_changed.h>
+#include <zmk/events/endpoint_changed.h>
 #include <zmk/usb.h>
 #include <zmk/ble.h>
 #include <zmk/endpoints.h>
@@ -32,10 +32,10 @@ LV_IMG_DECLARE(bluetooth_profile_unknown);
 static sys_slist_t widgets = SYS_SLIST_STATIC_INIT(&widgets);
 
 struct profile_status_state {
-    enum zmk_endpoint selected_endpoint;
+    struct zmk_endpoint_instance selected_endpoint;
     bool active_profile_connected;
     bool active_profile_bonded;
-    uint8_t active_profile_index;
+    int active_profile_index;
 };
 
 static struct profile_status_state get_state(const zmk_event_t *_eh) {
@@ -48,11 +48,11 @@ static struct profile_status_state get_state(const zmk_event_t *_eh) {
 }
 
 static void set_profile_indicator(lv_obj_t *icon, struct profile_status_state state) {
-    switch (state.selected_endpoint) {
-    case ZMK_ENDPOINT_USB:
+    switch (state.selected_endpoint.transport) {
+    case ZMK_TRANSPORT_USB:
         lv_img_set_src(icon, &usb_profile);
         break;
-    case ZMK_ENDPOINT_BLE:
+    case ZMK_TRANSPORT_BLE:
         switch (state.active_profile_index) {
         case 0:
             lv_img_set_src(icon, &bluetooth_profile_1);
@@ -83,7 +83,7 @@ static void profile_status_update_cb(struct profile_status_state state) {
 
 ZMK_DISPLAY_WIDGET_LISTENER(widget_profile_status, struct profile_status_state,
                             profile_status_update_cb, get_state)
-ZMK_SUBSCRIPTION(widget_profile_status, zmk_endpoint_selection_changed);
+ZMK_SUBSCRIPTION(widget_profile_status, zmk_endpoint_changed);
 
 #if IS_ENABLED(CONFIG_USB_DEVICE_STACK)
 ZMK_SUBSCRIPTION(widget_profile_status, zmk_usb_conn_state_changed);
