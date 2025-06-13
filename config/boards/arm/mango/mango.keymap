@@ -286,6 +286,13 @@ combos {
         bindings = <&kp LG(V)>;
     };
 
+// ctrl b
+    combo_ctrl_b {
+        timeout-ms = <20>;
+        key-positions = <16 29>;
+        bindings = <&kp LG(B)>;
+    };
+
 // ctrl alt v
     combo_ctrl_alt_v {
         timeout-ms = <20>;
